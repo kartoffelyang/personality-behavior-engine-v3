@@ -1,0 +1,53 @@
+scenario_id: cabin_comfort
+display_name: 座舱舒适调节
+min_score_to_call: 0.52
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 显著不适消除
+    preferred_needs:
+      physical_comfort: 1.0
+      immediate_feedback: 0.9
+  Si:
+    strategy: 舒适基线复归
+    preferred_needs:
+      restore_history: 1.0
+      physical_comfort: 0.8
+      predictability: 0.7
+  Ne:
+    strategy: 舒适模式拓展
+    preferred_needs:
+      provide_options: 1.0
+      exploration: 0.7
+      physical_comfort: 0.5
+  Ni:
+    strategy: 全程舒适构想
+    preferred_needs:
+      trip_forecast: 0.8
+      proactive_preparation: 0.7
+      physical_comfort: 0.6
+  Te:
+    strategy: 舒适目标统筹
+    preferred_needs:
+      task_completion: 0.8
+      physical_comfort: 0.9
+      time_efficiency: 0.5
+  Ti:
+    strategy: 舒适关系校准
+    preferred_needs:
+      dependency_check: 1.0
+      conflict_resolution: 0.9
+      physical_comfort: 0.5
+  Fe:
+    strategy: 多人舒适平衡
+    preferred_needs:
+      group_balance: 1.0
+      social_harmony: 0.8
+      physical_comfort: 0.7
+  Fi:
+    strategy: 个人舒适维护
+    preferred_needs:
+      user_autonomy: 1.0
+      personal_boundary: 0.9
+      physical_comfort: 0.8

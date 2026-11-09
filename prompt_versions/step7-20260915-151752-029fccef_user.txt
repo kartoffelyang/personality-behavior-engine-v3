@@ -1,0 +1,924 @@
+{
+  "persona": "INFP",
+  "scenario_id": "emotional_support",
+  "rule_summary": [
+    "未触发安全覆盖",
+    "不存在显式工具指令"
+  ],
+  "flow_context": {
+    "scenario_understanding": {
+      "explicit_intent": "希望尽快回到锦悦小区；需要处理家人在手机上询问检查情况的问题；不希望回家后独自面对空荡的家；检查结果还需等待两天，明天需要上班。",
+      "implicit_needs": [
+        "希望获得情绪上的理解和陪伴感",
+        "希望以不暴露过度担忧的方式向家人说明检查结果",
+        "希望减少返程等待和独处带来的心理压力"
+      ],
+      "core_goal": "整理一段适合回复家人的检查情况说明，并支持用户平稳完成回锦悦小区的返程。",
+      "must_do": [
+        "向家人明确说明检查结果还需等待两天",
+        "在返程过程中保持足够注意力并关注小雨和出口排队带来的行车不确定性"
+      ],
+      "unknowns": [
+        "用户当前车辆是静止排队还是正在缓慢行驶",
+        "用户当前是否需要立即操作手机回复家人",
+        "锦悦小区对应的具体地址、入口和预计路程",
+        "当前距离锦悦小区的预计到达时间",
+        "用户是否有明确的最晚到达时间",
+        "家人希望了解检查的哪些具体内容",
+        "用户回家后是否有人陪伴或可以联系的人",
+        "小雨是否已经影响当前道路或车辆视野"
+      ],
+      "context_overrides": {
+        "time_period": "evening",
+        "cabin_temperature_c": null,
+        "thermal_sensation": null,
+        "passenger_count": 1,
+        "destination_reference": "锦悦小区",
+        "arrival_deadline": null,
+        "driving_state": null,
+        "weather": "小雨"
+      },
+      "parsed_needs": {
+        "emotional_comfort": 0.86,
+        "physical_comfort": 0.0,
+        "task_completion": 0.83,
+        "time_efficiency": 0.58,
+        "safety_support": 0.32,
+        "restore_history": 0.0,
+        "user_autonomy": 0.0
+      },
+      "emotion": {
+        "label": "担忧和压抑",
+        "intensity": 0.8
+      },
+      "risk": {
+        "items": [
+          "用户情绪压抑和对检查结果的担忧可能影响返程状态",
+          "家人通过手机询问情况，处理消息可能带来注意力分散风险",
+          "小雨和出口排队可能增加返程耗时及行车不确定性",
+          "用户想早点回去，但没有明确截止时间，不能据此判断已经存在迟到风险"
+        ],
+        "fatigue_driving": 0.05,
+        "distraction": 0.34,
+        "visibility": 0.2,
+        "time_pressure": 0.46,
+        "overall": 0.35
+      }
+    },
+    "execution_context": {
+      "context": {
+        "time_period": "evening",
+        "passenger_count": 1,
+        "destination_reference": "锦悦小区",
+        "weather": "小雨",
+        "destination_known": false,
+        "estimated_trip_minutes": null,
+        "destination": "锦悦小区"
+      },
+      "history": {
+        "preferred_temperature": 23,
+        "preferred_music_style": "soft_acoustic",
+        "preferred_ambient_scene": "warm_amber",
+        "allow_auto_navigation": true,
+        "allow_auto_climate": true,
+        "allow_auto_music": false,
+        "allow_auto_ambient": true,
+        "allow_auto_notification": true,
+        "allow_auto_ecosystem": true,
+        "allow_auto_seat": true
+      }
+    },
+    "persona_scene_strategy": {
+      "dominant_function": "Fi",
+      "action_strategy": "个人价值一致",
+      "cross_scenario_prototype": "依据个人价值与边界筛选行动并保留自主权",
+      "scenario_strategy": "情绪边界维护",
+      "preferred_needs": {
+        "emotional_comfort": 1.0,
+        "personal_boundary": 1.0,
+        "user_autonomy": 1.0
+      }
+    },
+    "persona_description": {
+      "top4_functions": [
+        {
+          "function": "Fi",
+          "display_name": "内倾情感",
+          "action_strategy": "个人价值一致",
+          "principle": "依据个人价值和内在边界筛选系统行为，避免不符合主体的干预",
+          "action_logic": [
+            "识别个人价值与边界",
+            "过滤不一致行动",
+            "选择性表达和执行",
+            "保留自主控制"
+          ]
+        }
+      ],
+      "dominant_summary": "该方案优先维护用户当前感受、个人偏好与系统介入边界。\n",
+      "target_persona_description": [
+        "Fi：依据个人价值和内在边界筛选系统行为，避免不符合主体的干预"
+      ]
+    },
+    "interaction_dimensions": {
+      "raw_interaction": {
+        "initiative": 0.35,
+        "confirmation": 0.85,
+        "memory_usage": 0.45,
+        "option_count": 2,
+        "automation_level": 0.25,
+        "follow_up": 0.4,
+        "intervention_intensity": 0.35,
+        "group_orientation": 0.35,
+        "boundary_protection": 0.95
+      },
+      "scaled_1_to_5": {
+        "initiative": 2,
+        "confirmation": 4,
+        "memory_usage": 3,
+        "option_count": 5,
+        "automation_level": 2,
+        "follow_up": 3,
+        "intervention_intensity": 2,
+        "group_orientation": 2,
+        "boundary_protection": 5
+      },
+      "function_dimension_descriptions": [
+        {
+          "function": "Fi",
+          "stance": "个人价值、意义和自主边界的维护者",
+          "voice_org": "呈现个人选择、价值边界和可控范围",
+          "explanation_focus": "说明个人价值、边界影响及保留的选择权",
+          "timing": "在价值、隐私或自主边界可能被触及时先征得许可",
+          "ordering": "按个人价值优先级和不可让渡边界排序"
+        }
+      ],
+      "mode": "persona_driven"
+    },
+    "capability_catalog": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "atomic_abilities": [
+          {
+            "name": "空调开关",
+            "definition": "开启或关闭空调",
+            "core_params": [
+              "开关",
+              "作用区域"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "温度调节",
+            "definition": "设置车内温度",
+            "core_params": [
+              "温度",
+              "区域"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "风量调节",
+            "definition": "调整送风强度",
+            "core_params": [
+              "档位",
+              "区域"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "出风模式切换",
+            "definition": "切换出风位置",
+            "core_params": [
+              "吹脸",
+              "吹脚",
+              "吹窗"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "空气净化开关",
+            "definition": "控制空气净化",
+            "core_params": [
+              "开关",
+              "净化模式"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "前挡除雾开关",
+            "definition": "控制前挡除雾",
+            "core_params": [
+              "开关",
+              "强度",
+              "时长"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "后挡除雾开关",
+            "definition": "控制后挡除雾",
+            "core_params": [
+              "开关",
+              "时长"
+            ],
+            "service_sources": [
+              "车控系统"
+            ]
+          },
+          {
+            "name": "空调设置恢复",
+            "definition": "恢复历史设置",
+            "core_params": [
+              "用户",
+              "温度",
+              "模式"
+            ],
+            "service_sources": [
+              "车控系统",
+              "用户记忆"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "entertainment",
+        "display_name": "影音娱乐",
+        "atomic_abilities": [
+          {
+            "name": "内容搜索",
+            "definition": "搜索影音内容",
+            "core_params": [
+              "关键词",
+              "类型",
+              "来源"
+            ],
+            "service_sources": [
+              "影音系统",
+              "内容App"
+            ]
+          },
+          {
+            "name": "内容详情查看",
+            "definition": "获取内容信息",
+            "core_params": [
+              "名称",
+              "作者",
+              "时长"
+            ],
+            "service_sources": [
+              "影音系统",
+              "内容App"
+            ]
+          },
+          {
+            "name": "内容选择",
+            "definition": "确定播放内容",
+            "core_params": [
+              "内容",
+              "选择依据"
+            ],
+            "service_sources": [
+              "影音系统",
+              "内容App"
+            ]
+          },
+          {
+            "name": "播放控制",
+            "definition": "控制播放状态",
+            "core_params": [
+              "播放",
+              "暂停",
+              "继续",
+              "停止"
+            ],
+            "service_sources": [
+              "影音系统"
+            ]
+          },
+          {
+            "name": "音源切换",
+            "definition": "切换播放来源",
+            "core_params": [
+              "蓝牙",
+              "车机",
+              "广播",
+              "App"
+            ],
+            "service_sources": [
+              "影音系统"
+            ]
+          },
+          {
+            "name": "音量调节",
+            "definition": "调整播放音量",
+            "core_params": [
+              "音量",
+              "静音"
+            ],
+            "service_sources": [
+              "影音系统"
+            ]
+          },
+          {
+            "name": "影音设置恢复",
+            "definition": "恢复历史影音设置",
+            "core_params": [
+              "内容",
+              "音源",
+              "音量"
+            ],
+            "service_sources": [
+              "影音系统",
+              "用户记忆"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "ambient_light",
+        "display_name": "氛围灯",
+        "atomic_abilities": [
+          {
+            "name": "氛围灯开关",
+            "definition": "开启或关闭氛围灯",
+            "core_params": [
+              "开关",
+              "区域"
+            ],
+            "service_sources": [
+              "灯光控制系统"
+            ]
+          },
+          {
+            "name": "颜色设置",
+            "definition": "设置灯光颜色",
+            "core_params": [
+              "颜色",
+              "色温",
+              "区域"
+            ],
+            "service_sources": [
+              "灯光控制系统"
+            ]
+          },
+          {
+            "name": "亮度调节",
+            "definition": "调整灯光亮度",
+            "core_params": [
+              "亮度",
+              "区域"
+            ],
+            "service_sources": [
+              "灯光控制系统"
+            ]
+          },
+          {
+            "name": "灯光效果切换",
+            "definition": "切换灯光动态效果",
+            "core_params": [
+              "静态",
+              "呼吸",
+              "渐变",
+              "律动"
+            ],
+            "service_sources": [
+              "灯光控制系统"
+            ]
+          },
+          {
+            "name": "灯光设置恢复",
+            "definition": "恢复历史灯光方案",
+            "core_params": [
+              "颜色",
+              "亮度",
+              "效果"
+            ],
+            "service_sources": [
+              "灯光系统",
+              "用户记忆"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "atomic_abilities": [
+          {
+            "name": "地点搜索",
+            "definition": "搜索明确目的地",
+            "core_params": [
+              "名称",
+              "地址",
+              "范围"
+            ],
+            "service_sources": [
+              "高德地图等"
+            ]
+          },
+          {
+            "name": "地点详情查看",
+            "definition": "获取目的地信息",
+            "core_params": [
+              "地址",
+              "坐标",
+              "入口"
+            ],
+            "service_sources": [
+              "高德地图等"
+            ]
+          },
+          {
+            "name": "历史目的地获取",
+            "definition": "读取历史或收藏地点",
+            "core_params": [
+              "用户",
+              "时间",
+              "地点类型"
+            ],
+            "service_sources": [
+              "导航系统",
+              "用户记忆"
+            ]
+          },
+          {
+            "name": "目的地设置",
+            "definition": "设置或更换目的地",
+            "core_params": [
+              "POI",
+              "坐标",
+              "入口"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "路线规划",
+            "definition": "生成候选路线",
+            "core_params": [
+              "起终点",
+              "路况",
+              "偏好"
+            ],
+            "service_sources": [
+              "高德地图等"
+            ]
+          },
+          {
+            "name": "路线比较",
+            "definition": "比较路线差异",
+            "core_params": [
+              "时间",
+              "距离",
+              "收费",
+              "拥堵"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "路线选择",
+            "definition": "确定执行路线",
+            "core_params": [
+              "路线",
+              "选择依据"
+            ],
+            "service_sources": [
+              "系统决策",
+              "用户选择"
+            ]
+          },
+          {
+            "name": "导航运行控制",
+            "definition": "控制导航状态",
+            "core_params": [
+              "开始",
+              "暂停",
+              "继续",
+              "结束"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "路线重新规划",
+            "definition": "根据变化更新路线",
+            "core_params": [
+              "当前位置",
+              "路况",
+              "新约束"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "途经点管理",
+            "definition": "管理路线途经点",
+            "core_params": [
+              "地点",
+              "顺序",
+              "停留要求"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "预计到达时间获取",
+            "definition": "获取预计到达时间",
+            "core_params": [
+              "路线",
+              "路况",
+              "更新时间"
+            ],
+            "service_sources": [
+              "导航系统"
+            ]
+          },
+          {
+            "name": "迟到风险判断",
+            "definition": "判断能否按时到达",
+            "core_params": [
+              "到达时间",
+              "任务时间",
+              "缓冲时间"
+            ],
+            "service_sources": [
+              "规划模块",
+              "日程系统"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "atomic_abilities": [
+          {
+            "name": "通知读取",
+            "definition": "获取通知内容",
+            "core_params": [
+              "来源",
+              "时间",
+              "内容范围"
+            ],
+            "service_sources": [
+              "车机",
+              "手机互联"
+            ]
+          },
+          {
+            "name": "通知摘要",
+            "definition": "提炼通知重点",
+            "core_params": [
+              "通知集合",
+              "摘要长度"
+            ],
+            "service_sources": [
+              "通知系统",
+              "LLM"
+            ]
+          },
+          {
+            "name": "通知优先级分类",
+            "definition": "判断通知紧急程度",
+            "core_params": [
+              "来源",
+              "联系人",
+              "任务相关性"
+            ],
+            "service_sources": [
+              "通知系统",
+              "规划模块"
+            ]
+          },
+          {
+            "name": "提醒延后",
+            "definition": "推迟通知或提醒",
+            "core_params": [
+              "延后时间",
+              "恢复条件"
+            ],
+            "service_sources": [
+              "通知系统"
+            ]
+          },
+          {
+            "name": "通知静音控制",
+            "definition": "控制通知声音",
+            "core_params": [
+              "开关",
+              "时长",
+              "应用范围"
+            ],
+            "service_sources": [
+              "通知系统"
+            ]
+          },
+          {
+            "name": "非紧急通知屏蔽",
+            "definition": "暂时隐藏非紧急通知",
+            "core_params": [
+              "屏蔽范围",
+              "白名单",
+              "时长"
+            ],
+            "service_sources": [
+              "通知系统"
+            ]
+          },
+          {
+            "name": "回复草稿生成",
+            "definition": "生成待确认回复",
+            "core_params": [
+              "对象",
+              "内容",
+              "语气"
+            ],
+            "service_sources": [
+              "LLM",
+              "通信系统"
+            ]
+          },
+          {
+            "name": "回复发送",
+            "definition": "发送确认后的回复",
+            "core_params": [
+              "接收人",
+              "内容",
+              "渠道"
+            ],
+            "service_sources": [
+              "手机互联",
+              "通信App"
+            ]
+          },
+          {
+            "name": "回拨发起",
+            "definition": "发起电话回拨",
+            "core_params": [
+              "联系人",
+              "号码",
+              "确认状态"
+            ],
+            "service_sources": [
+              "电话系统"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "atomic_abilities": [
+          {
+            "name": "座椅位置调节",
+            "definition": "调整座椅位置",
+            "core_params": [
+              "前后",
+              "高低",
+              "靠背",
+              "腿托"
+            ],
+            "service_sources": [
+              "座椅控制系统"
+            ]
+          },
+          {
+            "name": "座椅位置恢复",
+            "definition": "恢复记忆位置",
+            "core_params": [
+              "用户",
+              "记忆方案",
+              "座位"
+            ],
+            "service_sources": [
+              "座椅系统",
+              "用户记忆"
+            ]
+          },
+          {
+            "name": "座椅加热控制",
+            "definition": "控制座椅加热",
+            "core_params": [
+              "开关",
+              "档位",
+              "座位"
+            ],
+            "service_sources": [
+              "座椅控制系统"
+            ]
+          },
+          {
+            "name": "座椅通风控制",
+            "definition": "控制座椅通风",
+            "core_params": [
+              "开关",
+              "档位",
+              "座位"
+            ],
+            "service_sources": [
+              "座椅控制系统"
+            ]
+          },
+          {
+            "name": "座椅按摩控制",
+            "definition": "控制座椅按摩",
+            "core_params": [
+              "开关",
+              "模式",
+              "强度",
+              "座位"
+            ],
+            "service_sources": [
+              "座椅控制系统"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "atomic_abilities": [
+          {
+            "name": "服务与地点搜索",
+            "definition": "搜索餐厅、酒店、景点、停车场等",
+            "core_params": [
+              "类型",
+              "关键词",
+              "位置",
+              "范围"
+            ],
+            "service_sources": [
+              "高德",
+              "大众点评",
+              "美团",
+              "ETCP"
+            ]
+          },
+          {
+            "name": "服务详情获取",
+            "definition": "获取商户或服务详情",
+            "core_params": [
+              "地址",
+              "营业时间",
+              "评分",
+              "设施"
+            ],
+            "service_sources": [
+              "高德",
+              "大众点评",
+              "美团"
+            ]
+          },
+          {
+            "name": "候选服务筛选",
+            "definition": "按需求过滤候选服务",
+            "core_params": [
+              "距离",
+              "绕行",
+              "评分",
+              "价格"
+            ],
+            "service_sources": [
+              "高德",
+              "大众点评",
+              "停车平台"
+            ]
+          },
+          {
+            "name": "候选方案比较",
+            "definition": "比较候选服务差异",
+            "core_params": [
+              "距离",
+              "时间",
+              "价格",
+              "评价",
+              "状态"
+            ],
+            "service_sources": [
+              "规划模块",
+              "服务App"
+            ]
+          },
+          {
+            "name": "价格与优惠查询",
+            "definition": "查询价格、优惠和收费规则",
+            "core_params": [
+              "原价",
+              "优惠价",
+              "团购",
+              "预计费用"
+            ],
+            "service_sources": [
+              "大众点评",
+              "美团",
+              "停车平台"
+            ]
+          },
+          {
+            "name": "实时资源状态查询",
+            "definition": "查询选择前的资源状态",
+            "core_params": [
+              "车位",
+              "排队人数",
+              "营业状态"
+            ],
+            "service_sources": [
+              "ETCP",
+              "PP停车",
+              "美团"
+            ]
+          },
+          {
+            "name": "候选方案选择",
+            "definition": "确定最终服务方案",
+            "core_params": [
+              "候选项",
+              "选择依据",
+              "选择方式"
+            ],
+            "service_sources": [
+              "系统决策",
+              "用户选择"
+            ]
+          },
+          {
+            "name": "预约与排队管理",
+            "definition": "创建、修改或取消预约排队",
+            "core_params": [
+              "时间",
+              "人数",
+              "联系方式"
+            ],
+            "service_sources": [
+              "大众点评",
+              "美团",
+              "服务商App"
+            ]
+          },
+          {
+            "name": "订单管理",
+            "definition": "创建、查询或取消订单",
+            "core_params": [
+              "项目",
+              "数量",
+              "状态",
+              "取消条件"
+            ],
+            "service_sources": [
+              "大众点评",
+              "美团",
+              "停车平台"
+            ]
+          },
+          {
+            "name": "支付与缴费",
+            "definition": "完成买单、票务或停车缴费",
+            "core_params": [
+              "金额",
+              "支付方式",
+              "优惠",
+              "确认"
+            ],
+            "service_sources": [
+              "美团",
+              "大众点评",
+              "ETCP"
+            ]
+          },
+          {
+            "name": "服务进度查询",
+            "definition": "查询服务执行状态",
+            "core_params": [
+              "排队位置",
+              "订单进度",
+              "停车时长"
+            ],
+            "service_sources": [
+              "美团",
+              "停车平台等"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

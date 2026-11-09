@@ -1,0 +1,63 @@
+scenario_id: welcome_on_board
+display_name: 上车迎宾
+min_score_to_call: 0.52
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 当前状态适配
+    preferred_needs:
+      physical_comfort: 0.8
+      immediate_feedback: 1.0
+      emotional_comfort: 0.4
+  Si:
+    strategy: 熟悉秩序复归
+    preferred_needs:
+      restore_history: 1.0
+      predictability: 0.8
+      task_completion: 0.35
+  Ne:
+    strategy: 启程可能拓展
+    preferred_needs:
+      provide_options: 1.0
+      exploration: 0.7
+      trip_forecast: 0.35
+  Ni:
+    strategy: 整程图景预置
+    preferred_needs:
+      trip_forecast: 1.0
+      proactive_preparation: 0.7
+      task_completion: 0.4
+  Te:
+    strategy: 出发任务编排
+    action_logic:
+      - 优先完成出发相关任务，强调时间效率，按目标组织行动
+      - 有可用日程时，主动提出当前行程方案；意图明确时直接启动
+      - 调用生态查询车内外信息并报告异常情况，主动给出合理建议，确认后执行
+    preferred_needs:
+      task_completion: 1.0
+      time_efficiency: 0.9
+      dependency_check: 0.4
+  Ti:
+    strategy: 出发条件校验
+    preferred_needs:
+      dependency_check: 1.0
+      conflict_resolution: 0.8
+      safety_support: 0.35
+  Fe:
+    strategy: 共同启程协调
+    preferred_needs:
+      group_balance: 1.0
+      social_harmony: 0.8
+      emotional_comfort: 0.4
+  Fi:
+    strategy: 个人迎宾对齐
+    action_logic:
+      - 光线不足且用户尚未入座时，开启入座引导照明；入座完成后结束引导，恢复此前照明状态
+      - 围绕目的地查询相关配套，提出少量有助于本次体验的候选；目的地明确时，优先补充停车、入口等配套信息。
+      - 主驾身份和历史记录可用时，优先采用熟悉的舒适设置；已有自动恢复授权时直接恢复，否则合并询问后恢复
+      - 结合生态结果提供少量路线方案，清楚展示驾驶时间、停车便利性和步行距离的差异
+    preferred_needs:
+      emotional_comfort: 0.9
+      personal_boundary: 1.0
+      user_autonomy: 1.0

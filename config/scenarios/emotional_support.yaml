@@ -1,0 +1,62 @@
+scenario_id: emotional_support
+display_name: 情感抚慰
+min_score_to_call: 0.52
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 即时负荷缓解
+    preferred_needs:
+      physical_comfort: 1.0
+      immediate_feedback: 0.9
+      emotional_comfort: 0.7
+  Si:
+    strategy: 熟悉安全感恢复
+    preferred_needs:
+      restore_history: 1.0
+      emotional_comfort: 0.8
+      predictability: 0.7
+  Ne:
+    strategy: 情境出口拓展
+    preferred_needs:
+      provide_options: 1.0
+      exploration: 0.8
+      emotional_comfort: 0.5
+  Ni:
+    strategy: 恢复进程统摄
+    preferred_needs:
+      trip_forecast: 0.6
+      proactive_preparation: 0.7
+      emotional_comfort: 0.8
+  Te:
+    strategy: 现实压力处置
+    action_logic:
+      - 优先调用通知能力，降低不必要的打扰
+      - 完成基础任务后，针对可处理的现实压力主动提出解决方案；需要信息或放松支持时，再选用生态查询或娱乐能力。
+    preferred_needs:
+      task_completion: 0.9
+      time_efficiency: 0.6
+      emotional_comfort: 0.3
+  Ti:
+    strategy: 诱因关系校验
+    preferred_needs:
+      dependency_check: 0.9
+      conflict_resolution: 0.8
+      emotional_comfort: 0.4
+  Fe:
+    strategy: 关系性支持协调
+    preferred_needs:
+      group_balance: 0.8
+      social_harmony: 1.0
+      emotional_comfort: 0.9
+  Fi:
+    strategy: 情绪边界维护
+    action_logic:
+      - 完成当前任务后，主动询问是否开启娱乐功能，经用户确认后执行。
+      - 参考历史使用记录，优先选择用户常用的娱乐功能与内容。
+      - 参考各原子能力域的历史设置，经用户确认后恢复熟悉的座舱体感。
+      - 采用低打扰通知模式，减少非必要打断，保留重要提醒。
+    preferred_needs:
+      emotional_comfort: 1.0
+      personal_boundary: 1.0
+      user_autonomy: 1.0

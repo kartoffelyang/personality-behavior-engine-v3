@@ -1,0 +1,27 @@
+<section class="section behavior-flow" id="behavior-flow" aria-labelledby="behavior-flow-title">
+  <div class="flow-heading">
+    <div>
+      <div class="flow-kicker">行为编排 · 波次视图</div>
+      <h3 id="behavior-flow-title">行为泳道图</h3>
+      <div class="flow-summary" data-flow-summary></div>
+    </div>
+    <div class="flow-switch" role="group" aria-label="显示的能力域">
+      <button type="button" data-flow-scope="active" aria-pressed="true">已调用</button>
+      <button type="button" data-flow-scope="all" aria-pressed="false">全部能力域</button>
+    </div>
+  </div>
+  <div class="flow-legend">
+    <span><i class="flow-key"></i>普通动作（含影响不确定）</span>
+    {% if persona in ['INFP', 'ESTJ'] %}<span><i class="flow-key influenced"></i>{{ persona }} 人格影响</span>{% endif %}
+    <span class="flow-help">点选节点，查看执行内容</span>
+  </div>
+  <div class="flow-viewport" tabindex="0" role="region" aria-label="行为波次图，可横向滚动">
+    <div class="flow-canvas" data-flow-canvas></div>
+  </div>
+  <div class="flow-caption"><span>连线表示同一能力域的调用顺序，波次不代表实际耗时。</span><span data-flow-scroll-hint></span></div>
+  <div class="flow-detail" data-flow-detail aria-live="polite">
+    <span class="flow-detail-empty">选择一个动作，查看它的执行方式与人格影响。</span>
+  </div>
+  <noscript><p class="muted">启用 JavaScript 后可查看泳道图；完整行为序列见上方。</p></noscript>
+</section>
+<script type="application/json" id="behavior-flow-data">{{ {'persona': persona, 'actions': final_snapshot.validated_actions}|tojson }}</script>

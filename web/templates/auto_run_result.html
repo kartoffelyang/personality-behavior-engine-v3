@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>场景故事与 Git 图 · {{ '无 MBTI 基线' if persona == 'NO_MBTI' else persona }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-run.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='behavior-swimlane.css') }}" />
+  <script defer src="{{ url_for('static', filename='behavior-swimlane.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='auto-run.js') }}"></script>
+</head>
+<body class="auto-result-page" data-auto-result>
+  <main class="auto-result-wrap">
+    <div class="standalone-nav"><a href="/auto_run/{{ job.id }}">← 返回一键生成</a></div>
+    <div class="result-context">
+      <span class="persona-badge persona-{{ persona }}">{{ '无 MBTI 基线' if persona == 'NO_MBTI' else persona }}</span>
+      <p>{{ job.user_utterance }}</p>
+    </div>
+
+    {% if scenario_assumptions %}<p class="scenario-assumptions">本次默认设定：{{ scenario_assumptions|join('；') }}</p>{% endif %}
+
+    {% if job.status == 'needs_clarification' %}
+    <section class="auto-panel outcome-note">
+      <h1>还需要补充一点信息</h1>
+      <p>请在上方情境中补充以下信息后重新生成。</p>
+      <ul>{% for question in clarification_questions|default([]) %}<li>{{ question }}</li>{% else %}<li>{{ job.message or '请补充当前情境中的关键条件。' }}</li>{% endfor %}</ul>
+    </section>
+    {% elif job.status == 'no_tool_needed' %}
+    <section class="auto-panel outcome-note">
+      <h1>本次情境无需调用车载能力</h1>
+      <p>{{ job.message or '流程已结束，本次没有生成工具调用序列。' }}</p>
+    </section>
+    {% endif %}
+
+    {% if story and story.paragraphs %}
+    <section class="auto-panel story-panel" aria-labelledby="story-heading">
+      <div class="story-heading-row"><div><span class="eyebrow">从行为编排，到场景体验</span><h1 id="story-heading">场景故事</h1></div><span class="story-status">已生成</span></div>
+      <p class="story-disclaimer">以下为根据行为序列生成的场景描述，不代表车辆已实际执行。</p>
+      {% for warning in quality_warnings|default([]) %}<p class="auto-notice">内容待核对：{{ warning }}</p>{% endfor %}
+      <article class="auto-story persona-{{ persona }}">
+        {% for paragraph in story.paragraphs %}
+        <p>{% for segment in paragraph.segments %}{% if segment.change_id and persona != 'NO_MBTI' %}<strong>{{ segment.text }}</strong>{% else %}{{ segment.text }}{% endif %}{% endfor %}</p>
+        {% endfor %}
+        {% if persona != 'NO_MBTI' and story.core_changes %}
+        <div class="core-changes"><span class="muted">人格带来的改变</span><div class="change-tags">{% for change in story.core_changes %}<span>{{ change.label }}</span>{% endfor %}</div></div>
+        {% endif %}
+      </article>
+    </section>
+    {% elif job.status == 'completed' %}
+    <section class="auto-panel outcome-note"><h1>场景故事暂不可用</h1><p>故事内容未能载入，请返回任务页重新加载结果。</p></section>
+    {% endif %}
+
+    {% if final_snapshot and final_snapshot.validated_actions %}
+      {% include '_behavior_swimlane.html' %}
+    {% elif job.status == 'completed' %}
+    <section class="auto-panel"><h2>Git 图 · 行为调用</h2><p class="muted">本次没有可绘制的动作。</p></section>
+    {% endif %}
+
+    <details class="auto-audit">
+      <summary>查看八步记录 <span>展开了解本次生成过程</span></summary>
+      <div class="audit-body">
+        {% for step in audit_steps|default([]) %}
+        <details class="audit-step">
+          <summary><span class="audit-number">{{ step.step }}</span>{{ step.title }}</summary>
+          <div class="audit-step-body">
+            {% if step.input_text %}<div class="audit-label">输入</div><p>{{ step.input_text }}</p>{% endif %}
+            {% if step.output_text %}<div class="audit-label">结果</div><p>{{ step.output_text }}</p>{% endif %}
+            {% if not step.input_text and not step.output_text %}<p class="muted">本步记录已保存。</p>{% endif %}
+          </div>
+        </details>
+        {% else %}<p class="muted">暂无步骤记录。</p>{% endfor %}
+      </div>
+    </details>
+    <noscript>
+      <p class="auto-notice">启用 JavaScript 后可查看交互式 Git 图。下面是本次行为序列。</p>
+      <ol class="plain-actions">{% for action in final_snapshot.validated_actions|default([]) %}<li><strong>{{ action.name }}</strong><p>{{ action.details }}</p></li>{% endfor %}</ol>
+    </noscript>
+  </main>
+</body>
+</html>

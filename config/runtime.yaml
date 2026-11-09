@@ -1,0 +1,36 @@
+llm:
+  default_backend: openai   # rules | carsona | openai
+  carsona:
+    base_url: http://127.0.0.1:7106/v1
+    model: carsona_simpo_4
+    timeout_sec: 120
+    race_n: 1
+  openai:
+    base_url: https://ai.juguang.chat/v1
+    api_key: 
+    model: gpt-5.6-terra
+    default_base_url: https://ai.juguang.chat/v1
+    default_model: gpt-5.6-terra
+    timeout_sec: 240
+    connect_timeout_sec: 10
+    stream_idle_timeout_sec: 45
+    total_timeout_sec: 240
+    race_n: 1
+defaults:
+  # 未由用户、传感器或上游业务明确提供的情境保持未知。
+  context: {}
+  # 历史偏好和自动执行授权仅接受明确提供的真实记录。
+  history: {}
+
+scenario_catalog:
+  - {id: welcome_on_board, label: 上车迎宾}
+  - {id: emotional_support, label: 情感抚慰}
+
+capability_order:
+  - climate
+  - entertainment
+  - ambient_light
+  - navigation
+  - notification_mode
+  - seat
+  - ecosystem

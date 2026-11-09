@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>服务执行台 · 本地模拟</title><link rel="stylesheet" href="/static/fast.css?v=6"><link rel="stylesheet" href="/static/soa-sim.css?v=10"><script src="/static/behavior-evidence.js?v=10" defer></script><script src="/static/execution-status.js?v=10" defer></script><script src="/static/soa-sim.js?v=10" defer></script></head><body>
+<header class="masthead"><a class="wordmark" href="/fast">行为与人格 <span>服务执行台</span></a><a href="/fast" id="back-link">返回行为方案 ↗</a></header>
+<main class="sim-main"><div class="sim-heading"><div><p class="eyebrow">REQUEST / RESPONSE / STATE</p><h1>行为、原因与执行，一条线看清。</h1><p id="input-description"></p></div><span class="sim-tag">本地模拟 · 未连接实车</span></div>
+<p class="sim-notice">初始车况、内容和地点均为演示数据；服务名为本项目演示协议，不是厂商 SOA 服务字典。页面改变的是模拟状态。</p>
+<div class="sim-toolbar"><div class="persona-tabs" aria-label="切换独立模拟会话"><button data-persona="ESTJ" type="button">ESTJ</button><button data-persona="INFP" type="button">INFP</button></div><button id="reset" type="button">重新生成演示结果</button></div>
+<p id="sim-error" class="error" role="alert" hidden></p>
+<section class="behavior-module" aria-label="行为与执行"><p class="sim-small">本地模拟，未连接实车；返回内容与初始车况均为演示数据。</p><div id="direct-results" aria-live="polite"><p>正在准备具体结果…</p></div><div id="behavior-verdict" role="status"></div>
+<details class="theory"><summary>核心依据：Te / Fi 策略如何影响行为？</summary><p>这是项目自定义的“情境任务 → 人格策略 → 动作与参数 → 服务执行”映射。ESTJ 在快速链路中使用 Te（外倾思维）策略：按客观目标、约束和优先级收敛行动；INFP 使用 Fi（内倾情感）策略：在有意义的取舍处保留用户选择与介入边界。</p><p>这些策略只有改变了服务、参数、先后顺序或执行条件，才可能产生可观察的行为差异。仅修改描述，不会自动改变服务返回或车况。两种人格共享用户意愿、授权与安全边界。</p><p>当前快速链路只读取主导功能的 action_logic，没有使用配置里的完整功能分数或 interaction 权重；这些数值没有在此实现经过校准的行为模型。配置引用是设计依据，不是已验证的心理因果。</p><p id="config-version" class="sim-small"></p></details>
+<details class="technical-details"><summary>查看策略依据与逐步调用</summary><div id="behavior-timeline"></div></details>
+<div id="dispatch-controls" hidden><p id="service-method" class="service-method"></p><p id="preconditions" class="preconditions"></p><form id="step-form"><div id="arguments"></div><details class="debug-options"><summary>开发调试选项</summary><p class="sim-small">故障注入：人为让下一次本地调用超时或被拒绝，用于测试失败处理。正常演示无需设置。</p><label for="fault">模拟服务异常</label><select id="fault"><option value="">正常响应</option><option value="timeout">模拟超时</option><option value="rejected">模拟服务拒绝</option></select></details><button id="execute" type="submit" class="generate">执行下一步模拟调用 →</button></form><p class="sim-small">缺少必需参数先补充；确认后只改变本地模拟状态。</p></div>
+<p id="step-count" class="sim-small"></p><p id="step-title" class="sim-small"></p>
+<details class="state-snapshot"><summary>查看本会话当前模拟状态</summary><div id="vehicle-state"></div></details>
+</section>
+</main></body></html>

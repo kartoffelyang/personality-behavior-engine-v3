@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>流程问题页 · 启动页</title>
+  <style>
+    :root {
+      --bg: #0f1318;
+      --panel: #171d26;
+      --panel-2: #111720;
+      --line: #2b3545;
+      --text: #e8edf4;
+      --muted: #96a2b5;
+      --accent: #d4a35c;
+      --ok: #7dcf9c;
+      --danger: #e08a7a;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #0d1117, #111822 45%, #0d1218);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 28px 20px 80px; }
+    h1 { margin: 0 0 8px; font-size: 2rem; }
+    .sub { margin: 0 0 18px; color: var(--muted); line-height: 1.6; }
+    .panel {
+      background: rgba(23,29,38,.94);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .full { grid-column: 1 / -1; }
+    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 6px; }
+    input, select, textarea, button {
+      font: inherit;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: #0f141c;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      padding: 11px 12px;
+    }
+    textarea { min-height: 132px; resize: vertical; }
+    .scenario-presets { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .scenario-label { color: var(--muted); font-size: .9rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      border: 1px solid rgba(212,163,92,.4);
+      border-radius: 999px;
+      color: #ecd8b6;
+      background: transparent;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .tag.active { background: rgba(212,163,92,.15); border-color: var(--accent); color: var(--accent); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; align-items: center; }
+    .primary {
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #231809;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ghost {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      padding: 12px 18px;
+      cursor: pointer;
+    }
+    .hint, .error {
+      margin-top: 16px;
+      border-radius: 14px;
+      padding: 12px 14px;
+      line-height: 1.6;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--muted);
+    }
+    .error { color: var(--danger); border-color: rgba(224,138,122,.5); }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px;">
+      <h1>流程问题页</h1>
+      <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; justify-content:flex-end;">
+        <a href="/" style="color:var(--text); text-decoration:none; font-size:.9rem;">返回主页面</a>
+        <a href="/comparison" style="color:var(--accent); text-decoration:none; font-size:.9rem;">对比台</a>
+        <a href="/prompt_versions" style="color:var(--accent); text-decoration:none; font-size:.9rem;">提示词版本库</a>
+      </div>
+    </div>
+    <div class="panel">
+      <form method="post" action="{{ url_for('start_flow_review') }}">
+        <div class="grid">
+          <div>
+            <label>人格</label>
+            <select name="persona">
+              <option value="INFP">INFP</option>
+              <option value="ESTJ">ESTJ</option>
+            </select>
+          </div>
+          <div>
+            <label>模型后端</label>
+            <select name="llm_backend">
+              <option value="openai" {% if default_backend == 'openai' %}selected{% endif %}>gpt-5.6-terra</option>
+              <option value="carsona" {% if default_backend == 'carsona' %}selected{% endif %}>carsona_simpo_4</option>
+              <option value="rules" {% if default_backend == 'rules' %}selected{% endif %}>纯规则</option>
+            </select>
+          </div>
+          <div class="full">
+            <label>预设 Case（可选）</label>
+            <select name="preset_case_id" id="presetSelect">
+              <option value="">不载入</option>
+              {% for item in presets %}
+              <option value="{{ item.case_id }}" data-utt="{{ item.utterance }}">{{ item.case_id }} · {{ item.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="full">
+            <label>自然语言情境</label>
+            <textarea name="user_utterance" id="utterance" placeholder="例如：晚上我刚上车，要去学校接女儿，然后一起回家。今天有点累，别太吵。"></textarea>
+          </div>
+        </div>
+
+        <div class="scenario-presets">
+          <span class="scenario-label">固定测试场景：</span>
+          <div class="tags" id="scenarioTags"></div>
+        </div>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <div class="row">
+          <button class="primary" type="submit">生成本次流程审阅</button>
+        </div>
+      </form>
+    </div>
+    {% if showcase %}
+    <div class="panel" style="margin-top:20px;">
+      <h2 style="margin:0 0 8px;">固定展示案例</h2>
+      <div class="row" style="margin:12px 0;">
+        {% for p in ['INFP', 'ESTJ'] %}<a class="tag {{ 'active' if showcase_persona == p else '' }}" style="text-decoration:none;" href="{{ url_for('index', persona=p) }}">{{ p }}</a>{% endfor %}
+      </div>
+      <p class="sub">{{ showcase|length }} 个案例已完整运行至场景故事。点击直接查看保存的结果，也可以逐步回看。</p>
+      <div class="grid">
+        {% for item in showcase %}
+        <a href="{{ url_for('open_showcase', case_id=item.case_id, persona=item.persona) }}" style="display:block;padding:18px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--text);background:#0f141c;">
+          <div style="color:var(--accent);font-size:.85rem;margin-bottom:8px;">{{ item.case_id }} · {{ item.persona }} · 已完成 8 步</div>
+          <strong>{{ item.title }}</strong>
+          <div style="color:var(--muted);font-size:.85rem;margin-top:10px;">{{ item.action_count }} 个动作 · 查看场景故事 →</div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <script id="scenarios-data" type="application/json">{{ scenario_catalog|tojson }}</script>
+  <script>
+    const SCENARIOS = JSON.parse(document.getElementById('scenarios-data').textContent || '[]');
+    const PROMPTS = {
+      welcome_on_board: '今天早上要去康源大厦见一位重要客户，我第一次去，十点前得赶到。外面挺冷，车里也有点凉，前挡看着有些发白。出门太急没吃早饭，路上最好能顺便买点，但别耽误太久。我现在有点着急。',
+      emotional_support: '今天晚上刚从医院出来，陪妈妈做了检查，结果还得等两天。她反过来安慰我，我也没敢让她看出我担心。现在车里就我一个人，要回锦悦小区，明天还得上班。家人在手机上问情况，我不知道怎么回。外面下着小雨，出口还排着队。我想早点回去，又不太想面对空荡荡的家，心里堵得慌。'
+    };
+
+    const tagsEl = document.getElementById('scenarioTags');
+    const utteranceEl = document.getElementById('utterance');
+    const presetEl = document.getElementById('presetSelect');
+
+    SCENARIOS.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag';
+      btn.textContent = item.label || item.id;
+      btn.onclick = () => {
+        document.querySelectorAll('.tag').forEach(x => x.classList.remove('active'));
+        btn.classList.add('active');
+        utteranceEl.value = PROMPTS[item.id] || `请按 ${item.label || item.id} 场景处理我当前状态。`;
+      };
+      tagsEl.appendChild(btn);
+    });
+
+    presetEl.addEventListener('change', () => {
+      const opt = presetEl.selectedOptions[0];
+      if (opt && opt.dataset.utt) {
+        utteranceEl.value = opt.dataset.utt;
+      }
+    });
+
+  </script>
+</body>
+</html>

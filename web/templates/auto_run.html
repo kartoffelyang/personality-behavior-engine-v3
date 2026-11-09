@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>生成记录 · 人格导游</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-run.css') }}" />
+  <script defer src="{{ url_for('static', filename='auto-run.js') }}"></script>
+</head>
+<body>
+  <main class="auto-wrap">
+    <header class="auto-header">
+      <a class="auto-brand" href="/">人格导游</a>
+      <nav class="auto-nav" aria-label="页面导航">
+        <a href="/">主页面</a>
+        <a href="/comparison">对比台</a>
+        <a href="/flow_review">流程问题页</a>
+      </nav>
+    </header>
+
+    <section class="auto-intro" aria-labelledby="page-title">
+      <span class="eyebrow">从一个情境，到一段完整体验</span>
+      <h1 id="page-title">选好人格，故事与行为图一起生成。</h1>
+      <p>自动完成相同的八步流程，直接查看场景故事与 Git 图，无需逐步点击。</p>
+    </section>
+
+    <section class="auto-panel input-panel" aria-label="生成条件">
+      <form id="auto-run-form">
+        <fieldset id="input-fields">
+          <div class="auto-form-grid">
+            <div class="persona-field">
+              <label for="persona">人格</label>
+              <select id="persona" name="persona">
+                {% for item in personas|default(['INFP', 'ESTJ', 'NO_MBTI']) %}
+                <option value="{{ item }}">{{ '无 MBTI 基线' if item == 'NO_MBTI' else item }}</option>
+                {% endfor %}
+              </select>
+              <p class="field-note">人格影响行为的组织方式。</p>
+            </div>
+            <div class="situation-field">
+              <label for="user-utterance">情境</label>
+              <textarea id="user-utterance" name="user_utterance" required maxlength="10000" rows="4" placeholder="例如：早上刚上车，要去拜访客户，十点前到。第一次去，想提前找好停车入口。今天有点累，希望车里安静一些。"></textarea>
+              <div class="auto-examples" aria-label="快速填入情境">
+                <span>试一个情境</span>
+                <button type="button" class="example-button" data-example="welcome">上车迎宾</button>
+                <button type="button" class="example-button" data-example="comfort">情感抚慰</button>
+              </div>
+            </div>
+          </div>
+          <details class="auto-settings">
+            <summary>生成设置</summary>
+            <div class="settings-grid">
+              <div>
+                <label for="llm-backend">生成模型</label>
+                <select id="llm-backend" name="llm_backend">
+                  <option value="openai" {% if default_backend != 'carsona' %}selected{% endif %}>gpt-5.6-terra</option>
+                  <option value="carsona" {% if default_backend == 'carsona' %}selected{% endif %}>carsona_simpo_4</option>
+                </select>
+              </div>
+              {% if presets %}
+              <div>
+                <label for="preset">已有案例</label>
+                <select id="preset">
+                  <option value="">选择案例填入情境</option>
+                  {% for item in presets %}
+                  <option value="{{ item.case_id }}" data-utterance="{{ item.utterance }}">{{ item.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% endif %}
+            </div>
+          </details>
+        </fieldset>
+        <div class="auto-form-footer">
+          <p class="auto-help">失败阶段最多自动重试 2 轮，已完成的步骤会保留。</p>
+          <button class="button primary" type="submit" id="generate-button">一键生成</button>
+        </div>
+        <p class="auto-notice error-notice" id="form-error" role="alert" hidden></p>
+      </form>
+      <noscript><p class="auto-notice">此页面需要启用 JavaScript 才能启动生成和查看进度。你也可以前往<a href="/flow_review">流程问题页</a>。</p></noscript>
+    </section>
+
+    <section class="progress-panel compact-progress" id="progress-panel" aria-label="生成进度" hidden>
+      <div class="compact-progress-row">
+        <progress id="run-progress" value="0" max="8" aria-label="生成进度"></progress>
+        <div id="progress-message" class="compact-progress-message" role="status" aria-live="polite" aria-atomic="true">准备开始</div>
+      </div>
+      <p class="connection-note" id="connection-note" role="status" hidden></p>
+      <div class="auto-notice error-notice" id="run-error" hidden>
+        <p id="run-error-message"></p>
+        <button type="button" class="button secondary" id="retry-button">重试失败步骤</button>
+      </div>
+    </section>
+
+    <section id="result-region" class="result-region" aria-label="本次生成结果" hidden>
+      <div class="result-topline">
+        <h2>本次结果</h2>
+        <a id="result-link" class="text-link" target="_blank" rel="noopener">单独查看结果 ↗</a>
+      </div>
+      <p id="result-loading" class="auto-notice" role="status">故事与行为图正在加载…</p>
+      <div id="result-error" class="auto-notice error-notice" hidden>
+        <p>结果未能显示，已保存的生成内容仍会保留。</p>
+        <button id="reload-result" type="button" class="button secondary">重新加载结果</button>
+      </div>
+      <iframe id="result-frame" title="本次场景故事与 Git 行为图" hidden></iframe>
+    </section>
+  </main>
+  <script type="application/json" id="auto-run-config">{{ {'initialJobId': initial_job_id|default(none), 'defaultBackend': default_backend|default('openai')}|tojson }}</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BehaviorEngineInput",
+  "type": "object",
+  "required": ["request_id", "persona", "scenario_id", "user_utterance", "context", "history", "available_capabilities"],
+  "properties": {
+    "request_id": {"type": "string"},
+    "persona": {"type": "string", "enum": ["INFP", "ESTJ"]},
+    "scenario_id": {"type": "string"},
+    "user_utterance": {"type": "string"},
+    "context": {"type": "object"},
+    "history": {"type": "object"},
+    "available_capabilities": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

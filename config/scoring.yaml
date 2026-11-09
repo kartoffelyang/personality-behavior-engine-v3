@@ -1,0 +1,31 @@
+weights:
+  need_match: 0.34
+  cognitive_match: 0.24
+  scenario_match: 0.16
+  history_match: 0.10
+  interaction_match: 0.10
+  context_match: 0.06
+  risk_cost: 0.12
+  intrusion_cost: 0.08
+
+thresholds:
+  min_score_to_call: 0.52
+  min_score_gap_for_multi_call: 0.08
+  score_window: 0.10
+  safety_risk_overall: 0.75
+
+max_tool_calls:
+  INFP: 2
+  ESTJ: 3
+
+randomness:
+  enabled: true
+  top_k: 2
+  score_window: 0.10
+  temperature:
+    INFP: 0.16
+    ESTJ: 0.10
+
+execution:
+  auto_threshold: 0.70
+  confirm_threshold: 0.40

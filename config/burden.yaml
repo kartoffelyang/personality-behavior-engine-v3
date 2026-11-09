@@ -1,0 +1,52 @@
+# 功能调用负担程度：配置优先，规则按原子能力名关键词兜底。
+# low = 可与其他低/中负担能力同波并行
+# medium = 默认可并行（同域串行）
+# high = 独占波次，不可与其他动作并行启动
+
+domain_default:
+  climate: low
+  seat: low
+  ambient_light: low
+  notification_mode: medium
+  entertainment: medium
+  navigation: medium
+  ecosystem: medium
+
+# 原子能力名包含下列关键词时覆盖域默认（先匹配 high，再 medium，再 low）
+high_keywords:
+  - 选择
+  - 路线选择
+  - 内容选择
+  - 启动导航
+  - 启动所选
+  - 发送
+  - 下单
+  - 支付
+
+medium_keywords:
+  - 规划
+  - 比较
+  - 搜索
+  - 筛选
+  - 推荐
+  - 详情
+  - 摘要
+  - 分类
+
+low_keywords:
+  - 开关
+  - 恢复
+  - 静音
+  - 读取
+  - 查询
+  - 延后
+  - 屏蔽
+  - 温度调节
+  - 风量
+  - 音量
+
+# 执行方式抬升负担
+execution_mode_bump:
+  choose_execute: high
+  confirm_execute: medium
+  suggest_only: low

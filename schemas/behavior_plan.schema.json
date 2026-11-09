@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BehaviorPlan",
+  "type": "object",
+  "required": ["behavior_call_type", "selected_capabilities", "behavior_sequence"],
+  "properties": {
+    "behavior_call_type": {
+      "type": "string",
+      "enum": ["tool", "multi_tool", "no_tool", "safety", "explicit"]
+    },
+    "selected_capabilities": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "behavior_sequence": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "scenario_description": {"type": "string"},
+    "assistant_response": {"type": "string"}
+  }
+}

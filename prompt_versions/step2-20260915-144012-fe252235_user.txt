@@ -1,0 +1,28 @@
+{
+  "persona": "INFP",
+  "user_utterance": "今天早上要去康源大厦见一位重要客户，我第一次去，十点前得赶到。外面挺冷，车里也有点凉，前挡看着有些发白。出门太急没吃早饭，路上最好能顺便买点，但别耽误太久。我现在有点着急。",
+  "default_context": {
+    "time_period": "evening",
+    "weather": "clear",
+    "cabin_temperature": 24,
+    "passenger_count": 1,
+    "driving_state": "parked",
+    "destination_known": false,
+    "destination": null,
+    "estimated_trip_minutes": null,
+    "calendar_pressure": false,
+    "is_festival": false,
+    "fatigue_risk": 0.0
+  },
+  "allowed_scenarios": [
+    "cabin_comfort",
+    "emotional_support",
+    "entertainment_relax",
+    "fatigue_driving",
+    "festival_celebration",
+    "pleasant_trip",
+    "temperature_control",
+    "time_pressure",
+    "welcome_on_board"
+  ]
+}

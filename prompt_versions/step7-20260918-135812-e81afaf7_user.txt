@@ -1,0 +1,802 @@
+{
+  "persona": "INFP",
+  "scenario_id": "time_pressure",
+  "rule_summary": [
+    "未触发安全覆盖",
+    "不存在显式工具指令"
+  ],
+  "flow_context": {
+    "user_utterance": "今天早上要去康源大厦见一位重要客户，我第一次去，十点前得赶到。外面挺冷，车里也有点凉，前挡看着有些发白。出门太急没吃早饭，路上最好能顺便买点，但别耽误太久。我现在有点着急。",
+    "persona_profile": {
+      "persona": "INFP",
+      "persona_description": "重视理想、个人价值和有意义的关系，关注人的潜能与多种可能；通常开放灵活，涉及核心价值时更坚持。",
+      "dominant": "Fi",
+      "dominant_name": "内倾情感",
+      "dominant_description": "寻求思想、行为与个人价值的一致性，以内在认可的价值衡量意义与可接受性；这些价值未必直接表达。",
+      "judgment_style": "倾向依据价值一致性作判断：是否符合所重视的原则，是否认可选择及其代价，是否违背核心价值。"
+    },
+    "scenario_understanding": {
+      "task": {
+        "core_goal": "今天早上十点前到达康源大厦，与重要客户见面",
+        "explicit_intents": [
+          "前往康源大厦",
+          "与一位重要客户见面",
+          "十点前赶到"
+        ],
+        "optional_goals": [
+          "路上顺便买早餐"
+        ],
+        "constraints": [
+          "今天早上出发",
+          "不得因买早餐耽误太久"
+        ],
+        "must_do": [
+          "确保前挡视野满足安全行驶条件",
+          "在十点前安全到达康源大厦"
+        ]
+      },
+      "facts": [
+        {
+          "category": "task",
+          "fact": "用户今天早上要去康源大厦",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "task",
+          "fact": "用户要去见一位重要客户",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "task",
+          "fact": "用户要求十点前赶到",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "task",
+          "fact": "用户是第一次去康源大厦",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "physical",
+          "fact": "外面挺冷",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "physical",
+          "fact": "车里有点凉",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "physical",
+          "fact": "前挡看着有些发白",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "user",
+          "fact": "用户出门太急没吃早饭",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "user",
+          "fact": "用户希望路上最好能顺便买早餐",
+          "source": "utterance",
+          "confidence": 1.0
+        },
+        {
+          "category": "user",
+          "fact": "用户表示有点着急",
+          "source": "utterance",
+          "confidence": 1.0
+        }
+      ],
+      "unknowns": [
+        "康源大厦对应的具体地址、入口或到达点尚未确认",
+        "当前距离康源大厦的路程和预计到达时间未知",
+        "前挡发白的具体原因未知",
+        "前挡发白是否已经影响实际视野未知",
+        "用户当前是否已经开始驾驶未知",
+        "是否存在合适且不会明显耽误时间的早餐地点未知"
+      ],
+      "context": {
+        "time_period": "morning",
+        "cabin_temperature_c": null,
+        "thermal_sensation": "有点凉",
+        "passenger_count": null,
+        "destination_reference": "康源大厦",
+        "arrival_deadline": "今天早上十点前",
+        "driving_state": null,
+        "weather": null
+      },
+      "needs": {
+        "emotional_comfort": 0.35,
+        "physical_comfort": 0.55,
+        "task_completion": 0.98,
+        "time_efficiency": 0.95,
+        "safety_support": 0.85,
+        "restore_history": 0.0,
+        "user_autonomy": 0.0
+      },
+      "emotion": {
+        "label": "anxious",
+        "intensity": 0.55
+      },
+      "risk": {
+        "items": [
+          "前挡发白的原因和实际视野影响尚不确定，可能存在视野风险",
+          "明确截止时间和首次前往目的地可能增加时间压力",
+          "目的地具体地址或入口未确认，可能影响到达效率",
+          "用户未吃早饭，但目前没有疲劳驾驶的明确证据"
+        ],
+        "fatigue_driving": 0.05,
+        "distraction": 0.15,
+        "visibility": 0.7,
+        "time_pressure": 0.9,
+        "overall": 0.7
+      },
+      "activated_interaction_dimensions": [
+        {
+          "dimension": "时机敏感",
+          "evidence": "用户说前挡看着有些发白，且十点前得赶到并表示有点着急",
+          "context_requirement": "优先关注影响安全接收和行驶负荷的介入时点，避免在时间紧张或视野受影响时增加不必要交互"
+        },
+        {
+          "dimension": "排序结构化",
+          "evidence": "用户有十点前到达的明确截止时间，同时提出顺便买早餐但别耽误太久",
+          "context_requirement": "突出截止时间、核心到达目标与条件性早餐目标之间的优先级关系"
+        },
+        {
+          "dimension": "行为深度",
+          "evidence": "用户明确提出早餐只能顺便购买，并限定别耽误太久",
+          "context_requirement": "将早餐目标限定在不影响按时到达的承接范围内，并以用户设定的时间边界作为停止条件"
+        },
+        {
+          "dimension": "情感投入",
+          "evidence": "用户明确说现在有点着急",
+          "context_requirement": "简短承接用户的着急情绪，保持支持与任务推进相关，不扩大为额外情绪服务"
+        }
+      ]
+    },
+    "execution_context": {
+      "context": {
+        "time_period": "morning",
+        "thermal_sensation": "有点凉",
+        "destination_reference": "康源大厦",
+        "arrival_deadline": "今天早上十点前",
+        "destination_known": false,
+        "estimated_trip_minutes": null,
+        "destination": "康源大厦",
+        "calendar_pressure": true
+      },
+      "history": {}
+    },
+    "persona_description": {
+      "action_strategy": "个人价值一致",
+      "action_logic": [
+        "识别个人价值与边界",
+        "过滤不一致行动",
+        "选择性表达和执行",
+        "保留自主控制",
+        "情绪承压或环境不适时，优先通过座椅、空调改善体感",
+        "情绪承压时，在基本任务完成后推荐低刺激娱乐内容"
+      ]
+    },
+    "persona_scene_strategy": {
+      "dominant_function": "Fi",
+      "action_strategy": "个人价值一致",
+      "cross_scenario_prototype": "依据个人价值与边界筛选行动并保留自主权",
+      "scenario_strategy": "个人优先维护",
+      "preferred_needs": {
+        "personal_boundary": 0.8,
+        "user_autonomy": 0.7,
+        "time_efficiency": 0.5
+      },
+      "action_logic": []
+    },
+    "interaction_dimensions": {
+      "mode": "persona_driven",
+      "fixed_dimensions": [
+        "主动性",
+        "确认严格度",
+        "解释透明度",
+        "控制权保留度"
+      ],
+      "active_dimensions": [
+        "主动性",
+        "确认严格度",
+        "解释透明度",
+        "控制权保留度",
+        "时机敏感",
+        "排序结构化",
+        "行为深度",
+        "情感投入"
+      ],
+      "compiled_prompt": "本轮交互约束：\n- 用户要求、情境约束与安全优先，执行前核验授权；功能风格不决定强度。\n- 激活不等于增强、授权或新增服务；仅在相关动作落实，不为风格增加无益步骤或追问。\n- 未激活仍须满足必要澄清、真实依赖、基础礼仪、隐私与任务完成要求。\n- 仅用真实且获准的信息；不从人格推断历史、情绪、关系、能力或用户意愿。\n- 拒绝、修改、停止、接管与撤销入口须真实可用；角色期待不构成代理授权。\n- 范围、频率和终点按用户与情境确定；表达要求用于相关交互，并传递至后续话术。\n1. 主动性：方案违背已表达取舍时，提出符合边界的选择。发起不替代授权，也不自动扩大目标。\n2. 确认严格度：偏好未定且影响结果时合并确认，明确事项不重问。\n3. 解释透明度：说明方案与个人取舍的关联、代价及边界影响。按决策需要说明依据、未知与替代项。\n4. 控制权保留度：在个人边界相关节点提供拒绝、修改与停止入口。拒绝后停止相关动作。\n5. 时机敏感：在将触及已表达边界且仍可调整时提示。非紧急内容可延后，窗口失效则取消。 情境优先：优先关注影响安全接收和行驶负荷的介入时点，避免在时间紧张或视野受影响时增加不必要交互\n6. 排序结构化：标出涉及个人取舍的选择节点，再排对应动作。只在合法依赖顺序内调整优先级。 情境优先：突出截止时间、核心到达目标与条件性早餐目标之间的优先级关系\n7. 行为深度：在指定取舍与停止点内，推进必要条件链。明确同一目标的终点与停止条件。 情境优先：将早餐目标限定在不影响按时到达的承接范围内，并以用户设定的时间边界作为停止条件\n8. 情感投入：接纳用户自述感受，允许不展开或不改变情绪。按真实线索承接情绪，不强迫倾诉。 情境优先：简短承接用户的着急情绪，保持支持与任务推进相关，不扩大为额外情绪服务"
+    },
+    "capability_catalog": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "atomic_abilities": [
+          {
+            "name": "空调开关",
+            "definition": "开启或关闭空调",
+            "core_params": [
+              "开关",
+              "作用区域"
+            ]
+          },
+          {
+            "name": "温度调节",
+            "definition": "设置车内温度",
+            "core_params": [
+              "温度",
+              "区域"
+            ],
+            "parameter_schema": {
+              "温度": {
+                "type": "number"
+              },
+              "区域": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "风量调节",
+            "definition": "调整送风强度",
+            "core_params": [
+              "档位",
+              "区域"
+            ]
+          },
+          {
+            "name": "出风模式切换",
+            "definition": "切换出风位置",
+            "core_params": [
+              "吹脸",
+              "吹脚",
+              "吹窗"
+            ]
+          },
+          {
+            "name": "空气净化开关",
+            "definition": "控制空气净化",
+            "core_params": [
+              "开关",
+              "净化模式"
+            ]
+          },
+          {
+            "name": "前挡除雾开关",
+            "definition": "控制前挡除雾",
+            "core_params": [
+              "开关",
+              "强度",
+              "时长"
+            ]
+          },
+          {
+            "name": "后挡除雾开关",
+            "definition": "控制后挡除雾",
+            "core_params": [
+              "开关",
+              "时长"
+            ]
+          },
+          {
+            "name": "空调设置恢复",
+            "definition": "恢复历史设置",
+            "core_params": [
+              "用户",
+              "温度",
+              "模式"
+            ],
+            "parameter_schema": {
+              "温度": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "capability": "entertainment",
+        "display_name": "影音娱乐",
+        "atomic_abilities": [
+          {
+            "name": "内容搜索",
+            "definition": "搜索影音内容",
+            "core_params": [
+              "关键词",
+              "类型",
+              "来源"
+            ]
+          },
+          {
+            "name": "内容详情查看",
+            "definition": "获取内容信息",
+            "core_params": [
+              "名称",
+              "作者",
+              "时长"
+            ]
+          },
+          {
+            "name": "内容选择",
+            "definition": "确定播放内容",
+            "core_params": [
+              "内容",
+              "选择依据"
+            ]
+          },
+          {
+            "name": "播放控制",
+            "definition": "控制播放状态",
+            "core_params": [
+              "播放",
+              "暂停",
+              "继续",
+              "停止"
+            ]
+          },
+          {
+            "name": "音源切换",
+            "definition": "切换播放来源",
+            "core_params": [
+              "蓝牙",
+              "车机",
+              "广播",
+              "App"
+            ]
+          },
+          {
+            "name": "音量调节",
+            "definition": "调整播放音量",
+            "core_params": [
+              "音量",
+              "静音"
+            ]
+          },
+          {
+            "name": "影音设置恢复",
+            "definition": "恢复历史影音设置",
+            "core_params": [
+              "内容",
+              "音源",
+              "音量"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "ambient_light",
+        "display_name": "氛围灯",
+        "atomic_abilities": [
+          {
+            "name": "氛围灯开关",
+            "definition": "开启或关闭氛围灯",
+            "core_params": [
+              "开关",
+              "区域"
+            ]
+          },
+          {
+            "name": "颜色设置",
+            "definition": "设置灯光颜色",
+            "core_params": [
+              "颜色",
+              "色温",
+              "区域"
+            ]
+          },
+          {
+            "name": "亮度调节",
+            "definition": "调整灯光亮度",
+            "core_params": [
+              "亮度",
+              "区域"
+            ]
+          },
+          {
+            "name": "灯光效果切换",
+            "definition": "切换灯光动态效果",
+            "core_params": [
+              "静态",
+              "呼吸",
+              "渐变",
+              "律动"
+            ]
+          },
+          {
+            "name": "灯光设置恢复",
+            "definition": "恢复历史灯光方案",
+            "core_params": [
+              "颜色",
+              "亮度",
+              "效果"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "atomic_abilities": [
+          {
+            "name": "地点搜索",
+            "definition": "搜索明确目的地",
+            "core_params": [
+              "名称",
+              "地址",
+              "范围"
+            ]
+          },
+          {
+            "name": "地点详情查看",
+            "definition": "获取目的地信息",
+            "core_params": [
+              "地址",
+              "坐标",
+              "入口"
+            ]
+          },
+          {
+            "name": "历史目的地获取",
+            "definition": "读取历史或收藏地点",
+            "core_params": [
+              "用户",
+              "时间",
+              "地点类型"
+            ]
+          },
+          {
+            "name": "目的地设置",
+            "definition": "设置或更换目的地",
+            "core_params": [
+              "POI",
+              "坐标",
+              "入口"
+            ]
+          },
+          {
+            "name": "路线规划",
+            "definition": "生成候选路线",
+            "core_params": [
+              "起终点",
+              "路况",
+              "偏好"
+            ]
+          },
+          {
+            "name": "路线比较",
+            "definition": "比较路线差异",
+            "core_params": [
+              "时间",
+              "距离",
+              "收费",
+              "拥堵"
+            ]
+          },
+          {
+            "name": "路线选择",
+            "definition": "确定执行路线",
+            "core_params": [
+              "路线",
+              "选择依据"
+            ]
+          },
+          {
+            "name": "导航运行控制",
+            "definition": "控制导航状态",
+            "core_params": [
+              "开始",
+              "暂停",
+              "继续",
+              "结束"
+            ]
+          },
+          {
+            "name": "路线重新规划",
+            "definition": "根据变化更新路线",
+            "core_params": [
+              "当前位置",
+              "路况",
+              "新约束"
+            ]
+          },
+          {
+            "name": "途经点管理",
+            "definition": "管理路线途经点",
+            "core_params": [
+              "地点",
+              "顺序",
+              "停留要求"
+            ]
+          },
+          {
+            "name": "预计到达时间获取",
+            "definition": "获取预计到达时间",
+            "core_params": [
+              "路线",
+              "路况",
+              "更新时间"
+            ]
+          },
+          {
+            "name": "迟到风险判断",
+            "definition": "判断能否按时到达",
+            "core_params": [
+              "到达时间",
+              "任务时间",
+              "缓冲时间"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "atomic_abilities": [
+          {
+            "name": "通知读取",
+            "definition": "获取通知内容",
+            "core_params": [
+              "来源",
+              "时间",
+              "内容范围"
+            ]
+          },
+          {
+            "name": "通知摘要",
+            "definition": "提炼通知重点",
+            "core_params": [
+              "通知集合",
+              "摘要长度"
+            ]
+          },
+          {
+            "name": "通知优先级分类",
+            "definition": "判断通知紧急程度",
+            "core_params": [
+              "来源",
+              "联系人",
+              "任务相关性"
+            ]
+          },
+          {
+            "name": "提醒延后",
+            "definition": "推迟通知或提醒",
+            "core_params": [
+              "延后时间",
+              "恢复条件"
+            ]
+          },
+          {
+            "name": "通知静音控制",
+            "definition": "控制通知声音",
+            "core_params": [
+              "开关",
+              "时长",
+              "应用范围"
+            ]
+          },
+          {
+            "name": "非紧急通知屏蔽",
+            "definition": "暂时隐藏非紧急通知",
+            "core_params": [
+              "屏蔽范围",
+              "白名单",
+              "时长"
+            ]
+          },
+          {
+            "name": "回复草稿生成",
+            "definition": "生成待确认回复",
+            "core_params": [
+              "对象",
+              "内容",
+              "语气"
+            ]
+          },
+          {
+            "name": "回复发送",
+            "definition": "发送确认后的回复",
+            "core_params": [
+              "接收人",
+              "内容",
+              "渠道"
+            ]
+          },
+          {
+            "name": "回拨发起",
+            "definition": "发起电话回拨",
+            "core_params": [
+              "联系人",
+              "号码",
+              "确认状态"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "atomic_abilities": [
+          {
+            "name": "座椅位置调节",
+            "definition": "调整座椅位置",
+            "core_params": [
+              "前后",
+              "高低",
+              "靠背",
+              "腿托"
+            ]
+          },
+          {
+            "name": "座椅位置恢复",
+            "definition": "恢复记忆位置",
+            "core_params": [
+              "用户",
+              "记忆方案",
+              "座位"
+            ]
+          },
+          {
+            "name": "座椅加热控制",
+            "definition": "控制座椅加热",
+            "core_params": [
+              "开关",
+              "档位",
+              "座位"
+            ]
+          },
+          {
+            "name": "座椅通风控制",
+            "definition": "控制座椅通风",
+            "core_params": [
+              "开关",
+              "档位",
+              "座位"
+            ]
+          },
+          {
+            "name": "座椅按摩控制",
+            "definition": "控制座椅按摩",
+            "core_params": [
+              "开关",
+              "模式",
+              "强度",
+              "座位"
+            ]
+          }
+        ]
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "atomic_abilities": [
+          {
+            "name": "服务与地点搜索",
+            "definition": "搜索餐厅、酒店、景点、停车场等",
+            "core_params": [
+              "类型",
+              "关键词",
+              "位置",
+              "范围"
+            ]
+          },
+          {
+            "name": "服务详情获取",
+            "definition": "获取商户或服务详情",
+            "core_params": [
+              "地址",
+              "营业时间",
+              "评分",
+              "设施"
+            ]
+          },
+          {
+            "name": "候选服务筛选",
+            "definition": "按需求过滤候选服务",
+            "core_params": [
+              "距离",
+              "绕行",
+              "评分",
+              "价格"
+            ]
+          },
+          {
+            "name": "候选方案比较",
+            "definition": "比较候选服务差异",
+            "core_params": [
+              "距离",
+              "时间",
+              "价格",
+              "评价",
+              "状态"
+            ]
+          },
+          {
+            "name": "价格与优惠查询",
+            "definition": "查询价格、优惠和收费规则",
+            "core_params": [
+              "原价",
+              "优惠价",
+              "团购",
+              "预计费用"
+            ]
+          },
+          {
+            "name": "实时资源状态查询",
+            "definition": "查询选择前的资源状态",
+            "core_params": [
+              "车位",
+              "排队人数",
+              "营业状态"
+            ]
+          },
+          {
+            "name": "候选方案选择",
+            "definition": "确定最终服务方案",
+            "core_params": [
+              "候选项",
+              "选择依据",
+              "选择方式"
+            ]
+          },
+          {
+            "name": "预约与排队管理",
+            "definition": "创建、修改或取消预约排队",
+            "core_params": [
+              "时间",
+              "人数",
+              "联系方式"
+            ]
+          },
+          {
+            "name": "订单管理",
+            "definition": "创建、查询或取消订单",
+            "core_params": [
+              "项目",
+              "数量",
+              "状态",
+              "取消条件"
+            ]
+          },
+          {
+            "name": "支付与缴费",
+            "definition": "完成买单、票务或停车缴费",
+            "core_params": [
+              "金额",
+              "支付方式",
+              "优惠",
+              "确认"
+            ]
+          },
+          {
+            "name": "服务进度查询",
+            "definition": "查询服务执行状态",
+            "core_params": [
+              "排队位置",
+              "订单进度",
+              "停车时长"
+            ]
+          }
+        ]
+      }
+    ],
+    "explicit_request": {
+      "exists": false,
+      "capability": null,
+      "parameters": {}
+    }
+  }
+}

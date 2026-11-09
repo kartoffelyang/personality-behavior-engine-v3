@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>行为与人格 · 简洁版</title>
+<link rel="stylesheet" href="/static/fast.css?v=10">
+<script src="/static/fast-contrast.js?v=10" defer></script>
+<script src="/static/fast.js?v=10" defer></script>
+</head>
+<body>
+<header class="masthead"><a class="wordmark" href="/fast">行为与人格<span>简洁版</span></a><nav aria-label="原版入口"><a href="/demo">新版人格演示 ↗</a><a href="/comparison">原对比台 ↗</a><a href="/">原首页 ↗</a></nav></header>
+<main>
+<div class="intro"><p class="eyebrow">PERSONALITY / BEHAVIOR</p><h1>同一情境，如何行动。</h1><p>直接对照两种做法，看差异落在哪里、依据是什么。</p></div>
+<div class="workspace">
+<aside class="composer">
+<form id="fast-form">
+<label for="situation">描述一个情境</label>
+<textarea id="situation" name="text" rows="7" maxlength="3000" required placeholder="你在哪里，发生了什么，希望助手帮你做什么？"></textarea>
+<div class="examples scenario-examples" aria-label="三个展示候选场景">
+<p class="examples-label">展示候选场景 · 试跑记录</p>
+{% for case in demo_scenarios %}
+<button type="button" data-example="{{ case.text }}" data-result-id="{{ case.job_id }}" data-scenario="{{ case.id }}" data-trial-error="{{ case.trial_error }}"><span>{{ case.title }}</span><span class="trial-label">{{ case.trial_label }}</span></button>
+{% endfor %}
+<p id="scenario-note" class="scenario-note" role="status">点击场景查看已保存试跑，编辑情境后可重新生成。</p>
+</div>
+<button class="generate" type="submit" id="generate">生成行为与差异 <span aria-hidden="true">→</span></button>
+<p class="input-note">对照 ESTJ 与 INFP，允许没有人格差异。</p>
+<p id="form-error" class="error" role="alert" hidden></p>
+</form>
+<div class="composer-foot">行为、依据和模拟执行在同一模块查看。<br>人格依据来自项目配置，属于待验证的设计假设。</div>
+</aside>
+<section class="output" aria-label="生成结果" aria-busy="false" id="output">
+<div id="empty" class="empty"><span class="empty-index" aria-hidden="true">01 — 02</span><h2>行为与原因，一起看。</h2><p>输入情境后，这里会逐步展示 ESTJ、INFP 的行为、<br>差异依据，以及每次模拟调用的返回。</p><div class="empty-line"></div><div class="empty-labels"><span>做什么</span><span>哪里不同</span><span>为什么</span></div></div>
+<div id="loading" class="loading" hidden><div class="loading-head"><h2>正在规划行为与人格差异</h2><span id="elapsed">0 秒</span></div><p id="progress" role="status" aria-live="polite">正在提交…</p><div class="skeleton" aria-hidden="true"><div></div><div></div><div></div></div></div>
+<div id="result" hidden></div>
+</section>
+</div>
+</main>
+<footer>行为映射引擎 <span>先满足任务，再调整风格。</span></footer>
+</body>
+</html>

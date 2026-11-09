@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>人格导游</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-run.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-compare.css') }}" />
+  <script defer src="{{ url_for('static', filename='auto-compare.js') }}"></script>
+</head>
+<body class="auto-compare-page">
+  <main class="auto-wrap compare-wrap">
+    <header class="auto-header">
+      <a class="auto-brand" href="/">人格导游</a>
+      <nav class="auto-nav" aria-label="页面导航">
+        <a href="/" aria-current="page">主页面</a>
+        <a href="/comparison">对比台</a>
+        <a href="/flow_review">流程问题页</a>
+      </nav>
+    </header>
+    <section class="auto-intro" aria-labelledby="page-title">
+      <h1 id="page-title">选你过今天的方式（效率；享受）</h1>
+    </section>
+    <section class="auto-panel input-panel" aria-label="生成条件">
+      <form id="auto-compare-form">
+        <fieldset id="compare-input-fields">
+          <label for="compare-utterance">情境</label>
+          <textarea id="compare-utterance" name="user_utterance" required maxlength="10000" rows="3" placeholder="例如：周末早上刚上车，准备去郊外露营，时间不赶，希望旅途轻松一些。"></textarea>
+        </fieldset>
+        <div class="auto-form-footer"><button type="submit" class="button primary" id="compare-generate">同时生成两个人格</button></div>
+        <p class="auto-notice error-notice" id="compare-form-error" role="alert" hidden></p>
+      </form>
+      <noscript><p class="auto-notice">此页面需要启用 JavaScript 才能启动生成和查看进度。</p></noscript>
+    </section>
+
+    <section class="compare-task" id="compare-task" aria-label="双人格对比结果" hidden>
+      <section class="compare-progress-summary" id="compare-progress-summary" aria-label="双人格生成进度">
+        <div class="compare-progress-line">
+          <progress id="compare-progress" value="0" max="16" aria-label="ESTJ 与 INFP 共十六步完成进度"></progress>
+          <p id="compare-progress-message" role="status" aria-live="polite" aria-atomic="true">正在启动…</p>
+        </div>
+      <p class="connection-note" id="compare-connection" role="status" hidden></p>
+        {% for persona in ['ESTJ', 'INFP'] %}
+        <div class="auto-notice error-notice" data-error-persona="{{ persona }}" aria-label="{{ persona }} 生成错误" hidden><p data-error role="alert"></p><button type="button" class="button secondary" data-retry="{{ persona }}">重试 {{ persona }} 失败步骤</button></div>
+        {% endfor %}
+      </section>
+
+      <section class="compare-result-section" aria-labelledby="compare-story-heading">
+        <div class="result-topline"><h2 id="compare-story-heading">场景故事对比</h2><span class="compare-section-note">相同情境，查看两种体验</span></div>
+        <p class="story-disclaimer">以下是根据行为序列生成的场景描述，不代表车辆已实际执行。</p>
+        <div class="compare-grid compare-story-grid">
+          {% for persona in ['ESTJ', 'INFP'] %}
+          <article class="auto-panel compare-story-card persona-{{ persona }}" aria-label="{{ persona }} 场景故事" data-story-persona="{{ persona }}">
+            <div class="compare-column-heading"><h3>{{ persona }}</h3><span class="compare-result-status" data-story-status>等待生成</span></div>
+            <div class="compare-placeholder" data-story-placeholder>流程启动后，这里会显示 {{ persona }} 的场景故事。</div>
+            <div data-story-content hidden></div>
+            <a class="text-link compare-audit-link" data-record hidden target="_blank" rel="noopener">完整记录 ↗</a>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="compare-result-section" aria-labelledby="compare-graph-heading">
+        <div class="result-topline"><h2 id="compare-graph-heading">Git 图对比</h2><span class="compare-section-note">点击节点，查看各自的原子能力调用</span></div>
+        <div class="compare-grid compare-graph-grid">
+          {% for persona in ['ESTJ', 'INFP'] %}
+          <section class="compare-graph-card persona-{{ persona }}" aria-label="{{ persona }} Git 行为图" data-graph-persona="{{ persona }}">
+            <div class="compare-column-heading"><h3>{{ persona }}</h3><a class="text-link" data-graph-link target="_blank" rel="noopener" hidden>单独查看图 ↗</a></div>
+            <p class="compare-placeholder" data-graph-placeholder>等待 {{ persona }} 行为序列生成。</p>
+            <p class="auto-notice" data-graph-loading role="status" hidden>正在加载 {{ persona }} 行为图…</p>
+            <div class="auto-notice error-notice" data-graph-error hidden><p>行为图暂时未能显示，已生成的结果仍会保留。</p><button type="button" class="button secondary" data-graph-reload>重新加载 {{ persona }} 图</button></div>
+            <iframe class="compare-graph-frame" title="{{ persona }} Git 图：原子能力与调用顺序" data-graph-frame hidden></iframe>
+          </section>
+          {% endfor %}
+        </div>
+      </section>
+    </section>
+  </main>
+  <script type="application/json" id="auto-compare-config">{{ {'initialJobId': initial_job_id|default(none), 'defaultBackend': default_backend|default('openai')}|tojson }}</script>
+</body>
+</html>

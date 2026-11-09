@@ -1,0 +1,28 @@
+{
+  "persona": "ESTJ",
+  "user_utterance": "我已经连续打哈欠了，但还想继续开。",
+  "default_context": {
+    "time_period": "evening",
+    "weather": "clear",
+    "cabin_temperature": 24,
+    "passenger_count": 1,
+    "driving_state": "parked",
+    "destination_known": false,
+    "destination": null,
+    "estimated_trip_minutes": null,
+    "calendar_pressure": false,
+    "is_festival": false,
+    "fatigue_risk": 0.0
+  },
+  "allowed_scenarios": [
+    "cabin_comfort",
+    "emotional_support",
+    "entertainment_relax",
+    "fatigue_driving",
+    "festival_celebration",
+    "pleasant_trip",
+    "temperature_control",
+    "time_pressure",
+    "welcome_on_board"
+  ]
+}

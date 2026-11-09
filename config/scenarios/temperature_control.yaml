@@ -1,0 +1,49 @@
+scenario_id: temperature_control
+display_name: 温度调节
+min_score_to_call: 0.50
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 当前温感修正
+    preferred_needs:
+      physical_comfort: 1.0
+      immediate_feedback: 1.0
+  Si:
+    strategy: 惯用温感恢复
+    preferred_needs:
+      restore_history: 1.0
+      physical_comfort: 0.9
+  Ne:
+    strategy: 温控路径拓展
+    preferred_needs:
+      provide_options: 0.9
+      physical_comfort: 0.7
+  Ni:
+    strategy: 温感走势预见
+    preferred_needs:
+      trip_forecast: 0.8
+      physical_comfort: 0.7
+      proactive_preparation: 0.6
+  Te:
+    strategy: 目标温度编排
+    preferred_needs:
+      task_completion: 0.9
+      physical_comfort: 0.9
+      time_efficiency: 0.5
+  Ti:
+    strategy: 热舒适逻辑校验
+    preferred_needs:
+      dependency_check: 0.9
+      conflict_resolution: 0.8
+  Fe:
+    strategy: 多人温感协调
+    preferred_needs:
+      group_balance: 1.0
+      physical_comfort: 0.8
+  Fi:
+    strategy: 个人温感一致
+    preferred_needs:
+      user_autonomy: 1.0
+      personal_boundary: 0.9
+      physical_comfort: 0.8

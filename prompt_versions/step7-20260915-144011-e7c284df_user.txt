@@ -1,0 +1,1282 @@
+{
+  "schema_version": "step7_user_prompt_v2.0",
+  "input": {
+    "persona": "INFP",
+    "free_scenario": "我马上要开会了，时间很紧。",
+    "scenario_id": "time_pressure",
+    "emotion": {
+      "label": "anxious",
+      "intensity": 0.7
+    }
+  },
+  "whitelist": [
+    "climate",
+    "entertainment",
+    "ambient_light",
+    "navigation",
+    "notification_mode",
+    "seat",
+    "ecosystem"
+  ],
+  "step_2_scenario_understanding": {
+    "summary": "用户即将参加会议并表达明显的时间压力，但没有明确提出导航或车辆控制指令。系统可以生成条件化的行程支持方案，目的地和会议时间补齐前不得执行导航。",
+    "explicit_intent": "表达即将开会且时间紧迫",
+    "inferred_task_intent": "用户可能需要行程规划、预计到达时间和迟到风险判断支持",
+    "core_goal": "在不补全未知信息的前提下，为用户准备低操作负担的会议出行方案。",
+    "must_do": [
+      "保留目的地和会议时间未知的事实",
+      "目的地明确后再生成可行路线",
+      "路线生成后再获取预计到达时间",
+      "会议时间明确后再判断迟到风险"
+    ],
+    "conditional_needs": [
+      "用户提供或确认目的地后进入导航流程",
+      "经用户同意后减少非紧急通知"
+    ],
+    "user_context": "用户独自一人，当前存在时间压力和一定焦虑。",
+    "task_context": "用户即将参加会议，但具体会议地点、准确开始时间和行程时间尚未明确。",
+    "physical_context": "车辆当前处于停放状态，车内温度适宜，天气晴朗。",
+    "social_context": "用户即将参加会议，需要尽量减少操作和非必要干扰。",
+    "key_facts": [
+      "用户马上要开会",
+      "用户明确表示时间很紧",
+      "用户没有明确发出导航或车辆控制指令",
+      "具体会议地点未知",
+      "会议准确开始时间未知"
+    ],
+    "inferences": [
+      "用户可能需要导航支持",
+      "用户可能希望减少操作步骤",
+      "用户可能需要掌握预计到达时间",
+      "非紧急通知可能增加分心"
+    ],
+    "unknowns": [
+      "具体会议地点",
+      "会议准确开始时间",
+      "预计行程时间"
+    ],
+    "risks": [
+      "时间压力可能增加驾驶分心",
+      "目的地未知时无法生成有效路线",
+      "会议时间未知时无法准确判断迟到风险"
+    ],
+    "evidence": [
+      {
+        "source": "utterance",
+        "fact": "用户表示马上要开会，时间很紧。",
+        "confidence": 0.95
+      }
+    ],
+    "confidence": 0.9,
+    "context_overrides": {
+      "destination_known": false,
+      "destination": null,
+      "meeting_time_known": false,
+      "meeting_time": null,
+      "calendar_pressure": true,
+      "driving_state": "parked",
+      "cabin_temperature_status": "comfortable",
+      "weather": "clear",
+      "explicit_tool_instruction": false
+    },
+    "needs": {
+      "emotional_comfort": 0.3,
+      "physical_comfort": 0.2,
+      "task_completion": 0.9,
+      "time_efficiency": 0.8,
+      "safety_support": 0.5,
+      "restore_history": 0.0,
+      "user_autonomy": 0.7,
+      "group_balance": 0.0
+    },
+    "risk": {
+      "fatigue_driving": 0.0,
+      "distraction": 0.4,
+      "overall": 0.4
+    }
+  },
+  "step_3_dominant_function_mapping": {
+    "persona": "INFP",
+    "function_sequence": [
+      "Fi",
+      "Ne",
+      "Si",
+      "Te"
+    ],
+    "dominant_function": {
+      "function": "Fi",
+      "display_name": "内倾情感",
+      "action_prototype": "个人价值一致",
+      "principle": "依据个人价值和边界筛选行动，并保留用户自主权。"
+    }
+  },
+  "step_4_persona_scene_action_strategy": {
+    "cross_scenario_prototype": "依据个人价值与边界筛选行动并保留自主权",
+    "scenario_strategy": "在保证时间效率的前提下，主动完成低风险的信息生成动作，将目的地、路线和通知状态等关键决定留给用户。",
+    "focus": [
+      "不自动补全未知目的地",
+      "不自动替用户选择主观路线",
+      "提供少量且差异明确的候选路线",
+      "改变通知状态前征得用户同意"
+    ],
+    "scenario_overrides": [
+      "时间效率高于可选体验增强",
+      "不得因增加选择而延误核心任务",
+      "安全和任务前置条件高于人格倾向",
+      "不存在明确工具指令时不得直接改变车辆状态"
+    ]
+  },
+  "step_5_target_persona_description_and_action_strategy": {
+    "target_persona_description": "该方案重视用户边界和自主选择。目的地等关键条件补齐后，系统可以主动完成搜索、规划、比较、查询和判断；涉及主观选择或真实状态改变的节点由用户确认。",
+    "action_logic": [
+      "主动处理低风险的信息生成动作",
+      "候选路线最多提供两个",
+      "优先展示预计用时更短的路线",
+      "保留一条到达稳定性更高的备选路线",
+      "不自动替用户完成目的地或路线选择",
+      "不自动改变通知状态",
+      "不调用与会议出行无关的体验能力"
+    ],
+    "protected_boundaries": [
+      "目的地需要用户提供或确认",
+      "路线选择由用户完成",
+      "通知状态改变前需要用户同意",
+      "未知会议时间不得被系统补全"
+    ]
+  },
+  "step_6_interaction_dimensions": {
+    "scale": "1_to_5",
+    "initiative": 2,
+    "confirmation": 4,
+    "memory_usage": 1,
+    "option_count": 2,
+    "automation_level": 2,
+    "follow_up": 3,
+    "intervention_intensity": 2,
+    "group_orientation": 2,
+    "boundary_protection": 5,
+    "behavioral_rules": {
+      "initiative_policy": "前置条件满足后主动完成搜索、规划、比较、查询和判断，不主动完成主观选择。",
+      "confirmation_policy": "目的地设置、路线选择、导航启动和通知状态改变需要用户确认或选择。",
+      "option_policy": "候选路线最多提供两个，并说明预计用时和到达稳定性的差异。",
+      "automation_policy": "信息生成可以自动完成，车辆或服务状态改变必须满足确认或授权条件。",
+      "memory_policy": "当前没有恢复历史设置需求，不主动调用历史目的地或历史偏好。",
+      "intervention_policy": "只调用会议出行所需的核心能力和低干扰辅助能力。",
+      "boundary_policy": "保留用户对目的地、路线和通知状态的最终控制权。"
+    }
+  },
+  "behavior_blueprint": {
+    "scene_backbone": [
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "activation": "conditional",
+        "scenario_basis": "用户存在会议时间压力，导航支持可能有助于完成出行任务，但目的地和会议时间尚未明确。",
+        "constraints": [
+          "当前没有明确工具执行指令",
+          "具体目的地未知",
+          "目的地明确前不得设置目的地或启动导航",
+          "会议时间明确前不得输出确定的迟到结论",
+          "候选路线最多提供两个"
+        ]
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "activation": "optional",
+        "scenario_basis": "减少非紧急通知可能降低时间压力下的分心，但不是完成会议出行的必要动作。",
+        "constraints": [
+          "必须保留安全、导航和紧急信息",
+          "改变通知状态前需要用户确认"
+        ]
+      }
+    ],
+    "excluded_domains": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "reason": "当前车内温度适宜，没有温度、空气净化或除雾需求。"
+      },
+      {
+        "capability": "entertainment",
+        "display_name": "影音娱乐",
+        "reason": "用户处于时间压力情境，影音内容可能增加干扰，当前没有相关需求。"
+      },
+      {
+        "capability": "ambient_light",
+        "display_name": "氛围灯",
+        "reason": "当前情境没有灯光调整需求。"
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "reason": "当前情境没有座椅不适或历史位置恢复需求。"
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "reason": "当前需求指向会议出行，不需要餐厅、景点、停车场等开放式服务探索。"
+      }
+    ],
+    "expected_outcomes": [
+      "用户提供或确认目的地后搜索并确认地点",
+      "目的地设置后生成两条以内的候选路线",
+      "比较预计用时和到达稳定性",
+      "由用户选择最终路线",
+      "用户选择后启动导航",
+      "路线确定后获取预计到达时间",
+      "会议时间明确后判断迟到风险",
+      "经用户同意后减少非紧急通知"
+    ]
+  },
+  "capability_catalog": [
+    {
+      "capability": "climate",
+      "display_name": "空调",
+      "atomic_actions": [
+        {
+          "action": "空调开关",
+          "definition": "开启或关闭空调。",
+          "parameter_keys": [
+            "state",
+            "zone"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        },
+        {
+          "action": "温度调节",
+          "definition": "设置或调整车内目标温度。",
+          "parameter_keys": [
+            "target_temperature",
+            "zone"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        },
+        {
+          "action": "风量调节",
+          "definition": "调整空调送风强度。",
+          "parameter_keys": [
+            "fan_level",
+            "zone"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "出风模式切换",
+          "definition": "切换主要出风位置。",
+          "parameter_keys": [
+            "vent_mode",
+            "zone"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "空气净化开关",
+          "definition": "开启或关闭空气净化。",
+          "parameter_keys": [
+            "state",
+            "purification_mode",
+            "zone"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "前挡除雾开关",
+          "definition": "开启或关闭前挡风玻璃除雾。",
+          "parameter_keys": [
+            "state",
+            "intensity",
+            "duration"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "后挡除雾开关",
+          "definition": "开启或关闭后挡风玻璃除雾。",
+          "parameter_keys": [
+            "state",
+            "duration"
+          ],
+          "providers": [
+            "车控系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "空调设置恢复",
+          "definition": "恢复用户历史空调设置。",
+          "parameter_keys": [
+            "user_id",
+            "restore_scope",
+            "history_record"
+          ],
+          "providers": [
+            "车控系统",
+            "用户记忆"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "entertainment",
+      "display_name": "影音娱乐",
+      "atomic_actions": [
+        {
+          "action": "内容搜索",
+          "definition": "根据关键词、类型或偏好搜索影音内容。",
+          "parameter_keys": [
+            "keyword",
+            "content_type",
+            "source",
+            "filters"
+          ],
+          "providers": [
+            "影音系统",
+            "内容App"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "内容详情查看",
+          "definition": "获取内容名称、作者、时长等信息。",
+          "parameter_keys": [
+            "content_id",
+            "detail_scope"
+          ],
+          "providers": [
+            "影音系统",
+            "内容App"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "内容选择",
+          "definition": "从候选内容中确定播放对象。",
+          "parameter_keys": [
+            "candidate_contents",
+            "selected_content",
+            "selection_basis"
+          ],
+          "providers": [
+            "影音系统",
+            "内容App"
+          ],
+          "allowed_execution_modes": [
+            "choose_execute",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "播放控制",
+          "definition": "控制播放、暂停、继续、停止或切换内容。",
+          "parameter_keys": [
+            "operation",
+            "content_id"
+          ],
+          "providers": [
+            "影音系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "音源切换",
+          "definition": "切换蓝牙、车机、广播或第三方应用音源。",
+          "parameter_keys": [
+            "target_source"
+          ],
+          "providers": [
+            "影音系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "音量调节",
+          "definition": "调整音量或静音状态。",
+          "parameter_keys": [
+            "target_volume",
+            "mute_state"
+          ],
+          "providers": [
+            "影音系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "影音设置恢复",
+          "definition": "恢复历史播放内容、音源或音量。",
+          "parameter_keys": [
+            "user_id",
+            "restore_scope",
+            "history_record"
+          ],
+          "providers": [
+            "影音系统",
+            "用户记忆"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "ambient_light",
+      "display_name": "氛围灯",
+      "atomic_actions": [
+        {
+          "action": "氛围灯开关",
+          "definition": "开启或关闭车内氛围灯。",
+          "parameter_keys": [
+            "state",
+            "zone"
+          ],
+          "providers": [
+            "灯光控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "颜色设置",
+          "definition": "设置氛围灯颜色或色温。",
+          "parameter_keys": [
+            "color",
+            "color_temperature",
+            "zone"
+          ],
+          "providers": [
+            "灯光控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "亮度调节",
+          "definition": "调整氛围灯亮度。",
+          "parameter_keys": [
+            "brightness",
+            "zone"
+          ],
+          "providers": [
+            "灯光控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "灯光效果切换",
+          "definition": "切换静态、呼吸、渐变或律动效果。",
+          "parameter_keys": [
+            "effect",
+            "speed",
+            "zone"
+          ],
+          "providers": [
+            "灯光控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "灯光设置恢复",
+          "definition": "恢复用户历史氛围灯方案。",
+          "parameter_keys": [
+            "user_id",
+            "restore_scope",
+            "history_record"
+          ],
+          "providers": [
+            "灯光控制系统",
+            "用户记忆"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "navigation",
+      "display_name": "导航",
+      "atomic_actions": [
+        {
+          "action": "地点搜索",
+          "definition": "根据地点名称、地址或关键词搜索目的地。",
+          "parameter_keys": [
+            "query",
+            "search_range",
+            "place_type"
+          ],
+          "providers": [
+            "高德地图等"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "地点详情查看",
+          "definition": "获取目的地地址、坐标、距离和入口信息。",
+          "parameter_keys": [
+            "poi_id",
+            "detail_scope"
+          ],
+          "providers": [
+            "高德地图等"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "历史目的地获取",
+          "definition": "读取历史目的地、收藏地点或常用地点。",
+          "parameter_keys": [
+            "user_id",
+            "time_range",
+            "place_type"
+          ],
+          "providers": [
+            "导航系统",
+            "用户记忆"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "目的地设置",
+          "definition": "设置或更换当前导航目的地。",
+          "parameter_keys": [
+            "poi_id",
+            "coordinates",
+            "entrance"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute",
+            "choose_execute"
+          ]
+        },
+        {
+          "action": "路线规划",
+          "definition": "根据起点、终点、实时路况和路线偏好生成候选路线。",
+          "parameter_keys": [
+            "origin",
+            "destination",
+            "traffic",
+            "route_preferences",
+            "option_count"
+          ],
+          "providers": [
+            "高德地图等"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "路线比较",
+          "definition": "比较候选路线的时间、距离、拥堵、收费和到达稳定性。",
+          "parameter_keys": [
+            "candidate_routes",
+            "comparison_criteria"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "路线选择",
+          "definition": "从候选路线中确定一条执行路线。",
+          "parameter_keys": [
+            "candidate_routes",
+            "selected_route",
+            "selection_basis"
+          ],
+          "providers": [
+            "系统决策",
+            "用户选择"
+          ],
+          "allowed_execution_modes": [
+            "choose_execute",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "导航运行控制",
+          "definition": "开始、暂停、继续或结束导航。",
+          "parameter_keys": [
+            "operation",
+            "route_id"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "confirm_execute",
+            "choose_execute"
+          ]
+        },
+        {
+          "action": "路线重新规划",
+          "definition": "在偏航、拥堵或约束变化后重新生成路线。",
+          "parameter_keys": [
+            "current_location",
+            "trigger_reason",
+            "new_constraints"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate",
+            "conditional_auto"
+          ]
+        },
+        {
+          "action": "途经点管理",
+          "definition": "添加、删除或调整路线途经点。",
+          "parameter_keys": [
+            "operation",
+            "waypoints",
+            "sequence",
+            "stop_requirements"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute",
+            "choose_execute"
+          ]
+        },
+        {
+          "action": "预计到达时间获取",
+          "definition": "根据当前路线和实时路况获取预计到达时间。",
+          "parameter_keys": [
+            "route_id",
+            "traffic",
+            "update_time"
+          ],
+          "providers": [
+            "导航系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "迟到风险判断",
+          "definition": "根据预计到达时间、会议时间和缓冲时间判断迟到风险。",
+          "parameter_keys": [
+            "estimated_arrival_time",
+            "target_time",
+            "buffer_time"
+          ],
+          "providers": [
+            "规划模块",
+            "日程系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "notification_mode",
+      "display_name": "通知",
+      "atomic_actions": [
+        {
+          "action": "通知读取",
+          "definition": "获取通知正文和来源信息。",
+          "parameter_keys": [
+            "source",
+            "time_range",
+            "content_scope"
+          ],
+          "providers": [
+            "车机",
+            "手机互联"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "通知摘要",
+          "definition": "将一条或多条通知压缩为重点信息。",
+          "parameter_keys": [
+            "notification_set",
+            "summary_length",
+            "focus"
+          ],
+          "providers": [
+            "通知系统",
+            "LLM"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "通知优先级分类",
+          "definition": "判断通知的紧急性和任务相关性。",
+          "parameter_keys": [
+            "source",
+            "contact",
+            "keywords",
+            "task_relevance"
+          ],
+          "providers": [
+            "通知系统",
+            "规划模块"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "提醒延后",
+          "definition": "将通知或提醒推迟到适合的时间。",
+          "parameter_keys": [
+            "notification_id",
+            "delay_duration",
+            "resume_condition"
+          ],
+          "providers": [
+            "通知系统"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "通知静音控制",
+          "definition": "开启或解除通知静音状态。",
+          "parameter_keys": [
+            "state",
+            "duration",
+            "application_scope"
+          ],
+          "providers": [
+            "通知系统"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "非紧急通知屏蔽",
+          "definition": "暂时隐藏非紧急通知，并保留安全、导航和紧急信息。",
+          "parameter_keys": [
+            "blocked_scope",
+            "whitelist",
+            "duration",
+            "resume_condition"
+          ],
+          "providers": [
+            "通知系统"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "回复草稿生成",
+          "definition": "根据通知内容生成待确认回复。",
+          "parameter_keys": [
+            "recipient",
+            "content_requirements",
+            "tone",
+            "length"
+          ],
+          "providers": [
+            "LLM",
+            "通信系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "回复发送",
+          "definition": "将用户确认后的内容发送给外部联系人。",
+          "parameter_keys": [
+            "recipient",
+            "content",
+            "channel"
+          ],
+          "providers": [
+            "手机互联",
+            "通信App"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "回拨发起",
+          "definition": "向通知关联联系人发起电话。",
+          "parameter_keys": [
+            "contact",
+            "phone_number"
+          ],
+          "providers": [
+            "电话系统"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "seat",
+      "display_name": "座椅",
+      "atomic_actions": [
+        {
+          "action": "座椅位置调节",
+          "definition": "调整座椅前后、高低、靠背或腿托位置。",
+          "parameter_keys": [
+            "seat",
+            "forward_backward",
+            "height",
+            "backrest",
+            "leg_rest"
+          ],
+          "providers": [
+            "座椅控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "座椅位置恢复",
+          "definition": "恢复用户保存的座椅记忆位置。",
+          "parameter_keys": [
+            "user_id",
+            "memory_profile",
+            "seat"
+          ],
+          "providers": [
+            "座椅系统",
+            "用户记忆"
+          ],
+          "allowed_execution_modes": [
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "座椅加热控制",
+          "definition": "开启、关闭或调整座椅加热。",
+          "parameter_keys": [
+            "state",
+            "level",
+            "seat"
+          ],
+          "providers": [
+            "座椅控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "座椅通风控制",
+          "definition": "开启、关闭或调整座椅通风。",
+          "parameter_keys": [
+            "state",
+            "level",
+            "seat"
+          ],
+          "providers": [
+            "座椅控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "座椅按摩控制",
+          "definition": "开启、关闭或调整座椅按摩。",
+          "parameter_keys": [
+            "state",
+            "mode",
+            "intensity",
+            "seat"
+          ],
+          "providers": [
+            "座椅控制系统"
+          ],
+          "allowed_execution_modes": [
+            "auto_execute",
+            "conditional_auto",
+            "confirm_execute",
+            "suggest_only"
+          ]
+        }
+      ]
+    },
+    {
+      "capability": "ecosystem",
+      "display_name": "生态服务",
+      "atomic_actions": [
+        {
+          "action": "服务与地点搜索",
+          "definition": "根据开放式需求搜索餐厅、酒店、景点、停车场等服务。",
+          "parameter_keys": [
+            "service_type",
+            "keyword",
+            "location",
+            "range",
+            "business_status"
+          ],
+          "providers": [
+            "高德地图",
+            "大众点评",
+            "美团",
+            "ETCP"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "服务详情获取",
+          "definition": "获取商户或服务地点的地址、营业时间、评分、图片和设施信息。",
+          "parameter_keys": [
+            "service_id",
+            "detail_scope"
+          ],
+          "providers": [
+            "高德地图",
+            "大众点评",
+            "美团"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "候选服务筛选",
+          "definition": "按照距离、绕行时间、评分、价格和营业状态筛选候选项。",
+          "parameter_keys": [
+            "candidate_services",
+            "distance",
+            "detour_time",
+            "rating",
+            "price",
+            "business_status"
+          ],
+          "providers": [
+            "高德地图",
+            "大众点评",
+            "停车平台"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "候选方案比较",
+          "definition": "比较多个服务候选项的距离、时间、价格、评价和实时状态。",
+          "parameter_keys": [
+            "candidate_services",
+            "comparison_criteria"
+          ],
+          "providers": [
+            "规划模块",
+            "服务App"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "价格与优惠查询",
+          "definition": "查询商品、服务、票务或停车价格与优惠。",
+          "parameter_keys": [
+            "service_id",
+            "original_price",
+            "discount_price",
+            "promotion",
+            "estimated_cost"
+          ],
+          "providers": [
+            "大众点评",
+            "美团",
+            "停车平台"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "实时资源状态查询",
+          "definition": "查询剩余车位、排队人数、营业状态或资源余量。",
+          "parameter_keys": [
+            "service_id",
+            "resource_type",
+            "availability",
+            "business_status"
+          ],
+          "providers": [
+            "ETCP",
+            "PP停车",
+            "美团"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        },
+        {
+          "action": "候选方案选择",
+          "definition": "从候选项中确定最终服务方案。",
+          "parameter_keys": [
+            "candidate_services",
+            "selected_service",
+            "selection_basis"
+          ],
+          "providers": [
+            "系统决策",
+            "用户选择"
+          ],
+          "allowed_execution_modes": [
+            "choose_execute",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "预约与排队管理",
+          "definition": "创建、修改或取消预约和排队。",
+          "parameter_keys": [
+            "operation",
+            "service_id",
+            "time",
+            "party_size",
+            "contact",
+            "cancellation_rule"
+          ],
+          "providers": [
+            "大众点评",
+            "美团",
+            "服务商App"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "订单管理",
+          "definition": "创建、查询、修改或取消服务订单。",
+          "parameter_keys": [
+            "operation",
+            "service_id",
+            "items",
+            "quantity",
+            "order_status",
+            "cancellation_condition"
+          ],
+          "providers": [
+            "大众点评",
+            "美团",
+            "停车平台"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate",
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "支付与缴费",
+          "definition": "完成服务买单、票务支付或停车费缴纳。",
+          "parameter_keys": [
+            "amount",
+            "payment_method",
+            "discount",
+            "confirmation_status"
+          ],
+          "providers": [
+            "美团",
+            "大众点评",
+            "ETCP"
+          ],
+          "allowed_execution_modes": [
+            "confirm_execute"
+          ]
+        },
+        {
+          "action": "服务进度查询",
+          "definition": "查询预约、排队、订单或停车过程状态。",
+          "parameter_keys": [
+            "service_id",
+            "queue_position",
+            "order_progress",
+            "parking_duration",
+            "payment_status"
+          ],
+          "providers": [
+            "美团",
+            "停车平台"
+          ],
+          "allowed_execution_modes": [
+            "auto_generate"
+          ]
+        }
+      ]
+    }
+  ],
+  "execution_modes": {
+    "auto_generate": {
+      "display_name": "自动生成",
+      "definition": "自动完成搜索、读取、查询、分析、规划、筛选、比较、摘要或草稿生成，不改变车辆和外部服务状态。"
+    },
+    "auto_execute": {
+      "display_name": "自动执行",
+      "definition": "无需事前确认，直接执行安全必需或低风险、可撤销且已经获得授权的动作。"
+    },
+    "conditional_auto": {
+      "display_name": "条件自动",
+      "definition": "满足明确阈值、权限、历史授权或触发条件后自动执行；条件不满足时不得执行。"
+    },
+    "confirm_execute": {
+      "display_name": "确认后执行",
+      "definition": "展示一个明确动作和关键参数，用户确认后执行。"
+    },
+    "choose_execute": {
+      "display_name": "选择后执行",
+      "definition": "提供两个或以上候选项，用户完成选择后执行对应动作。"
+    },
+    "suggest_only": {
+      "display_name": "仅建议",
+      "definition": "只提供建议，不调用实际能力。"
+    }
+  },
+  "hard_rules": [
+    "当前未触发安全覆盖。",
+    "当前不存在显式工具执行指令。",
+    "目的地未知时不得宣称已经设置目的地、生成有效路线或启动导航。",
+    "会议时间未知时不得输出确定的迟到结论。",
+    "任何支付、下单、预约、消息发送和电话操作必须经用户确认。",
+    "除非触发新的安全覆盖，不得调用behavior_blueprint.excluded_domains中的能力。",
+    "通知状态改变前必须获得用户确认。",
+    "必须保留安全、导航和紧急通知。",
+    "候选路线数量不得超过2个。",
+    "所有action名称必须逐字来自对应capability的atomic_actions。",
+    "parameters_hint只能使用对应原子能力的parameter_keys。",
+    "不得使用definition、场景策略或人格策略充当action。",
+    "禁止输出O_Action_Plan、O_Behavior、scene_plan、validated_actions和planner_output包装字段。"
+  ],
+  "request_constraints": {
+    "output_format": "strict_json",
+    "legacy_fields_allowed": false,
+    "spoken_reply_allowed": false,
+    "allow_unknown_fact_completion": false,
+    "require_atomic_action_validation": true,
+    "require_dependency_validation": true
+  }
+}

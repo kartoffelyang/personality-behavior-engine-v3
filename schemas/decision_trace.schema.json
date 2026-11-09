@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DecisionTrace",
+  "type": "object",
+  "required": ["layers", "final"],
+  "properties": {
+    "layers": {
+      "type": "object",
+      "properties": {
+        "layer1_context": {"type": "object"},
+        "layer2_persona_activation": {"type": "object"},
+        "layer3_candidates_and_rules": {"type": "object"},
+        "layer4_behavior_sequence": {"type": "object"},
+        "layer5_scenario_plan": {"type": "object"}
+      }
+    },
+    "final": {"type": "object"}
+  }
+}

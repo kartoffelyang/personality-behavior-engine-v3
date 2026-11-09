@@ -1,0 +1,49 @@
+scenario_id: fatigue_driving
+display_name: 疲劳驾驶
+min_score_to_call: 0.45
+min_score_gap_for_multi_call: 0.05
+
+function_strategies:
+  Se:
+    strategy: 即时风险响应
+    preferred_needs:
+      safety_support: 1.0
+      immediate_feedback: 1.0
+  Si:
+    strategy: 可靠处置复用
+    preferred_needs:
+      safety_support: 1.0
+      restore_history: 0.7
+  Ne:
+    strategy: 安全出口拓展
+    preferred_needs:
+      safety_support: 0.9
+      provide_options: 0.7
+  Ni:
+    strategy: 风险趋势阻断
+    preferred_needs:
+      safety_support: 1.0
+      trip_forecast: 0.7
+  Te:
+    strategy: 安全目标编排
+    preferred_needs:
+      safety_support: 1.0
+      task_completion: 0.8
+      time_efficiency: 0.6
+  Ti:
+    strategy: 安全闭环校验
+    preferred_needs:
+      safety_support: 1.0
+      dependency_check: 0.9
+      conflict_resolution: 0.8
+  Fe:
+    strategy: 安全责任协调
+    preferred_needs:
+      safety_support: 0.9
+      group_balance: 0.7
+  Fi:
+    strategy: 安全选择维护
+    preferred_needs:
+      safety_support: 1.0
+      user_autonomy: 0.6
+      personal_boundary: 0.5

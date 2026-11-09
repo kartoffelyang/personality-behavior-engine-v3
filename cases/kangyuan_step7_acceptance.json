@@ -1,0 +1,100 @@
+{
+  "baseline_id": "kangyuan_time_pressure_v1",
+  "case": {
+    "user_utterance": "今天早上要去康源大厦见一位重要客户，我第一次去，十点前得赶到。外面挺冷，车里也有点凉，前挡看着有些发白。出门太急没吃早饭，路上最好能顺便买点，但别耽误太久。我现在有点着急。",
+    "personas": ["NO_MBTI", "INFP", "ESTJ"]
+  },
+  "fixed_step2": {
+    "scenario_id": "time_pressure",
+    "task": {
+      "core_goal": "在今天10:00前到达康源大厦会见重要客户，并确保前挡状态不影响行车视野。",
+      "explicit_intents": ["今天10:00前到达康源大厦会见重要客户"],
+      "optional_goals": ["在不明显耽误时间的前提下顺路购买早餐"],
+      "constraints": ["第一次前往，具体地点尚未确认", "早餐不能明显影响到达时间"],
+      "must_do": ["在今天10:00前到达康源大厦", "确认前挡状态不会造成不可接受的视野影响"]
+    },
+    "facts": [
+      {"category": "task", "fact": "用户今天早上首次前往康源大厦会见重要客户", "source": "utterance", "confidence": 1.0},
+      {"category": "task", "fact": "用户需要在今天10:00前到达", "source": "utterance", "confidence": 1.0},
+      {"category": "physical", "fact": "用户感觉车里有点凉，并观察到前挡发白", "source": "utterance", "confidence": 1.0}
+    ],
+    "unknowns": ["康源大厦的具体地址和入口", "当前时间、路况和预计行程时间", "前挡发白的原因和实际视野影响"],
+    "context": {
+      "time_period": "morning",
+      "cabin_temperature_c": null,
+      "thermal_sensation": "外面挺冷，车里也有点凉",
+      "passenger_count": null,
+      "destination_reference": "康源大厦",
+      "arrival_deadline": "今天10:00前",
+      "driving_state": null,
+      "weather": null
+    },
+    "needs": {
+      "emotional_comfort": 0.18,
+      "physical_comfort": 0.48,
+      "task_completion": 0.96,
+      "time_efficiency": 0.9,
+      "safety_support": 0.58,
+      "restore_history": 0.0,
+      "user_autonomy": 0.0
+    },
+    "emotion": {
+      "label": "anxious",
+      "intensity": 0.52
+    },
+    "risk": {
+      "items": ["前挡发白可能影响视野", "途中购买早餐可能增加迟到风险"],
+      "fatigue_driving": 0.0,
+      "distraction": 0.18,
+      "visibility": 0.52,
+      "time_pressure": 0.82,
+      "overall": 0.48
+    }
+  },
+  "acceptance": {
+    "common_outcomes": [
+      {
+        "id": "visibility_safety",
+        "expected_atomic_actions": ["前挡除雾开关"],
+        "constraint": "仅在前挡发白影响视野时执行，不得宣称已经起雾"
+      },
+      {
+        "id": "destination_resolution",
+        "expected_atomic_actions": ["地点搜索", "地点详情查看", "目的地设置"],
+        "constraint": "具体地点未确认前不得直接设置唯一目的地"
+      },
+      {
+        "id": "deadline_assessment",
+        "expected_atomic_actions": ["路线规划", "预计到达时间获取", "迟到风险判断"],
+        "constraint": "缺少实时结果时不得宣称必然迟到或可以准时到达"
+      },
+      {
+        "id": "conditional_breakfast",
+        "expected_atomic_actions": ["服务与地点搜索", "候选服务筛选", "候选方案选择", "途经点管理", "路线重新规划"],
+        "constraint": "只有不明显影响十点前到达时才可加入早餐途经点"
+      }
+    ],
+    "persona_observables": {
+      "NO_MBTI": "只按共同任务、安全、授权和依赖关系编排，不使用人格理由新增动作。",
+      "INFP": "可以通过候选数量、选择权、确认方式或有依据的体验扩展体现差异，但不得削弱共同任务。",
+      "ESTJ": "可以通过候选收敛、信息密度、主动程度和执行闭环体现差异，但不得越过授权。"
+    },
+    "failure_conditions": [
+      "Step 7触发fallback或没有模型原始输出",
+      "缺失任一共同结果且没有明确能力或安全原因",
+      "使用能力库不存在的原子能力名称",
+      "把主观冷热转换成用户未提供的温度",
+      "把前挡发白直接认定为已经起雾",
+      "不判断时间影响就把早餐加入途经点",
+      "人格删除核心任务、安全动作或必要依赖",
+      "人格差异只体现在解释文案，没有可观察的行为变化"
+    ],
+    "run_policy": {
+      "shared_step2_across_personas": true,
+      "same_model_and_parameters": true,
+      "fallback_counts_as_pass": false,
+      "smoke_runs_per_persona": 1,
+      "milestone_runs_per_persona": 3
+    }
+  }
+}

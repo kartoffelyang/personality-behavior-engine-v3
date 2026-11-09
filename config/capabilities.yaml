@@ -1,0 +1,551 @@
+climate:
+  display_name: 空调
+  domain: 空调
+  description: 覆盖空调开关、温度、风量、出风模式、净化、除雾和历史空调设置恢复。
+  atomic_abilities:
+    - name: 空调开关
+      definition: 开启或关闭空调
+      core_params: [开关, 作用区域]
+      service_sources: [车控系统]
+    - name: 温度调节
+      definition: 设置车内温度
+      core_params: [温度, 区域]
+      parameter_schema:
+        温度: {type: number}
+        区域: {type: string}
+      service_sources: [车控系统]
+    - name: 风量调节
+      definition: 调整送风强度
+      core_params: [档位, 区域]
+      service_sources: [车控系统]
+    - name: 出风模式切换
+      definition: 切换出风位置
+      core_params: [吹脸, 吹脚, 吹窗]
+      service_sources: [车控系统]
+    - name: 空气净化开关
+      definition: 控制空气净化
+      core_params: [开关, 净化模式]
+      service_sources: [车控系统]
+    - name: 前挡除雾开关
+      definition: 控制前挡除雾
+      core_params: [开关, 强度, 时长]
+      service_sources: [车控系统]
+    - name: 后挡除雾开关
+      definition: 控制后挡除雾
+      core_params: [开关, 时长]
+      service_sources: [车控系统]
+    - name: 空调设置恢复
+      definition: 恢复历史设置
+      core_params: [用户, 温度, 模式]
+      parameter_schema:
+        温度: {type: number}
+      service_sources: [车控系统, 用户记忆]
+  recommended_execution_modes: [conditional_auto, auto_execute, confirm_execute, suggest_only]
+  return_fields:
+    - current_state
+    - success
+    - target_temperature
+  supported_needs:
+    physical_comfort: 1.0
+    emotional_comfort: 0.35
+    task_completion: 0.25
+    restore_history: 0.7
+    time_efficiency: 0.3
+    group_balance: 0.75
+    user_autonomy: 0.55
+  function_affinity:
+    Se: 0.8
+    Si: 0.75
+    Te: 0.55
+    Fe: 0.5
+    Fi: 0.4
+    Ti: 0.35
+    Ne: 0.25
+    Ni: 0.3
+  properties:
+    risk: 0.05
+    intrusiveness: 0.3
+    reversibility: 1.0
+    requires_confirmation: false
+    max_persona_randomness: 0.08
+  history_keys:
+    - preferred_temperature
+  permission_key: allow_auto_climate
+  parameter_presets:
+    low:
+      target_delta: -1
+      mode: gentle
+    medium:
+      target_delta: -2
+      mode: balanced
+    high:
+      target_delta: -3
+      mode: rapid
+
+entertainment:
+  display_name: 影音娱乐
+  domain: 影音娱乐
+  description: 覆盖内容搜索、详情查看、内容选择、播放控制、音源切换、音量调节和历史影音设置恢复。
+  atomic_abilities:
+    - name: 内容搜索
+      definition: 搜索影音内容
+      core_params: [关键词, 类型, 来源]
+      service_sources: [影音系统, 内容App]
+    - name: 内容详情查看
+      definition: 获取内容信息
+      core_params: [名称, 作者, 时长]
+      service_sources: [影音系统, 内容App]
+    - name: 内容选择
+      definition: 确定播放内容
+      core_params: [内容, 选择依据]
+      service_sources: [影音系统, 内容App]
+    - name: 播放控制
+      definition: 控制播放状态
+      core_params: [播放, 暂停, 继续, 停止]
+      service_sources: [影音系统]
+    - name: 音源切换
+      definition: 切换播放来源
+      core_params: [蓝牙, 车机, 广播, App]
+      service_sources: [影音系统]
+    - name: 音量调节
+      definition: 调整播放音量
+      core_params: [音量, 静音]
+      service_sources: [影音系统]
+    - name: 影音设置恢复
+      definition: 恢复历史影音设置
+      core_params: [内容, 音源, 音量]
+      service_sources: [影音系统, 用户记忆]
+  recommended_execution_modes: [auto_generate, choose_execute, confirm_execute, suggest_only]
+  return_fields:
+    - is_playing
+    - music_style_or_scene
+    - volume_state
+    - play_result
+  supported_needs:
+    emotional_comfort: 0.9
+    physical_comfort: 0.2
+    exploration: 0.55
+    restore_history: 0.7
+    user_autonomy: 0.7
+    group_balance: 0.45
+    task_completion: 0.05
+  function_affinity:
+    Fi: 0.8
+    Fe: 0.65
+    Ne: 0.6
+    Se: 0.55
+    Si: 0.5
+    Ni: 0.35
+    Te: 0.1
+    Ti: 0.1
+  properties:
+    risk: 0.1
+    intrusiveness: 0.45
+    reversibility: 1.0
+    requires_confirmation: false
+    max_persona_randomness: 0.12
+  history_keys:
+    - preferred_music_style
+  permission_key: allow_auto_music
+  parameter_presets:
+    low:
+      style: quiet
+      volume: 15
+    medium:
+      style: soft_acoustic
+      volume: 25
+    high:
+      style: commute_upbeat
+      volume: 35
+
+ambient_light:
+  display_name: 氛围灯
+  domain: 氛围灯
+  description: 覆盖氛围灯开关、颜色、亮度、灯效切换和历史灯光方案恢复。
+  atomic_abilities:
+    - name: 氛围灯开关
+      definition: 开启或关闭氛围灯
+      core_params: [开关, 区域]
+      service_sources: [灯光控制系统]
+    - name: 颜色设置
+      definition: 设置灯光颜色
+      core_params: [颜色, 色温, 区域]
+      service_sources: [灯光控制系统]
+    - name: 亮度调节
+      definition: 调整灯光亮度
+      core_params: [亮度, 区域]
+      service_sources: [灯光控制系统]
+    - name: 灯光效果切换
+      definition: 切换灯光动态效果
+      core_params: [静态, 呼吸, 渐变, 律动]
+      service_sources: [灯光控制系统]
+    - name: 灯光设置恢复
+      definition: 恢复历史灯光方案
+      core_params: [颜色, 亮度, 效果]
+      service_sources: [灯光系统, 用户记忆]
+  recommended_execution_modes: [conditional_auto, choose_execute, suggest_only]
+  return_fields:
+    - current_scene
+    - switch_result
+    - mode_after
+  supported_needs:
+    emotional_comfort: 0.9
+    physical_comfort: 0.25
+    immediate_feedback: 0.85
+    user_autonomy: 0.65
+    task_completion: 0.05
+    restore_history: 0.55
+  function_affinity:
+    Fi: 0.85
+    Fe: 0.7
+    Se: 0.65
+    Si: 0.35
+    Ne: 0.35
+    Ni: 0.3
+    Te: 0.05
+    Ti: 0.05
+  properties:
+    risk: 0.05
+    intrusiveness: 0.25
+    reversibility: 1.0
+    requires_confirmation: false
+    max_persona_randomness: 0.12
+  history_keys:
+    - preferred_ambient_scene
+  permission_key: allow_auto_ambient
+  parameter_presets:
+    low:
+      brightness: 20
+      transition: slow
+    medium:
+      brightness: 35
+      transition: slow
+    high:
+      brightness: 50
+      transition: dynamic
+
+navigation:
+  display_name: 导航
+  domain: 导航
+  description: 覆盖地点搜索、详情查看、历史目的地、目的地设置、路线规划/比较/选择、导航运行和 ETA/迟到风险判断。
+  atomic_abilities:
+    - name: 地点搜索
+      definition: 搜索明确目的地
+      core_params: [名称, 地址, 范围]
+      service_sources: [高德地图等]
+    - name: 地点详情查看
+      definition: 获取目的地信息
+      core_params: [地址, 坐标, 入口]
+      service_sources: [高德地图等]
+    - name: 历史目的地获取
+      definition: 读取历史或收藏地点
+      core_params: [用户, 时间, 地点类型]
+      service_sources: [导航系统, 用户记忆]
+    - name: 目的地设置
+      definition: 设置或更换目的地
+      core_params: [POI, 坐标, 入口]
+      service_sources: [导航系统]
+    - name: 路线规划
+      definition: 生成候选路线
+      core_params: [起终点, 路况, 偏好]
+      service_sources: [高德地图等]
+    - name: 路线比较
+      definition: 比较路线差异
+      core_params: [时间, 距离, 收费, 拥堵]
+      service_sources: [导航系统]
+    - name: 路线选择
+      definition: 确定执行路线
+      core_params: [路线, 选择依据]
+      service_sources: [系统决策, 用户选择]
+    - name: 导航运行控制
+      definition: 控制导航状态
+      core_params: [开始, 暂停, 继续, 结束]
+      service_sources: [导航系统]
+    - name: 路线重新规划
+      definition: 根据变化更新路线
+      core_params: [当前位置, 路况, 新约束]
+      service_sources: [导航系统]
+    - name: 途经点管理
+      definition: 管理路线途经点
+      core_params: [地点, 顺序, 停留要求]
+      service_sources: [导航系统]
+    - name: 预计到达时间获取
+      definition: 获取预计到达时间
+      core_params: [路线, 路况, 更新时间]
+      service_sources: [导航系统]
+    - name: 迟到风险判断
+      definition: 判断能否按时到达
+      core_params: [到达时间, 任务时间, 缓冲时间]
+      service_sources: [规划模块, 日程系统]
+  recommended_execution_modes: [auto_generate, choose_execute, auto_execute, confirm_execute, suggest_only]
+  return_fields:
+    - recommended_destination
+    - eta_minutes
+    - started
+  supported_needs:
+    task_completion: 1.0
+    time_efficiency: 0.95
+    trip_forecast: 0.8
+    safety_support: 0.85
+    emotional_comfort: 0.1
+    dependency_check: 0.6
+  function_affinity:
+    Te: 0.95
+    Si: 0.65
+    Ni: 0.55
+    Ti: 0.55
+    Se: 0.4
+    Ne: 0.35
+    Fe: 0.2
+    Fi: 0.15
+  properties:
+    risk: 0.15
+    intrusiveness: 0.35
+    reversibility: 0.9
+    requires_confirmation: false
+    max_persona_randomness: 0.05
+  history_keys:
+    - preferred_route_style
+  permission_key: allow_auto_navigation
+  parameter_presets:
+    low:
+      mode: suggest_only
+    medium:
+      mode: start_known_destination
+    high:
+      mode: fastest_stable
+
+notification_mode:
+  display_name: 通知
+  domain: 通知
+  description: 覆盖通知读取、摘要、优先级分类、提醒延后、静音控制、非紧急通知屏蔽、回复草稿和发送、电话回拨。
+  atomic_abilities:
+    - name: 通知读取
+      definition: 获取通知内容
+      core_params: [来源, 时间, 内容范围]
+      service_sources: [车机, 手机互联]
+    - name: 通知摘要
+      definition: 提炼通知重点
+      core_params: [通知集合, 摘要长度]
+      service_sources: [通知系统, LLM]
+    - name: 通知优先级分类
+      definition: 判断通知紧急程度
+      core_params: [来源, 联系人, 任务相关性]
+      service_sources: [通知系统, 规划模块]
+    - name: 提醒延后
+      definition: 推迟通知或提醒
+      core_params: [延后时间, 恢复条件]
+      service_sources: [通知系统]
+    - name: 通知静音控制
+      definition: 控制通知声音
+      core_params: [开关, 时长, 应用范围]
+      service_sources: [通知系统]
+    - name: 非紧急通知屏蔽
+      definition: 暂时隐藏非紧急通知
+      core_params: [屏蔽范围, 白名单, 时长]
+      service_sources: [通知系统]
+    - name: 回复草稿生成
+      definition: 生成待确认回复
+      core_params: [对象, 内容, 语气]
+      service_sources: [LLM, 通信系统]
+    - name: 回复发送
+      definition: 发送确认后的回复
+      core_params: [接收人, 内容, 渠道]
+      service_sources: [手机互联, 通信App]
+    - name: 回拨发起
+      definition: 发起电话回拨
+      core_params: [联系人, 号码, 确认状态]
+      service_sources: [电话系统]
+  recommended_execution_modes: [auto_generate, confirm_execute, conditional_auto, suggest_only]
+  return_fields:
+    - current_mode
+    - switch_result
+    - mode_after
+  supported_needs:
+    user_autonomy: 0.7
+    emotional_comfort: 0.55
+    task_completion: 0.65
+    time_efficiency: 0.5
+    personal_boundary: 0.85
+    safety_support: 0.3
+  function_affinity:
+    Te: 0.7
+    Fi: 0.75
+    Ti: 0.55
+    Si: 0.45
+    Fe: 0.35
+    Ni: 0.4
+    Se: 0.25
+    Ne: 0.2
+  properties:
+    risk: 0.08
+    intrusiveness: 0.35
+    reversibility: 1.0
+    requires_confirmation: false
+    max_persona_randomness: 0.06
+  history_keys:
+    - preferred_notification_mode
+  permission_key: allow_auto_notification
+  parameter_presets:
+    low:
+      mode: normal
+    medium:
+      mode: focus
+    high:
+      mode: dnd
+
+seat:
+  display_name: 座椅
+  domain: 座椅
+  description: 覆盖座椅位置调节、记忆位置恢复、加热、通风和按摩控制。
+  atomic_abilities:
+    - name: 座椅位置调节
+      definition: 调整座椅位置
+      core_params: [前后, 高低, 靠背, 腿托]
+      service_sources: [座椅控制系统]
+    - name: 座椅位置恢复
+      definition: 恢复记忆位置
+      core_params: [用户, 记忆方案, 座位]
+      service_sources: [座椅系统, 用户记忆]
+    - name: 座椅加热控制
+      definition: 控制座椅加热
+      core_params: [开关, 档位, 座位]
+      service_sources: [座椅控制系统]
+    - name: 座椅通风控制
+      definition: 控制座椅通风
+      core_params: [开关, 档位, 座位]
+      service_sources: [座椅控制系统]
+    - name: 座椅按摩控制
+      definition: 控制座椅按摩
+      core_params: [开关, 模式, 强度, 座位]
+      service_sources: [座椅控制系统]
+  recommended_execution_modes: [conditional_auto, confirm_execute, suggest_only]
+  return_fields:
+    - current_state
+    - target_mode
+    - success
+    - result_state
+  supported_needs:
+    physical_comfort: 0.95
+    emotional_comfort: 0.45
+    restore_history: 0.8
+    task_completion: 0.2
+    user_autonomy: 0.6
+    group_balance: 0.3
+  function_affinity:
+    Si: 0.8
+    Se: 0.7
+    Fi: 0.55
+    Te: 0.4
+    Fe: 0.35
+    Ni: 0.3
+    Ne: 0.25
+    Ti: 0.3
+  properties:
+    risk: 0.08
+    intrusiveness: 0.4
+    reversibility: 0.95
+    requires_confirmation: false
+    max_persona_randomness: 0.08
+  history_keys:
+    - preferred_seat_mode
+  permission_key: allow_auto_seat
+  parameter_presets:
+    low:
+      mode: comfort_light
+    medium:
+      mode: memory_restore
+    high:
+      mode: support_focus
+
+ecosystem:
+  display_name: 生态服务
+  domain: 生态服务
+  description: 覆盖服务与地点搜索、详情获取、候选筛选与比较、价格优惠、资源状态、方案选择、预约、订单、支付和进度查询。
+  atomic_abilities:
+    - name: 服务与地点搜索
+      definition: 搜索餐厅、酒店、景点、停车场等
+      core_params: [类型, 关键词, 位置, 范围]
+      service_sources: [高德, 大众点评, 美团, ETCP]
+    - name: 服务详情获取
+      definition: 获取商户或服务详情
+      core_params: [地址, 营业时间, 评分, 设施]
+      service_sources: [高德, 大众点评, 美团]
+    - name: 候选服务筛选
+      definition: 按需求过滤候选服务
+      core_params: [距离, 绕行, 评分, 价格]
+      service_sources: [高德, 大众点评, 停车平台]
+    - name: 候选方案比较
+      definition: 比较候选服务差异
+      core_params: [距离, 时间, 价格, 评价, 状态]
+      service_sources: [规划模块, 服务App]
+    - name: 价格与优惠查询
+      definition: 查询价格、优惠和收费规则
+      core_params: [原价, 优惠价, 团购, 预计费用]
+      service_sources: [大众点评, 美团, 停车平台]
+    - name: 实时资源状态查询
+      definition: 查询选择前的资源状态
+      core_params: [车位, 排队人数, 营业状态]
+      service_sources: [ETCP, PP停车, 美团]
+    - name: 候选方案选择
+      definition: 确定最终服务方案
+      core_params: [候选项, 选择依据, 选择方式]
+      service_sources: [系统决策, 用户选择]
+    - name: 预约与排队管理
+      definition: 创建、修改或取消预约排队
+      core_params: [时间, 人数, 联系方式]
+      service_sources: [大众点评, 美团, 服务商App]
+    - name: 订单管理
+      definition: 创建、查询或取消订单
+      core_params: [项目, 数量, 状态, 取消条件]
+      service_sources: [大众点评, 美团, 停车平台]
+    - name: 支付与缴费
+      definition: 完成买单、票务或停车缴费
+      core_params: [金额, 支付方式, 优惠, 确认]
+      service_sources: [美团, 大众点评, ETCP]
+    - name: 服务进度查询
+      definition: 查询服务执行状态
+      core_params: [排队位置, 订单进度, 停车时长]
+      service_sources: [美团, 停车平台等]
+  recommended_execution_modes: [auto_generate, choose_execute, confirm_execute, suggest_only]
+  return_fields:
+    - ecosystem_type
+    - recommendations
+    - eta_or_score_or_delivery
+    - call_result
+  supported_needs:
+    trip_forecast: 0.75
+    provide_options: 0.9
+    exploration: 0.8
+    task_completion: 0.55
+    time_efficiency: 0.5
+    safety_support: 0.6
+    group_balance: 0.4
+    emotional_comfort: 0.25
+  function_affinity:
+    Ne: 0.9
+    Ni: 0.7
+    Te: 0.55
+    Fe: 0.45
+    Se: 0.4
+    Si: 0.35
+    Ti: 0.4
+    Fi: 0.3
+  properties:
+    risk: 0.2
+    intrusiveness: 0.4
+    reversibility: 0.85
+    requires_confirmation: true
+    max_persona_randomness: 0.1
+  history_keys: []
+  permission_key: allow_auto_ecosystem
+  parameter_presets:
+    low:
+      ecosystem_type: nearby_poi
+      count: 2
+    medium:
+      ecosystem_type: route_assist
+      count: 3
+    high:
+      ecosystem_type: life_service
+      count: 3

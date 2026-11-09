@@ -1,0 +1,277 @@
+[
+  {
+    "id": "message_boundary",
+    "title": "消息很多：整理还是暂离",
+    "text": "车已经停好，刚才一口气来了好多消息，没有急事。我有二十分钟空档，想清静一点，你帮我安排。",
+    "category": "交互边界",
+    "dimension": "梳理通知 vs 不读内容、直接隔离",
+    "observe": "梳理通知 vs 不读内容、直接隔离",
+    "why_suitable": "消息均不紧急，整理后安静与暂时不读都合理，可直接观察是否读取内容。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 4,
+    "order_atoms": [
+      "notification_mode/通知读取",
+      "notification_mode/通知优先级分类",
+      "notification_mode/通知摘要",
+      "notification_mode/提醒延后"
+    ],
+    "feeling_atoms": [
+      "notification_mode/通知静音控制",
+      "notification_mode/非紧急通知屏蔽",
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节"
+    ],
+    "order_goal": "先梳理外部任务，再设置明确的安静时段。",
+    "feeling_goal": "先保护个人边界，不阅读消息内容，以低音量音乐保留自己的空间。",
+    "order_description": "模拟将8条非紧急消息分组，显示一段简短摘要，延后提醒20分钟；不播放内容。",
+    "feeling_description": "不读取消息内容，模拟静音并屏蔽非紧急通知20分钟，低音量播放《雨后钢琴》。",
+    "music_order": "M2",
+    "music_feeling": "M1",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。共享通知共8条：3条工作群普通讨论、2条活动推广、3条朋友日常闲聊，无紧急联系人消息。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "same_song",
+    "title": "同一首歌：只播还是联动",
+    "text": "车停好了，我想听《雨后钢琴》。现在温度舒服，不需要改空调，你帮我安排一个舒服的听歌方式。",
+    "category": "座舱体验",
+    "dimension": "内容相同，比较环境联动范围",
+    "observe": "内容相同，比较环境联动范围",
+    "why_suitable": "固定相同曲目并排除空调，能隔离“换了推荐内容”对差异的干扰。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 5,
+    "order_atoms": [
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节"
+    ],
+    "feeling_atoms": [
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节",
+      "ambient_light/氛围灯开关",
+      "ambient_light/颜色设置",
+      "ambient_light/亮度调节",
+      "seat/座椅按摩控制"
+    ],
+    "order_goal": "明确完成听歌任务，少量调整音量即可，不扩大介入。",
+    "feeling_goal": "将同一首音乐与柔和灯光、身体放松组成完整体验。",
+    "order_description": "模拟播放《雨后钢琴》，音量20；不调整灯光、座椅或空调。",
+    "feeling_description": "模拟播放同一首《雨后钢琴》，音量20，开启暖白20%氛围灯和轻柔按摩；不改空调。",
+    "music_order": "M1",
+    "music_feeling": "M1",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "stuffy_cabin",
+    "title": "车内舒适：调环境还是全身放松",
+    "text": "车停好了，车里有点闷，我也有点坐僵了。接下来不赶时间，想舒服一点，不用放音乐。",
+    "category": "座舱体验",
+    "dimension": "必要通风共同完成，比较舒适延伸",
+    "observe": "必要通风共同完成，比较舒适延伸",
+    "why_suitable": "共同完成通风，额外座椅与灯光保持可选，能看到核心任务和人格延伸的区别。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 6,
+    "order_atoms": [
+      "climate/空调开关",
+      "climate/温度调节",
+      "climate/风量调节",
+      "climate/空气净化开关"
+    ],
+    "feeling_atoms": [
+      "climate/空调开关",
+      "climate/温度调节",
+      "climate/风量调节",
+      "ambient_light/氛围灯开关",
+      "ambient_light/颜色设置",
+      "ambient_light/亮度调节",
+      "seat/座椅按摩控制"
+    ],
+    "order_goal": "先用明确温度、风量与净化改善空气，控制额外介入。",
+    "feeling_goal": "在改善空气的基础上处理身体紧绷与环境体验。",
+    "order_description": "模拟前排24℃、2档送风，开启空气净化；不调座椅灯光，不放音乐。",
+    "feeling_description": "模拟前排24℃、1档柔风，轻柔按摩与暖白20%灯光；不放音乐。",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。通风与坐姿舒适都没有必须唯一采用的操作组合。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "waiting_pickup",
+    "title": "提前到达：有效利用还是留白",
+    "text": "我提前二十分钟到接人的地方了，车已经停好。对方到点会来找我，不用联系他。这段时间你帮我安排一下。",
+    "category": "交互边界",
+    "dimension": "信息摄入 vs 安静留白",
+    "observe": "信息摄入 vs 安静留白",
+    "why_suitable": "等待时间固定，既可听短内容也可安静休息；不涉及催促、发消息或确认。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 7,
+    "order_atoms": [
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节",
+      "notification_mode/提醒延后"
+    ],
+    "feeling_atoms": [
+      "ambient_light/氛围灯开关",
+      "ambient_light/颜色设置",
+      "ambient_light/亮度调节",
+      "seat/座椅按摩控制"
+    ],
+    "order_goal": "把固定等待段用于一段有明确结束点的内容，延后非紧急提醒。",
+    "feeling_goal": "不填满空档，用安静环境和身体放松保留留白。",
+    "order_description": "模拟播放15分钟《换个角度看今天》，音量20，非紧急提醒延后20分钟；不改变灯光和座椅。",
+    "feeling_description": "保持安静，不播放内容，不联络对方；模拟暖白20%灯光和轻柔按摩。",
+    "music_order": "M2",
+    "music_feeling": "M1",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "rain_choice",
+    "title": "等雨还是出发：尽快完成与慢一点",
+    "text": "我在停车场，外面小雨。去附近商场也行，等雨停再走也行，今天没别的安排，你帮我选一个。",
+    "category": "出行选择",
+    "dimension": "是否启动导航，而非仅换目的地",
+    "observe": "是否启动导航，而非仅换目的地",
+    "why_suitable": "明确授权出发与等待两条合理路径，可观察是否真正启动导航。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 8,
+    "order_atoms": [
+      "navigation/地点搜索",
+      "navigation/地点详情查看",
+      "navigation/目的地设置",
+      "navigation/路线规划",
+      "navigation/路线选择",
+      "navigation/导航运行控制",
+      "navigation/路线比较"
+    ],
+    "feeling_atoms": [
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节",
+      "ambient_light/氛围灯开关",
+      "ambient_light/颜色设置",
+      "ambient_light/亮度调节"
+    ],
+    "order_goal": "既然路线可行，就明确目标并完成出发安排。",
+    "feeling_goal": "既然不赶时间，就暂缓出发，把等待变成可享受的片刻。",
+    "order_description": "共同演示假设：小雨能见度良好。模拟规划至星港商场的10分钟路线，比较后选定路线并启动导航。",
+    "feeling_description": "选择继续驻车等雨，不启动导航；模拟播放《雨后钢琴》，暖白20%氛围灯。",
+    "place_order": {
+      "id": "P1",
+      "name": "星港商场",
+      "description": "单程10分钟，室内停车"
+    },
+    "music_feeling": "M1",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。小雨，能见度良好、道路可通行，无气象警报；星港商场距当前点10分钟，正常营业。等待也不影响任何任务。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "self_reward",
+    "title": "给自己奖励：预算优先与体验优先",
+    "text": "今天完成了一件挺重要的事，想找个地方犒劳自己。预算一百元，车停着，时间很充裕，你帮我安排。",
+    "category": "出行选择",
+    "dimension": "同一预算内的选择标准与延伸",
+    "observe": "同一预算内的选择标准与延伸",
+    "why_suitable": "所有候选都在预算内，成本最省不等于唯一合理答案，适合观察价值取舍。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 9,
+    "order_atoms": [
+      "ecosystem/服务与地点搜索",
+      "ecosystem/服务详情获取",
+      "ecosystem/候选方案选择",
+      "ecosystem/候选方案比较",
+      "ecosystem/价格与优惠查询",
+      "navigation/地点搜索",
+      "navigation/地点详情查看",
+      "navigation/目的地设置",
+      "navigation/路线规划",
+      "navigation/路线选择",
+      "navigation/导航运行控制"
+    ],
+    "feeling_atoms": [
+      "ecosystem/服务与地点搜索",
+      "ecosystem/服务详情获取",
+      "ecosystem/候选方案选择",
+      "navigation/地点搜索",
+      "navigation/地点详情查看",
+      "navigation/目的地设置",
+      "navigation/路线规划",
+      "navigation/路线选择",
+      "navigation/导航运行控制",
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节"
+    ],
+    "order_goal": "先核对预算和性价比，选择简单明确的一餐，完成即止。",
+    "feeling_goal": "在相同预算约束内，优先有仪式感的环境，并用音乐延续庆祝体验。",
+    "order_description": "选择谷仓食堂的58元烤鸡套餐，核对价格与备选后模拟导航；不增加音乐。",
+    "feeling_description": "选择云台露台的88元轻食甜品套餐，模拟导航并播放《城市慢游》；预算不超100元。",
+    "place_order": {
+      "id": "R1",
+      "name": "谷仓食堂",
+      "description": "58元烤鸡套餐，单程10分钟"
+    },
+    "place_feeling": {
+      "id": "R2",
+      "name": "云台露台",
+      "description": "88元轻食甜品，单程15分钟，露台环境"
+    },
+    "music_feeling": "M3",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。谷仓食堂：58元烤鸡套餐，单程10分钟、等位5分钟；云台露台：88元轻食甜品，单程15分钟、等位10分钟、有露台景观。均有停车位且开放。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  },
+  {
+    "id": "friend_onboard",
+    "title": "朋友上车：清晰行程与欢迎氛围",
+    "text": "朋友第一次坐我的车，我们已经坐好，还停在路边。去河岸咖啡馆，不赶时间，他说现在车里挺舒服，你帮我安排一下。",
+    "category": "座舱体验",
+    "dimension": "共同目的地，比较接待方式",
+    "observe": "共同目的地，比较接待方式",
+    "why_suitable": "固定同一目的地和舒适条件，排除选址差异，观察是否追加欢迎氛围。",
+    "trial_observation": "设计观察目标，尚不是对真实MBTI人群的结论。角色约束会强化本场景取舍。",
+    "priority": 10,
+    "order_atoms": [
+      "navigation/地点搜索",
+      "navigation/地点详情查看",
+      "navigation/目的地设置",
+      "navigation/路线规划",
+      "navigation/路线选择",
+      "navigation/导航运行控制",
+      "navigation/路线比较",
+      "navigation/预计到达时间获取"
+    ],
+    "feeling_atoms": [
+      "navigation/地点搜索",
+      "navigation/地点详情查看",
+      "navigation/目的地设置",
+      "navigation/路线规划",
+      "navigation/路线选择",
+      "navigation/导航运行控制",
+      "entertainment/内容搜索",
+      "entertainment/内容选择",
+      "entertainment/播放控制",
+      "entertainment/音量调节",
+      "ambient_light/氛围灯开关",
+      "ambient_light/颜色设置",
+      "ambient_light/亮度调节"
+    ],
+    "order_goal": "明确同一目的地的路线与用时，减少额外感官介入。",
+    "feeling_goal": "完成同一导航任务后，用轻音乐和柔和灯光表达欢迎，不调整朋友已认可的空调状态。",
+    "order_description": "模拟导航至河岸咖啡馆，比较路线并显示15分钟用时；不播放音乐、不调灯光和空调。",
+    "feeling_description": "模拟导航至同一河岸咖啡馆，播放《城市慢游》并开启暖白20%氛围灯；空调保持不变。",
+    "place_order": {
+      "id": "P1",
+      "name": "河岸咖啡馆",
+      "description": "单程15分钟"
+    },
+    "place_feeling": {
+      "id": "P1",
+      "name": "河岸咖啡馆",
+      "description": "单程15分钟"
+    },
+    "music_feeling": "M3",
+    "world": "共同虚拟设定：车辆已安全驻车；没有紧急任务，不使用真实历史记录。朋友已在车内，没有已知音乐偏好；河岸咖啡馆单程15分钟，目的地已明确，无到达期限。 内容库M1《雨后钢琴》纯音乐12分钟，M2《换个角度看今天》播客15分钟，M3《城市慢游》音乐10分钟。涉及地点、通知和控制全部为演示假设，只模拟，不向真人确认，不进行真实操作。"
+  }
+]

@@ -1,0 +1,57 @@
+auto_generate:
+  display_name: 自动生成
+  definition: 自动完成搜索、分析或方案生成，但不改变车辆或外部状态
+  applies_to:
+    - 搜索
+    - 摘要
+    - 规划
+    - 比较
+    - 草稿
+  example: 自动生成两条候选路线
+
+auto_execute:
+  display_name: 自动执行
+  definition: 无需事前确认，直接改变车辆或服务状态
+  applies_to:
+    - 安全必需动作
+    - 低风险动作
+    - 可撤销动作
+  example: 自动开启前挡除雾
+
+conditional_auto:
+  display_name: 条件自动
+  definition: 满足预设条件后自动执行，否则降级为确认或建议
+  applies_to:
+    - 有明确阈值的动作
+    - 有权限约束的动作
+    - 有历史偏好的动作
+  example: 温度低于阈值时自动开启加热
+
+confirm_execute:
+  display_name: 确认后执行
+  definition: 展示动作和关键参数，用户确认后执行
+  applies_to:
+    - 对外通信
+    - 支付
+    - 订单
+    - 较高影响动作
+  example: 确认后支付停车费
+
+choose_execute:
+  display_name: 选择后执行
+  definition: 提供多个候选项，用户选择后执行
+  applies_to:
+    - 路线
+    - 餐厅
+    - 停车场
+    - 其他主观决策
+  example: 用户选择路线后启动导航
+
+suggest_only:
+  display_name: 仅建议
+  definition: 只提供建议，不调用实际能力
+  applies_to:
+    - 证据不足
+    - 权限缺失
+    - 需求不明确
+  example: 建议开启座椅加热

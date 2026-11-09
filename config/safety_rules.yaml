@@ -1,0 +1,26 @@
+fatigue_driving:
+  trigger_risk_key: fatigue_driving
+  trigger_overall_min: 0.75
+  forbidden_as_primary:
+    - entertainment
+    - ambient_light
+  preferred_capabilities:
+    - navigation
+    - ecosystem
+    - notification_mode
+  ecosystem_types_allowed:
+    - rest_area
+    - safe_parking
+    - roadside_assistance
+  behavior_call_type: safety
+  dialogue_goal: 明确疲劳风险并引导安全停车或休息
+
+high_distraction:
+  trigger_risk_key: distraction
+  trigger_overall_min: 0.75
+  forbidden_as_primary:
+    - entertainment
+  preferred_capabilities:
+    - notification_mode
+    - navigation
+  behavior_call_type: safety

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>流程问题页 · Step {{ step_view.step_no }}</title>
+  {% if step_view.step_no == 8 %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='behavior-swimlane.css') }}" />
+  <script defer src="{{ url_for('static', filename='behavior-swimlane.js') }}"></script>
+  {% endif %}
+  <style>
+    :root {
+      --bg: #0f1318;
+      --panel: #171d26;
+      --panel-2: #111720;
+      --line: #2b3545;
+      --text: #e8edf4;
+      --muted: #97a4b8;
+      --accent: #d4a35c;
+      --accent-2: #6eb5a4;
+      --ok: #7dcf9c;
+      --danger: #e08a7a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #0d1117, #111822 45%, #0d1218);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .wrap { max-width: 1380px; margin: 0 auto; padding: 24px 20px 72px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .title { margin: 0; font-size: 1.8rem; }
+    .response-time {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .76rem;
+      opacity: .78;
+    }
+    .sub { margin: 6px 0 0; color: var(--muted); line-height: 1.6; max-width: 860px; }
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn, .btn-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+      font: inherit;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #231809;
+      border: 0;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+    }
+    .panel {
+      background: rgba(23,29,38,.94);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0 16px;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav-item {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      text-decoration: none;
+      color: var(--text);
+      background: #10161f;
+    }
+    .nav-item.current { border-color: var(--accent); background: rgba(212,163,92,.08); }
+    .nav-item.confirmed { border-color: rgba(125,207,156,.35); }
+    .nav-item.pending { opacity: .5; cursor: not-allowed; }
+    .nav-step { font-size: .82rem; color: var(--muted); }
+    .nav-title { margin-top: 4px; line-height: 1.45; }
+    .section {
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #111821;
+      overflow: hidden;
+    }
+    .section h3 {
+      margin: 0;
+      padding: 12px 14px;
+      font-size: .96rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--accent);
+      background: rgba(212,163,92,.06);
+    }
+    .section .body {
+      padding: 14px;
+      line-height: 1.65;
+    }
+    details.fold {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #10161f;
+      overflow: hidden;
+    }
+    details.fold + details.fold {
+      margin-top: 12px;
+    }
+    details.fold summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      color: var(--text);
+      font-weight: 700;
+      background: rgba(255,255,255,.02);
+      user-select: none;
+    }
+    details.fold summary::-webkit-details-marker {
+      display: none;
+    }
+    details.fold summary::before {
+      content: ">";
+      display: inline-block;
+      margin-right: 8px;
+      color: var(--accent);
+      transition: transform .15s ease;
+    }
+    details.fold[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .fold-body {
+      padding: 0 14px 14px;
+    }
+    .muted { color: var(--muted); }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0d1219;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: #dce5f1;
+      line-height: 1.55;
+      overflow: auto;
+    }
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      resize: none;
+      overflow: hidden;
+      background: #0d1219;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: #dce5f1;
+      font: inherit;
+      line-height: 1.55;
+    }
+    .kv {
+      display: grid;
+      gap: 10px;
+    }
+    .kv-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #10161f;
+    }
+    .kv-item strong { color: var(--accent-2); }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 18px;
+    }
+    .status-ok { color: var(--ok); }
+    .status-warn { color: var(--accent); }
+    .failure-box {
+      margin-bottom: 14px;
+      border: 1px solid rgba(224,138,122,.65);
+      border-radius: 12px;
+      padding: 14px;
+      background: rgba(224,138,122,.09);
+      color: #f1b1a6;
+    }
+    .failure-box strong { display: block; margin-bottom: 4px; color: #ffd0c8; }
+    .plan-state-box { margin-bottom: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: #172330; }
+    .plan-state-box strong { display: block; color: var(--accent); margin-bottom: 6px; }
+    .plan-state-box li { margin-top: 6px; }
+    .story { line-height: 1.95; font-size: 17px; }
+    .story p { margin: 0 0 18px; overflow-wrap: anywhere; }
+    .story-source {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+    .story-source-label {
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .story-source-persona {
+      color: var(--accent-2);
+      font-size: 1.15rem;
+      font-weight: 750;
+    }
+    .story-source-persona[data-persona="ESTJ"] { color: #78b7ff; }
+    .story-source-utterance {
+      margin: 0;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .story-INFP { --persona-color: #64d9ae; }
+    .story-ESTJ { --persona-color: #78b7ff; }
+    .story strong, .story .change-tag { color: var(--persona-color, inherit); font-weight: 700; }
+    .change-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .change-tag { border: 1px solid var(--line); border-radius: 20px; padding: 3px 12px; font-size: 15px; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .story-source { grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1 class="title">Step {{ step_view.step_no }} · {{ step_view.title }}</h1>
+        {% if step_view.response_time_label %}<div class="response-time">响应时间：{{ step_view.response_time_label }}</div>{% endif %}
+        {% if step_view.step.get('attempts', [])|length > 1 %}
+        <details class="fold"><summary>本步尝试 {{ step_view.step.attempts|length }} 次（耗时包含重试）</summary><div class="fold-body">
+          {% for attempt in step_view.step.attempts %}
+          <p>第 {{ attempt.attempt }} 次：{{ attempt.status }} · {{ attempt.elapsed_seconds }} 秒{% if attempt.get('error_info') %} · {{ attempt.error_info.message }}{% endif %}</p>
+          {% endfor %}
+        </div></details>
+        {% endif %}
+        {% if frozen %}<div class="muted" style="margin-top:8px;">固定展示 · {{ case_title }} · {{ persona }}</div>{% endif %}
+        {% if frozen and demo_background %}<div class="muted" style="margin-top:8px;">演示背景：{{ demo_background }}</div>{% endif %}
+      </div>
+      <div class="top-actions">
+        <a class="btn-link btn btn-ghost" href="/">返回主页面</a>
+        <a class="btn-link btn btn-ghost" href="/comparison">对比台</a>
+        <a class="btn-link btn btn-ghost" href="{{ url_for('index') }}">返回启动页</a>
+        <a class="btn-link btn btn-ghost" href="/prompt_versions">提示词版本库</a>
+        {% if step_view.previous_url %}
+        <a class="btn-link btn btn-ghost" href="{{ step_view.previous_url }}">上一页</a>
+        {% endif %}
+        {% if step_view.next_url %}
+        <a class="btn-link btn btn-ghost" href="{{ step_view.next_url }}">下一页</a>
+        {% endif %}
+        {% if not frozen %}<form method="post" action="{{ url_for('rerun_all', session_id=session_id) }}" style="display:inline;">
+          <button class="btn btn-ghost" type="submit" title="重新运行情境理解，并清除尚未确认的行为序列">重新生成情境理解</button>
+        </form>{% endif %}
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="panel">
+        <div class="section">
+          <h3>Step 导航</h3>
+          <div class="body nav-list">
+            {% for item in nav_steps %}
+              {% if item.accessible %}
+              <a class="nav-item {{ item.status }}" href="{{ item.url }}">
+                <div class="nav-step">Step {{ item.step }} · {{ item.status }}</div>
+                <div class="nav-title">{{ item.title }}</div>
+              </a>
+              {% else %}
+              <div class="nav-item pending">
+                <div class="nav-step">Step {{ item.step }} · locked</div>
+                <div class="nav-title">{{ item.title }}</div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="panel">
+          {% if step_view.step_no == 8 %}
+          <div class="section story-source-section">
+            <h3>本次输入</h3>
+            <div class="body story-source">
+              <div>
+                <div class="story-source-label">选择的人格</div>
+                <div class="story-source-persona" data-persona="{{ persona }}">{{ '无 MBTI 基线' if persona == 'NO_MBTI' else persona }}</div>
+              </div>
+              <div>
+                <div class="story-source-label">用户原始情境</div>
+                <p class="story-source-utterance">{{ user_utterance or '未提供' }}</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% if step_view.generation_failed %}
+          <div class="failure-box" role="alert">
+            <strong>{{ step_view.generation_failure_label }}</strong>
+            <div>{{ step_view.generation_error_user_message }}</div>
+            {% if step_view.generation_error.technical_message and step_view.generation_error.technical_message != step_view.generation_error_user_message %}
+            <details class="muted" style="margin-top:8px;">
+              <summary>查看错误详情</summary>
+              <div style="white-space:pre-wrap;margin-top:6px;">{{ step_view.generation_error.technical_message }}</div>
+            </details>
+            {% endif %}
+            {% if step_view.step_no == 8 %}
+            <div class="muted">本次请求未取得故事内容，可点击下方按钮重试。</div>
+            {% else %}
+            <div class="muted">本次没有生成行为序列，也没有使用蓝图结果代替。请重新生成 Step 7。</div>
+            {% endif %}
+            {% if step_view.can_retry_step7 %}
+            <form class="step7-generate" method="post" action="{{ url_for('generate_step7', session_id=session_id) }}" style="margin-top:12px;">
+              <button class="btn btn-primary" type="submit">重新生成</button>
+              <span class="muted" role="status" aria-live="polite"></span>
+            </form>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if step_view.step_no == 7 and step_view.plan_status == 'needs_clarification' %}
+          <div class="plan-state-box" role="status">
+            <strong>待确认信息 · {{ step_view.clarification_questions|length }} 项</strong>
+            <div>以下信息会影响真实执行，但不阻断本次 Demo。你仍可确认当前行为序列并生成场景故事。</div>
+            <ol>{% for question in step_view.clarification_questions %}<li>{{ question }}</li>{% endfor %}</ol>
+          </div>
+          {% elif step_view.step_no == 7 and step_view.plan_status == 'no_tool_needed' %}
+          <div class="plan-state-box" role="status">
+            <strong>无需工具调用</strong>
+            <div>本次情境无需调用车载能力，流程在本步结束。</div>
+          </div>
+          {% endif %}
+          {% if step_view.step_no == 8 %}
+          <div class="section">
+            <h3>Step 7 · 已确认的行为序列</h3>
+            <div class="body">
+              {% include '_behavior_sequence.html' %}
+            </div>
+          </div>
+          <div class="section">
+            <h3>场景故事 · {{ '无 MBTI 基线' if persona == 'NO_MBTI' else persona }}</h3>
+            <div class="body">
+              {% for warning in step_view.step.get('quality_warnings', []) %}
+              <p class="muted">内容待核对：{{ warning }}</p>
+              {% endfor %}
+              {% if step_view.step.get('attempts', [])|length > 1 %}
+              <p class="muted">本步尝试 {{ step_view.step.attempts|length }} 次，响应时间包含重试。</p>
+              {% endif %}
+              {% if step_view.story %}
+              <article class="story story-{{ persona }}">
+                {% for paragraph in step_view.story.paragraphs %}
+                <p>{% for segment in paragraph.segments %}{% if segment.change_id and persona != 'NO_MBTI' %}<strong>{{ segment.text }}</strong>{% else %}{{ segment.text }}{% endif %}{% endfor %}</p>
+                {% endfor %}
+                {% if persona != 'NO_MBTI' and step_view.story.core_changes %}
+                <div class="muted">核心改变点</div>
+                <div class="change-tags">
+                  {% for change in step_view.story.core_changes %}<span class="change-tag">{{ change.label }}</span>{% endfor %}
+                </div>
+                {% endif %}
+              </article>
+              {% elif not step_view.generation_failed %}
+              <p class="muted">Step 7 已确认。点击下方“生成场景故事”，根据本次行为序列编写故事和核心改变点。</p>
+              {% endif %}
+            </div>
+          </div>
+          {% include '_behavior_swimlane.html' %}
+          {% endif %}
+          {% if step_view.step_no == 2 and step_view.interaction_activations is not none %}
+          <div class="section">
+            <h3>本轮情境激活 · {{ step_view.interaction_activations|length }} 项</h3>
+            <div class="body">
+              {% for item in step_view.interaction_activations %}
+              <div class="kv-item" style="margin-bottom:12px;">
+                <strong>{{ item.dimension }}</strong>
+                <div>依据：{{ item.evidence }}</div>
+                <div>本轮要求：{{ item.context_requirement }}</div>
+              </div>
+              {% else %}
+              <p class="muted">本轮没有需要额外启用的情境维度。</p>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if step_view.step_no == 6 and step_view.interaction_policy %}
+          <div class="section">
+            <h3>本轮交互要求 · {{ step_view.interaction_policy.constraints|length }} 项</h3>
+            <div class="body">
+              <p>固定 {{ step_view.interaction_policy.fixed_dimensions|length }} 项，情境激活 {{ step_view.interaction_policy.activated_dimensions|length }} 项。</p>
+              {% for item in step_view.interaction_policy.constraints %}
+              <div class="kv-item" style="margin-bottom:14px;">
+                <strong>{{ item.dimension }} · {{ '固定' if item.source == 'persona_default' else '情境激活' }}</strong>
+                {% if item.description %}<div>{{ item.description }}</div>{% endif %}
+                {% if item.context_requirement %}<div>本轮要求：{{ item.context_requirement }}</div>{% endif %}
+                {% if item.source == 'scenario' %}<div class="muted">依据：{{ item.evidence }}</div>{% endif %}
+              </div>
+              {% endfor %}
+              <details class="fold">
+                <summary>查看交给行为生成的完整要求</summary>
+                <div class="fold-body"><pre>{{ step_view.interaction_policy.compiled_prompt }}</pre></div>
+              </details>
+            </div>
+          </div>
+          {% endif %}
+          {% if step_view.prompt_info %}
+          <div class="section">
+            <h3>{{ step_view.prompt_info.label }}</h3>
+            <div class="body">
+              <details class="fold">
+                <summary>完整 system prompt</summary>
+                <div class="fold-body">
+                  <pre>{{ step_view.prompt_info.system_prompt }}</pre>
+                </div>
+              </details>
+              <details class="fold">
+                <summary>完整 user prompt</summary>
+                <div class="fold-body">
+                  <pre>{{ step_view.prompt_info.user_prompt }}</pre>
+                </div>
+              </details>
+
+              <details class="fold">
+                <summary>LLM 原始返回</summary>
+                <div class="fold-body">
+                  <pre>{{ step_view.raw_llm_pretty }}</pre>
+                </div>
+              </details>
+
+              {% if step_view.can_edit_prompt %}
+              <div class="kv" style="margin-top: 16px;">
+                <div class="kv-item">
+                  <strong>临时修改 prompt</strong>
+                  <div class="muted" style="margin-top: 6px;">
+                    {% if step_view.can_generate_step7 %}
+                    可以在生成行为序列前调整本次 Step 7 的提示词。
+                    {% else %}
+                    这里只影响当前审阅 session。提交后会从当前 step 开始重算，并清空这个 step 以及之后步骤的确认状态。
+                    {% endif %}
+                  </div>
+                </div>
+                <form method="post" action="{{ url_for('rerun_step_with_prompt', session_id=session_id, step_no=step_view.step_no) }}">
+                  <div class="kv-item">
+                    {% if step_view.step_no == 7 %}<details class="fold prompt-editor"><summary>system prompt</summary><div class="fold-body">{% endif %}
+                    {% if step_view.step_no != 7 %}
+                    <strong>system prompt</strong>
+                    {% endif %}
+                    <div style="margin-top: 10px;">
+                        <textarea class="auto-resize" name="system_prompt">{{ step_view.prompt_info.system_prompt }}</textarea>
+                    </div>
+                    {% if step_view.step_no == 7 %}</div></details>{% endif %}
+                  </div>
+                  <div class="kv-item" style="margin-top: 10px;">
+                    {% if step_view.step_no == 7 %}<details class="fold prompt-editor"><summary>user prompt</summary><div class="fold-body">{% endif %}
+                    {% if step_view.step_no != 7 %}
+                    <strong>user prompt</strong>
+                    {% endif %}
+                    <div style="margin-top: 10px;">
+                        <textarea class="auto-resize" name="user_prompt">{{ step_view.prompt_info.user_prompt }}</textarea>
+                    </div>
+                    {% if step_view.step_no == 7 %}</div></details>{% endif %}
+                  </div>
+                  <div class="actions">
+                    <button class="btn btn-primary" type="submit" name="action" value="apply">
+                      {% if step_view.can_generate_step7 %}使用修改后的 prompt 生成 Step 7{% else %}更新当前 step 并重算{% endif %}
+                    </button>
+                    <button class="btn btn-ghost" type="submit" name="action" value="reset">
+                      {% if step_view.can_generate_step7 %}使用默认 prompt 生成 Step 7{% else %}恢复默认 prompt 并重算{% endif %}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="section">
+            <h3>结构化输入</h3>
+            <div class="body">
+              <details class="fold">
+                <summary>展开查看结构化输入</summary>
+                <div class="fold-body">
+                  <pre>{{ step_view.input_pretty }}</pre>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>结构化输出</h3>
+            <div class="body">
+              <details class="fold">
+                <summary>展开查看结构化输出</summary>
+                <div class="fold-body">
+                  <pre>{{ step_view.output_pretty }}</pre>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          {% if step_view.step_no == 7 and not step_view.can_generate_step7 and step_view.plan_status != 'no_tool_needed' %}
+          <div class="section">
+            <h3>最终结果快照</h3>
+            <div class="body">
+              {% if step_view.generation_failed %}
+              <div class="failure-box" style="margin-bottom:0;">
+                <strong>{{ step_view.generation_failure_label }}</strong>
+                <div>没有可展示的有效行为序列。</div>
+              </div>
+              {% else %}
+              <div class="kv">
+                <div class="kv-item">
+                  <strong>功能优先级序列（含负担）</strong>
+                  <div>
+                    {% include '_behavior_sequence.html' %}
+                  </div>
+                </div>
+                <div class="kv-item">
+                  <strong>scene_plan</strong>
+                  <div style="white-space: pre-wrap;">{{ final_snapshot.scene_plan or "—" }}</div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="actions">
+            {% if step_view.can_generate_story %}
+            <form class="story-generate" method="post" action="{{ url_for('generate_step8', session_id=session_id) }}">
+              <button class="btn btn-primary" type="submit">{{ '重新生成场景故事' if step_view.generation_failed else '生成场景故事' }}</button>
+              <span class="muted" role="status" aria-live="polite"></span>
+            </form>
+            {% elif step_view.can_generate_step7 %}
+            <form class="step7-generate" method="post" action="{{ url_for('generate_step7', session_id=session_id) }}">
+              <button class="btn btn-primary" type="submit">生成 Step 7 行为序列</button>
+              <span class="muted" role="status" aria-live="polite"></span>
+            </form>
+            <span class="muted">点击后才会调用行为序列模型。</span>
+            {% elif step_view.can_confirm %}
+            <form method="post" action="{{ url_for('confirm_step', session_id=session_id, step_no=step_view.step_no) }}">
+              <button class="btn btn-primary" type="submit">
+                {% if step_view.step_no == 7 %}确认行为序列，进入 Step 8{% elif step_view.step_no < 8 %}确认本步，进入下一步{% else %}确认本步，完成审阅{% endif %}
+              </button>
+            </form>
+            {% elif step_view.step_no == 7 and step_view.plan_status == 'no_tool_needed' %}
+            <span class="muted">本次流程已结束，无需生成场景故事。</span>
+            {% elif step_view.is_confirmed %}
+            <span class="status-ok">本步已确认。</span>
+            {% else %}
+            <span class="status-warn">当前还不能确认本步。</span>
+            {% endif %}
+
+            {% if step_view.next_url %}
+            <a class="btn-link btn btn-ghost" href="{{ step_view.next_url }}">直接进入下一页</a>
+            {% endif %}
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('form.story-generate, form.step7-generate').forEach(function (form) {
+      form.addEventListener('submit', function () {
+        form.querySelector('button').disabled = true;
+        form.querySelector('[role="status"]').textContent = form.classList.contains('step7-generate')
+          ? '正在生成行为序列，请稍候…' : '正在编写场景故事，请稍候…';
+      });
+    });
+    function autoResizeTextarea(el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+
+    document.querySelectorAll("textarea.auto-resize").forEach(function (el) {
+      autoResizeTextarea(el);
+      el.addEventListener("input", function () {
+        autoResizeTextarea(el);
+      });
+    });
+    document.querySelectorAll("details.prompt-editor").forEach(function (details) {
+      details.addEventListener("toggle", function () {
+        if (details.open) {
+          details.querySelectorAll("textarea.auto-resize").forEach(autoResizeTextarea);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ParsedContext",
+  "type": "object",
+  "required": ["explicit_request", "emotion", "needs", "risk", "confidence", "evidence"],
+  "properties": {
+    "explicit_request": {
+      "type": "object",
+      "required": ["exists"],
+      "properties": {
+        "exists": {"type": "boolean"},
+        "capability": {"type": ["string", "null"]},
+        "parameters": {"type": "object"}
+      }
+    },
+    "emotion": {
+      "type": "object",
+      "required": ["label", "intensity"],
+      "properties": {
+        "label": {"type": "string"},
+        "intensity": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "needs": {"type": "object", "additionalProperties": {"type": "number"}},
+    "risk": {
+      "type": "object",
+      "required": ["overall"],
+      "properties": {
+        "fatigue_driving": {"type": "number"},
+        "distraction": {"type": "number"},
+        "overall": {"type": "number"}
+      }
+    },
+    "confidence": {"type": "number"},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "fact"],
+        "properties": {
+          "source": {"type": "string"},
+          "fact": {"type": "string"}
+        }
+      }
+    }
+  }
+}

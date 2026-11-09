@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>人格行为映射</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #10141a;
+      --panel: #171d26;
+      --panel-2: #1e2632;
+      --line: #2b3545;
+      --text: #e8edf4;
+      --muted: #93a0b4;
+      --accent: #d4a35c;
+      --accent-2: #6eb5a4;
+      --danger: #e08a7a;
+      --ok: #7dcf9c;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(212,163,92,.18), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(110,181,164,.12), transparent 50%),
+        linear-gradient(180deg, #0c1016, #121821 40%, #0e1319);
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1760px; margin: 0 auto; padding: 28px 28px 80px; }
+    header { margin-bottom: 22px; }
+    .brand { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: .02em; }
+    .brand span { color: var(--accent); font-style: italic; }
+    .sub { color: var(--muted); max-width: 980px; line-height: 1.55; margin-top: 8px; }
+    .panel {
+      background: rgba(23,29,38,.92); border: 1px solid var(--line);
+      border-radius: 24px; padding: 24px 26px; box-shadow: var(--shadow);
+    }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    label { display: block; font-size: .82rem; color: var(--muted); margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; background: #0f141c; border: 1px solid var(--line); color: var(--text);
+      border-radius: 10px; padding: 10px 12px; font: inherit;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    .full { grid-column: 1 / -1; }
+    .hint {
+      margin-top: 14px; padding: 12px 14px; border-radius: 14px;
+      background: #121820; border: 1px solid var(--line); color: var(--muted); line-height: 1.55; font-size: .9rem;
+    }
+    .hint strong { color: var(--accent); font-weight: 600; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag {
+      font-size: .78rem; padding: 5px 10px; border-radius: 999px;
+      border: 1px solid rgba(212,163,92,.35); color: #e6d3b0; cursor: pointer;
+      background: transparent;
+    }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+    .tag.active { background: rgba(212,163,92,.15); border-color: var(--accent); color: var(--accent); }
+    .row-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    button.primary, button.ghost {
+      border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer;
+    }
+    button.primary { background: var(--accent); color: #1a1408; }
+    button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+    button.fixed-case.active { color: var(--accent); border-color: var(--accent); background: rgba(212,163,92,.1); }
+    button:disabled { opacity: .55; cursor: wait; }
+    .status { color: var(--muted); font-size: .9rem; margin-top: 10px; }
+    .status.err { color: var(--danger); }
+    .status.ok { color: var(--ok); }
+    .failure-note {
+      padding: 10px 12px;
+      border: 1px solid rgba(224,138,122,.55);
+      border-radius: 10px;
+      background: rgba(224,138,122,.09);
+      color: #f1b1a6;
+      line-height: 1.5;
+    }
+    .block { margin-bottom: 14px; padding: 14px 16px; border-radius: 14px; background: #121820; border: 1px solid var(--line); }
+    .block h4 { margin: 0 0 8px; color: var(--accent); font-size: .92rem; letter-spacing: .04em; text-transform: uppercase; }
+    .block p, .block pre { margin: 0; white-space: pre-wrap; line-height: 1.55; color: var(--text); }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .chip {
+      font-size: .75rem; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted);
+    }
+    .result-stack { display: grid; gap: 24px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .mini-card {
+      background: rgba(23,29,38,.92); border: 1px solid var(--line);
+      border-radius: 18px; padding: 16px; box-shadow: var(--shadow);
+    }
+    .mini-card.is-baseline { border-color: rgba(110,181,164,.35); }
+    .mini-card h3 { margin: 0 0 10px; font-size: 1rem; color: var(--text); }
+    .mini-card p { margin: 0; line-height: 1.55; color: var(--muted); }
+    .metric-list { display: grid; gap: 8px; margin-top: 12px; }
+    .metric {
+      padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #111720;
+    }
+    .metric strong { display: block; margin-bottom: 4px; color: var(--accent); font-size: .78rem; letter-spacing: .03em; text-transform: uppercase; }
+    .metric span { color: var(--text); line-height: 1.5; }
+    .compare-table-wrap {
+      overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: #111720;
+    }
+    table.compare-table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    .compare-table th, .compare-table td {
+      vertical-align: top; padding: 14px 18px; border-bottom: 1px solid var(--line); text-align: left;
+    }
+    .compare-table th {
+      position: sticky; top: 0; background: #141b25; color: var(--accent); font-size: .84rem; letter-spacing: .03em; text-transform: uppercase;
+    }
+    .compare-table tr.diff-row td:first-child { color: var(--accent-2); font-weight: 700; }
+    .compare-table td:first-child { width: 170px; color: var(--muted); }
+    .cell-stack { display: grid; gap: 8px; }
+    .decision-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 999px;
+      border: 1px solid var(--line); font-size: .74rem; width: fit-content;
+    }
+    .decision-badge.called { color: var(--ok); border-color: rgba(125,207,156,.35); background: rgba(125,207,156,.08); }
+    .decision-badge.idle { color: var(--muted); }
+    .decision-meta { color: var(--text); font-size: .86rem; line-height: 1.55; }
+    .decision-reason { color: var(--muted); font-size: .82rem; line-height: 1.55; }
+    .compare-summary { display: grid; gap: 10px; }
+    .summary-item {
+      padding: 12px 14px; border-radius: 14px; background: #121820; border: 1px solid var(--line);
+      line-height: 1.6; color: var(--text);
+    }
+    .summary-item strong { color: var(--accent); }
+    .audit-variant-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    details.step {
+      margin: 8px 0; border: 1px solid var(--line); border-radius: 12px; background: #10161f; padding: 0 12px;
+    }
+    details.step summary {
+      cursor: pointer; color: var(--muted); padding: 12px 4px; font-weight: 600; list-style: none;
+    }
+    details.step summary::-webkit-details-marker { display: none; }
+    details.step[open] summary { color: var(--accent-2); }
+    .step-body { padding: 0 4px 14px; color: var(--text); font-size: .9rem; }
+    .narr {
+      background: #0c1118; border: 1px solid var(--line); border-radius: 10px;
+      padding: 12px; white-space: pre-wrap; line-height: 1.6; margin: 0;
+    }
+    .kv { display: grid; gap: 8px; }
+    .kv div { padding: 10px 12px; border-radius: 10px; background: #0f141c; border: 1px solid var(--line); line-height: 1.5; }
+    .plan-list { margin: 0; padding-left: 18px; line-height: 1.6; }
+    mark.hl-estj {
+      background: rgba(125,179,232,.28); color: #cfe4f8; padding: 0 4px; border-radius: 4px;
+    }
+    mark.hl-infp {
+      background: rgba(111,207,151,.22); color: #c8efd6; padding: 0 4px; border-radius: 4px;
+    }
+    @media (max-width: 1100px) {
+      .wrap { padding: 20px 16px 60px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .compare-grid, .audit-variant-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+        <div>
+          <div class="brand">人格行为映射</div>
+          <a href="/fast" style="font-size:13px;color:var(--accent)">打开简洁版 ↗</a>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+          <a href="/" style="white-space:nowrap; text-decoration:none; border:1px solid var(--accent); color:var(--accent); padding:8px 14px; border-radius:999px; font-size:.85rem; flex:none;">人格导游 ↗</a>
+          <a href="/prompt_versions" style="white-space:nowrap; text-decoration:none; border:1px solid var(--line); color:var(--text); padding:8px 14px; border-radius:999px; font-size:.85rem; flex:none;">提示词版本库</a>
+          <a href="/flow_review" style="white-space:nowrap; text-decoration:none; border:1px solid var(--accent); color:var(--accent); padding:8px 14px; border-radius:999px; font-size:.85rem; flex:none;">固定案例展示 / 分步流程 ↗</a>
+        </div>
+      </div>
+    </header>
+
+    {% if fixed_comparisons %}
+    <section class="panel" style="margin-bottom:18px;">
+      <h3 style="margin-top:0;">固定测试场景</h3>
+      <p class="sub">已保存的 INFP、ESTJ 与无 MBTI 基线结果，点击直接查看，无需重新生成。</p>
+      <div class="row-actions">
+        {% for item in fixed_comparisons %}
+        <button type="button" class="ghost fixed-case" data-case-id="{{ item.case_id }}">{{ item.title }}</button>
+        {% endfor %}
+      </div>
+      <div id="fixedStatus" class="status" role="status"></div>
+    </section>
+    {% endif %}
+    <section class="panel">
+      <form id="runForm">
+        <div class="form-grid">
+          <div>
+            <label>模型后端</label>
+            <select name="llm_backend">
+              <option value="rules" {% if default_backend == 'rules' %}selected{% endif %}>纯规则（不调模型）</option>
+              <option value="carsona" {% if default_backend == 'carsona' %}selected{% endif %}>carsona_simpo_4（本地 7106）</option>
+              <option value="openai" {% if default_backend == 'openai' %}selected{% endif %}>gpt-5.6-terra</option>
+            </select>
+          </div>
+          <div>
+            <label>默认展示模式</label>
+            <input value="INFP + ESTJ + 无 MBTI 基线（固定）" disabled />
+          </div>
+          <div class="full">
+            <label>参考预设 Case（可选，仅预填情境文案）</label>
+            <select name="preset_case_id" id="presetSelect">
+              <option value="">不载入</option>
+            </select>
+          </div>
+          <div class="full">
+            <label>自然语言情境</label>
+            <textarea name="user_utterance" placeholder="可输入一句话或完整场景，例如：晚上，我刚上车，准备去学校接女儿，然后一起回家"></textarea>
+          </div>
+        </div>
+
+        <div class="hint">
+          <strong>可用情境</strong>
+          <div class="tags" id="scenarioTags"></div>
+        </div>
+
+        <div class="row-actions">
+          <button class="primary" type="submit" id="runBtn">运行三组对比</button>
+          <button class="ghost" type="button" id="fillExample">填入示例情境</button>
+        </div>
+        <div class="status" id="runStatus"></div>
+      </form>
+    </section>
+
+    <section id="resultMount" style="margin-top:18px;"></section>
+  </div>
+
+  <script id="presets-data" type="application/json">{{ presets|tojson }}</script>
+  <script id="scenarios-data" type="application/json">{{ scenario_catalog|tojson }}</script>
+  <script>
+    const PRESETS = JSON.parse(document.getElementById('presets-data').textContent || '[]');
+    const SCENARIOS = JSON.parse(document.getElementById('scenarios-data').textContent || '[]');
+    const SCENARIO_PROMPTS = {
+      welcome_on_board: '今天早上要去康源大厦见一位重要客户，我第一次去，十点前得赶到。外面挺冷，车里也有点凉，前挡看着有些发白。出门太急没吃早饭，路上最好能顺便买点，但别耽误太久。我现在有点着急。',
+      emotional_support: '今天晚上刚从医院出来，陪妈妈做了检查，结果还得等两天。她反过来安慰我，我也没敢让她看出我担心。现在车里就我一个人，要回锦悦小区，明天还得上班。家人在手机上问情况，我不知道怎么回。外面下着小雨，出口还排着队。我想早点回去，又不太想面对空荡荡的家，心里堵得慌。',
+    };
+    const form = document.getElementById('runForm');
+    const statusEl = document.getElementById('runStatus');
+    const mount = document.getElementById('resultMount');
+    const presetSelect = document.getElementById('presetSelect');
+
+    SCENARIOS.forEach(s => {
+      const t = document.createElement('button');
+      t.type = 'button';
+      t.className = 'tag';
+      t.textContent = s.label || s.id;
+      t.dataset.id = s.id;
+      t.title = '点击填入情境';
+      t.onclick = () => {
+        document.querySelectorAll('#scenarioTags .tag').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        const prompt = SCENARIO_PROMPTS[s.id] || `请按「${s.label || s.id}」情境处理我当前的出行需求。`;
+        form.user_utterance.value = prompt;
+        form.user_utterance.focus();
+      };
+      document.getElementById('scenarioTags').appendChild(t);
+    });
+
+    PRESETS.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.case_id;
+      opt.textContent = `${p.case_id} · ${p.title}`;
+      opt.dataset.utt = p.utterance || '';
+      presetSelect.appendChild(opt);
+    });
+
+    presetSelect.addEventListener('change', () => {
+      const opt = presetSelect.selectedOptions[0];
+      if (opt && opt.dataset.utt !== undefined) {
+        form.user_utterance.value = opt.dataset.utt || form.user_utterance.value;
+      }
+    });
+
+    document.getElementById('fillExample').onclick = () => {
+      form.user_utterance.value = '晚上，我刚上车，准备去学校接女儿，然后一起回家。今天有点累，先别催我。';
+    };
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function parseBehavior(desc) {
+      const text = String(desc || '');
+      const called = text.startsWith('【调用】');
+      const intensity = (text.match(/调用程度：([^（；]+)/) || [])[1] || '无';
+      const mode = (text.match(/（([^）]+)）/) || [])[1] || '';
+      const reason = (text.match(/原因：([^；]+)/) || [])[1] || text;
+      return { called, intensity: intensity.trim(), mode: mode.trim(), reason: reason.trim() };
+    }
+
+    function shortText(s, max = 44) {
+      const text = String(s || '').trim();
+      return text.length > max ? `${text.slice(0, max)}...` : (text || '—');
+    }
+
+    function renderActions(actions) {
+      const list = actions || [];
+      if (!list.length) return '<span>无工具调用</span>';
+      return list
+        .map(
+          (a, i) =>
+            `<div style="white-space:pre-wrap; word-break:break-word; padding:2px 0; line-height:1.5;">${i + 1}. ${esc(a)}</div>`
+        )
+        .join('');
+    }
+
+    function sameValue(values) {
+      const norm = values.map(v => JSON.stringify(v ?? null));
+      return new Set(norm).size <= 1;
+    }
+
+    function failureLabel(data) {
+      if (data?.generation_status !== 'failed') return '';
+      return data?.generation_error?.category === 'timeout' ? '生成失败/超时' : '生成失败';
+    }
+
+    function nonReadyLabel(data) {
+      if (data?.generation_status === 'needs_clarification') return `待补充信息（${(data.clarification_questions || []).length} 项）`;
+      if (data?.generation_status === 'no_tool_needed') return '无需工具调用';
+      return failureLabel(data);
+    }
+
+    function renderPlanStatus(data) {
+      const failed = failureLabel(data);
+      if (failed) return `<div class="failure-note"><strong>${esc(failed)}</strong><br>${esc(data.generation_error?.message || '行为序列模型未返回有效结果。')}<br>本次没有生成行为序列。</div>`;
+      if (data?.generation_status === 'needs_clarification') return `<div class="status"><strong>${esc(nonReadyLabel(data))}</strong><ol>${(data.clarification_questions || []).map(q => `<li>${esc(q)}</li>`).join('')}</ol>补充信息后再生成行为序列。</div>`;
+      if (data?.generation_status === 'no_tool_needed') return '<div class="status">本次情境无需调用车载能力，流程在此结束。</div>';
+      return '';
+    }
+
+    function comparisonRunStatus(variants) {
+      const count = {ready: 0, needs_clarification: 0, no_tool_needed: 0, failed: 0};
+      let questionCount = 0;
+      for (const item of variants) {
+        const data = item.result || {};
+        const status = data.generation_status || 'ok';
+        if (status === 'ok' || status === 'ready') count.ready += 1;
+        else if (status in count) count[status] += 1;
+        if (status === 'needs_clarification') questionCount += (data.clarification_questions || []).length;
+      }
+      const storyFailed = variants.filter(v => v.result?.story_step?.status === 'failed').length;
+      const storyReady = variants.filter(v => v.result?.story_step?.status === 'ok').length;
+      const parts = [];
+      if (storyReady) parts.push(`故事就绪 ${storyReady} 组`);
+      if (storyFailed) parts.push(`故事失败 ${storyFailed} 组`);
+      if (count.ready) parts.push(`行为序列就绪 ${count.ready} 组`);
+      if (count.needs_clarification) parts.push(`待补充信息 ${count.needs_clarification} 组（${questionCount} 项）`);
+      if (count.no_tool_needed) parts.push(`无需工具 ${count.no_tool_needed} 组`);
+      if (count.failed) parts.push(`生成失败 ${count.failed} 组`);
+      return {
+        className: (count.failed || storyFailed) ? 'status err' : count.ready === variants.length ? 'status ok' : 'status',
+        text: `运行完成 · ${parts.join(' · ')}`,
+      };
+    }
+
+    function renderOverviewCards(variants) {
+      return `
+        <div class="compare-grid">
+          ${variants.map(item => {
+            const data = item.result || {};
+            const actions = data.O_Action_Plan || [];
+            const caps = data.capabilities || [];
+            const state = nonReadyLabel(data);
+            return `
+              <div class="mini-card ${item.persona === 'NO_MBTI' ? 'is-baseline' : ''}">
+                <div class="meta-row">
+                  <span class="chip">模式 ${esc(item.label || item.persona || '')}</span>
+                  <span class="chip">${state ? esc(state) : `调用类型 ${esc(data.call_type || '')}`}</span>
+                </div>
+                <h3>${esc(item.label || item.persona || '')}</h3>
+                ${state
+                  ? renderPlanStatus(data)
+                  : `<p>${esc(shortText(data.scene_plan || '', 72))}</p>`}
+                <div class="metric-list">
+                  <div class="metric"><strong>调用能力</strong><span>${state ? esc(state) : esc(caps.join(' / ') || '无工具调用')}</span></div>
+                  <div class="metric"><strong>功能优先级</strong>${state ? `<span>${esc(state)}</span>` : renderActions(actions)}</div>
+                  <div class="metric"><strong>场景</strong><span>${esc(data.scenario_id || '—')}</span></div>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>`;
+    }
+
+    function renderSummary(variants) {
+      const callTypes = variants.map(v => nonReadyLabel(v.result) || v.result?.call_type || '—');
+      const caps = variants.map(v => nonReadyLabel(v.result) || (v.result?.capabilities || []).join(' / ') || '无工具调用');
+      const planBlocks = variants
+        .map(v => {
+          const actions = v.result?.O_Action_Plan || [];
+          const failed = failureLabel(v.result);
+          const state = nonReadyLabel(v.result);
+          const body = state
+            ? `<span style="padding-left:22px;${failed ? 'color:var(--danger);' : ''}">${esc(state)}</span>`
+            : actions.length
+            ? actions.map((a, i) => `<div style="white-space:pre-wrap; word-break:break-word; padding-left:22px;">${i + 1}. ${esc(a)}</div>`).join('')
+            : '<span style="padding-left:22px;">无工具调用</span>';
+          return `<div style="padding:3px 0;"><strong style="color:var(--accent-2);">${esc(v.label)}</strong>${body}</div>`;
+        })
+        .join('');
+      const lines = [];
+      lines.push(`<div class="summary-item"><strong>调用类型对比：</strong>${variants.map((v, i) => `${esc(v.label)}=${esc(callTypes[i])}`).join('；')}</div>`);
+      lines.push(`<div class="summary-item"><strong>调用能力对比：</strong>${variants.map((v, i) => `${esc(v.label)}=${esc(shortText(caps[i], 80))}`).join('；')}</div>`);
+      lines.push(`<div class="summary-item"><strong>功能优先级对比：</strong><div style="margin-top:4px;">${planBlocks}</div></div>`);
+      return `<div class="compare-summary">${lines.join('')}</div>`;
+    }
+
+    function renderBehaviorMatrix(variants) {
+      const keys = [...new Set(variants.flatMap(v => Object.keys(v.result?.O_Behavior || {})))];
+      if (!keys.length && variants.some(v => ['needs_clarification', 'no_tool_needed'].includes(v.result?.generation_status))) {
+        return `<div class="status">${variants.map(v => `${esc(v.label || v.persona)}：${esc(nonReadyLabel(v.result) || '行为序列就绪')}`).join('；')}。当前没有可比较的能力调用结果。</div>`;
+      }
+      if (!keys.length && variants.some(v => failureLabel(v.result))) {
+        return '<div class="failure-note">存在生成失败的对比组，没有可用于比较的有效能力调用结果。</div>';
+      }
+      const rows = keys.map(key => {
+        const parsed = variants.map(v => parseBehavior(v.result?.O_Behavior?.[key]));
+        const isDiff = !sameValue(parsed.map(x => `${x.called}|${x.intensity}|${x.mode}|${x.reason}`));
+        return `
+          <tr class="${isDiff ? 'diff-row' : ''}">
+            <td>${esc(key)}</td>
+            ${parsed.map((cell, index) => nonReadyLabel(variants[index].result) ? `<td><span class="decision-meta">${esc(nonReadyLabel(variants[index].result))}</span></td>` : `
+              <td>
+                <div class="cell-stack">
+                  <span class="decision-badge ${cell.called ? 'called' : 'idle'}">${cell.called ? '调用' : '不调用'}</span>
+                  <div class="decision-meta">${esc(cell.intensity)}${cell.mode ? ` / ${esc(cell.mode)}` : ''}</div>
+                  <div class="decision-reason" title="${esc(cell.reason)}">${esc(shortText(cell.reason, 64))}</div>
+                </div>
+              </td>`).join('')}
+          </tr>`;
+      }).join('');
+      return `
+        <div class="compare-table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>能力</th>
+                ${variants.map(v => `<th>${esc(v.label || v.persona || '')}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function renderInteraction(item) {
+      const policy = (item.result?.audit_steps || []).find(s => s.step === 6)?.output?.interaction_policy;
+      if (!policy) return '<p>暂无交互要求</p>';
+      return `<p>固定 ${esc((policy.fixed_dimensions || []).length)} 项 · 情境激活 ${esc((policy.activated_dimensions || []).length)} 项</p>` +
+        (policy.constraints || []).map(c => `<div class="block"><strong>${esc(c.dimension)} · ${c.source === 'persona_default' ? '固定' : '情境激活'}</strong><p>${esc(c.description || '')}</p>${c.context_requirement ? `<p>本轮要求：${esc(c.context_requirement)}</p>` : ''}${c.source === 'scenario' && c.evidence ? `<p>依据：${esc(c.evidence)}</p>` : ''}</div>`).join('') +
+        `<details class="step"><summary>交给行为生成的完整要求</summary><p class="narr">${esc(policy.compiled_prompt || '')}</p></details>`;
+    }
+
+    function renderSequence(item) {
+      const step = (item.result?.audit_steps || []).find(s => s.step === 7);
+      const actions = step?.output?.validated_actions || [];
+      if (!actions.length) return renderPlanStatus(item.result) || '<p>暂无行为序列</p>';
+      return actions.map((a, i) => `<div class="block"><strong>${i + 1}. ${esc(a.name)}</strong><p>${esc(a.details || '')}</p><p>执行方式：${esc(({auto_execute:'自动执行', conditional_auto:'满足条件后执行', confirm_execute:'确认后执行', choose_execute:'用户选择后执行', suggest_only:'仅建议'}[a.execution_mode]) || a.execution_mode || '')}</p><p>前置条件：${esc(typeof a.preconditions === 'string' ? a.preconditions : JSON.stringify(a.preconditions || []))}</p><p>人格影响：${esc(typeof a.persona_influence === 'string' ? a.persona_influence : JSON.stringify(a.persona_influence || ''))}</p></div>`).join('');
+    }
+
+    function renderStory(item) {
+      const record = item.result?.story_step || {};
+      if (record.status !== 'ok') return `<div class="${record.status === 'failed' ? 'failure-note' : 'status'}">${esc(record.error_info?.message || '等待生成场景故事')}</div>`;
+      const story = item.result?.story_display || {};
+      return (record.attempts?.length > 1 ? `<p>本次共尝试 ${record.attempts.length} 次，首次失败已保留。</p>` : '') + (record.quality_warnings || []).map(w => `<p class="failure-note">内容待核对：${esc(w)}</p>`).join('') + (story.paragraphs || []).map(p => `<p class="narr">${(p.segments || []).map(s => esc(s.text)).join('')}</p>`).join('') +
+        (story.core_changes || []).map(c => `<div class="block"><strong>${esc(c.label)}</strong><p>${esc(c.explanation || c.description || c.highlight_text || '')}</p></div>`).join('');
+    }
+
+    function renderComparisonSection(variants, renderer) {
+      return `<div class="compare-grid">${variants.map(item => `<div class="mini-card"><h3>${esc(item.label || item.persona)}</h3>${renderer(item)}</div>`).join('')}</div>`;
+    }
+
+    function renderVariantAuditCard(item) {
+      const data = item.result || {};
+      const steps = [...(data.audit_steps || [])];
+      if (data.story_step?.step === 8) steps.push(data.story_step);
+      let auditHtml = steps.map(st => `
+        <details class="step">
+          <summary>步骤 ${esc(st.step)} · ${esc(st.title)}
+            <span class="chip">${esc(st.model_version || '')}</span>
+            <span class="chip">${esc(st.status || 'ok')}</span>
+            ${st.elapsed_seconds != null ? `<span class="chip">${esc(st.elapsed_seconds)} 秒</span>` : ''}
+          </summary>
+          <div class="step-body">
+            ${st.attempts?.length > 1 ? `<p>尝试 ${st.attempts.length} 次；失败 ${st.attempts.filter(a => a.status === 'failed').length} 次（耗时含重试）。</p>` : ''}
+            ${st.error_info?.message ? `<div class="failure-note">${esc(st.error_info.message)}</div>` : ''}
+            <p style="color:var(--muted);margin:0 0 8px;">规则命中：${esc((st.rules_hit||[]).slice(0,8).join('；') || '—')}</p>
+            <div class="block"><h4>本步输入</h4><p class="narr">${esc(st.input_text || JSON.stringify(st.input || {}, null, 2))}</p></div>
+            <div class="block"><h4>本步结果</h4><p class="narr">${esc(st.output_text || JSON.stringify(st.output || {}, null, 2))}</p></div>
+          </div>
+        </details>`).join('');
+      return `
+        <div class="mini-card ${item.persona === 'NO_MBTI' ? 'is-baseline' : ''}">
+          <div class="meta-row">
+            <span class="chip">${esc(item.label || item.persona || '')}</span>
+            <span class="chip">${esc(nonReadyLabel(data) || data.call_type || '')}</span>
+          </div>
+          <h3>${esc(item.label || item.persona || '')} · 八步流程</h3>
+          ${renderPlanStatus(data)}
+          ${auditHtml || '<p>无审计数据</p>'}
+        </div>`;
+    }
+
+    function renderResult(payload) {
+      const variants = payload?.variants || [];
+      if (!variants.length) {
+        mount.innerHTML = '';
+        return;
+      }
+      mount.innerHTML = `
+        <div class="result-stack">
+          <div class="panel">
+            <div class="meta-row">
+              <span class="chip">场景 ${esc(variants[0]?.result?.scenario_id || '')}</span>
+              <span class="chip">后端 ${esc(variants[0]?.result?.llm_backend || '')}</span>
+              <span class="chip">结果数 ${esc(variants.length)}</span>
+            </div>
+            <div class="block"><h4>快速总览</h4>${renderOverviewCards(variants)}</div>
+            <div class="block"><h4>关键差异摘要</h4>${renderSummary(variants)}</div>
+            <div class="block"><h4>能力调用对比矩阵</h4>${renderBehaviorMatrix(variants)}</div>
+            <div class="block"><h4>Step6 · 本轮交互要求</h4>${renderComparisonSection(variants, renderInteraction)}</div>
+            <div class="block"><h4>Step7 · 行为序列</h4>${renderComparisonSection(variants, renderSequence)}</div>
+            <div class="block"><h4>Step8 · 场景故事与核心改变点</h4>${renderComparisonSection(variants, renderStory)}</div>
+          </div>
+          <div class="panel">
+            <div class="block"><h4>逐组详细审计</h4><div class="audit-variant-grid">${variants.map(renderVariantAuditCard).join('')}</div></div>
+          </div>
+        </div>`;
+    }
+
+    let displayRevision = 0;
+    async function loadFixedCase(caseId) {
+      const revision = ++displayRevision;
+      const fixedStatus = document.getElementById('fixedStatus');
+      fixedStatus.textContent = '正在读取固定结果…';
+      try {
+        const response = await fetch(`/api/fixed-comparisons/${encodeURIComponent(caseId)}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || '读取失败');
+        if (revision !== displayRevision) return;
+        renderResult(data);
+        form.user_utterance.value = data.variants[0]?.request?.user_utterance || '';
+        presetSelect.value = caseId;
+        fixedStatus.textContent = `正在查看：${data.title} · 已保存结果`;
+        statusEl.textContent = '';
+        document.querySelectorAll('.fixed-case').forEach(b => b.classList.toggle('active', b.dataset.caseId === caseId));
+      } catch (error) {
+        if (revision === displayRevision) fixedStatus.textContent = error.message;
+      }
+    }
+    const fixedButtons = document.querySelectorAll('.fixed-case');
+    fixedButtons.forEach(b => b.addEventListener('click', () => loadFixedCase(b.dataset.caseId)));
+    if (fixedButtons.length) loadFixedCase(fixedButtons[0].dataset.caseId);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const revision = ++displayRevision;
+      const fixedStatus = document.getElementById('fixedStatus');
+      if (fixedStatus) fixedStatus.textContent = '';
+      const btn = document.getElementById('runBtn');
+      btn.disabled = true;
+      statusEl.className = 'status';
+      statusEl.textContent = '正在理解情境并生成三组行为序列，完成后先展示，再逐组生成故事…';
+      const payload = {
+        user_utterance: form.user_utterance.value,
+        llm_backend: form.llm_backend.value,
+        preset_case_id: form.preset_case_id.value || undefined,
+        compare_variants: true,
+        include_story: false,
+      };
+      try {
+        const resp = await fetch('/api/run', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error || 'run failed');
+        if (revision !== displayRevision) return;
+        const runStatus = comparisonRunStatus(data.variants || []);
+        statusEl.className = runStatus.className;
+        statusEl.textContent = runStatus.text;
+        renderResult(data);
+        statusEl.textContent = '行为序列已展示，正在逐组补充故事…';
+        await Promise.all((data.variants || []).map(async item => {
+          try {
+            const response = await fetch('/api/comparison-story', {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({result_file: item.result_file}),
+            });
+            const story = await response.json();
+            if (!response.ok || !story.ok) throw new Error(story.error || '故事生成失败');
+            item.result = story.result;
+          } catch (error) {
+            item.result.story_step = {step: 8, status: 'failed', error_info: {message: error.message}};
+          }
+          if (revision === displayRevision) {
+            renderResult(data);
+            statusEl.textContent = `故事已返回 ${data.variants.filter(v => v.result?.story_step?.status).length}/${data.variants.length} 组`;
+          }
+        }));
+        if (revision === displayRevision) {
+          const finalStatus = comparisonRunStatus(data.variants || []);
+          statusEl.className = finalStatus.className;
+          statusEl.textContent = finalStatus.text;
+        }
+      } catch (err) {
+        if (revision !== displayRevision) return;
+        statusEl.className = 'status err';
+        statusEl.textContent = String(err.message || err);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

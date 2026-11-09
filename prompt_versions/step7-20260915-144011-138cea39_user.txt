@@ -1,0 +1,495 @@
+{
+  "persona": "INFP",
+  "scenario_id": "emotional_support",
+  "emotion": {
+    "label": "sad",
+    "intensity": 0.7
+  },
+  "needs": {
+    "emotional_comfort": 0.9,
+    "physical_comfort": 0.7,
+    "task_completion": 0.0,
+    "time_efficiency": 0.0,
+    "safety_support": 0.0,
+    "restore_history": 0.0,
+    "user_autonomy": 0.8,
+    "group_balance": 0.0
+  },
+  "risk": {
+    "fatigue_driving": 0.0,
+    "distraction": 0.2,
+    "overall": 0.2
+  },
+  "whitelist": [
+    "climate",
+    "entertainment",
+    "ambient_light",
+    "navigation",
+    "notification_mode",
+    "seat",
+    "ecosystem"
+  ],
+  "rule_summary": [
+    "未触发安全覆盖",
+    "不存在显式工具指令"
+  ],
+  "flow_context": {
+    "scenario_understanding": {
+      "scenario_id": "emotional_support",
+      "summary": "用户表达情绪低落，拒绝被催促做决定，需提供情感支持和舒缓环境。",
+      "explicit_intent": "寻求情感支持",
+      "implicit_needs": [
+        "舒缓情绪",
+        "避免压力",
+        "提供安慰"
+      ],
+      "core_goal": "帮助用户缓解情绪低落，提供舒适和支持。",
+      "must_do": [
+        "避免催促用户做决定",
+        "营造舒缓的车内环境",
+        "提供情感支持"
+      ],
+      "user_context": "用户情绪低落，偏好避免压力。",
+      "task_context": "无明确任务，用户不希望被催促做决定。",
+      "physical_context": "车内温度舒适，车辆处于停车状态。",
+      "social_context": "用户独自一人，无其他乘客。",
+      "key_facts": [
+        "用户情绪低落",
+        "用户不希望被催促做决定",
+        "车辆处于停车状态"
+      ],
+      "inferences": [
+        "用户可能需要舒缓的音乐或环境来缓解情绪",
+        "用户可能希望暂时放松而非处理复杂任务"
+      ],
+      "unknowns": [
+        "用户情绪低落的具体原因",
+        "用户是否需要具体的帮助或建议"
+      ],
+      "risks": [
+        "用户情绪可能进一步恶化",
+        "过度干预可能引发用户反感"
+      ],
+      "evidence": [
+        {
+          "source": "utterance",
+          "fact": "用户情绪低落，拒绝被催促做决定",
+          "confidence": 0.9
+        }
+      ],
+      "confidence": 0.9,
+      "context_overrides": {
+        "time_period": "evening",
+        "cabin_temperature": 24,
+        "passenger_count": 1,
+        "fatigue_risk": 0.0,
+        "destination_known": false,
+        "destination": null,
+        "calendar_pressure": false,
+        "is_festival": false,
+        "driving_state": "parked",
+        "weather": "clear"
+      },
+      "parsed_needs": {
+        "emotional_comfort": 0.9,
+        "physical_comfort": 0.7,
+        "task_completion": 0.0,
+        "time_efficiency": 0.0,
+        "safety_support": 0.0,
+        "restore_history": 0.0,
+        "user_autonomy": 0.8
+      },
+      "emotion": {
+        "label": "sad",
+        "intensity": 0.7
+      },
+      "risk": {
+        "fatigue_driving": 0.0,
+        "distraction": 0.2,
+        "overall": 0.2
+      }
+    },
+    "persona_scene_strategy": {
+      "dominant_function": "Fi",
+      "action_strategy": "个人价值一致",
+      "cross_scenario_prototype": "依据个人价值与边界筛选行动并保留自主权",
+      "scenario_strategy": "情绪边界维护",
+      "preferred_needs": {
+        "emotional_comfort": 1.0,
+        "personal_boundary": 1.0,
+        "user_autonomy": 1.0
+      }
+    },
+    "persona_description": {
+      "top4_functions": [
+        {
+          "function": "Fi",
+          "display_name": "内倾情感",
+          "action_strategy": "个人价值一致",
+          "principle": "依据个人价值和内在边界筛选系统行为，避免不符合主体的干预",
+          "action_logic": [
+            "识别个人价值与边界",
+            "过滤不一致行动",
+            "选择性表达和执行",
+            "保留自主控制"
+          ]
+        }
+      ],
+      "dominant_summary": "该方案优先维护用户当前感受、个人偏好与系统介入边界。\n",
+      "target_persona_description": [
+        "Fi：依据个人价值和内在边界筛选系统行为，避免不符合主体的干预"
+      ]
+    },
+    "interaction_dimensions": {
+      "raw_interaction": {
+        "initiative": 0.35,
+        "confirmation": 0.85,
+        "memory_usage": 0.45,
+        "option_count": 2,
+        "automation_level": 0.25,
+        "follow_up": 0.4,
+        "intervention_intensity": 0.35,
+        "group_orientation": 0.35,
+        "boundary_protection": 0.95
+      },
+      "scaled_1_to_5": {
+        "initiative": 2,
+        "confirmation": 4,
+        "memory_usage": 3,
+        "option_count": 5,
+        "automation_level": 2,
+        "follow_up": 3,
+        "intervention_intensity": 2,
+        "group_orientation": 2,
+        "boundary_protection": 5
+      },
+      "function_dimension_descriptions": [
+        {
+          "function": "Fi",
+          "stance": "个人价值、意义和自主边界的维护者",
+          "voice_org": "呈现个人选择、价值边界和可控范围",
+          "explanation_focus": "说明个人价值、边界影响及保留的选择权",
+          "timing": "在价值、隐私或自主边界可能被触及时先征得许可",
+          "ordering": "按个人价值优先级和不可让渡边界排序"
+        }
+      ]
+    },
+    "capability_catalog": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "description": "覆盖空调开关、温度、风量、出风模式、净化、除雾和历史空调设置恢复。",
+        "supported_needs": {
+          "physical_comfort": 1.0,
+          "emotional_comfort": 0.35,
+          "task_completion": 0.25,
+          "restore_history": 0.7,
+          "time_efficiency": 0.3,
+          "group_balance": 0.75,
+          "user_autonomy": 0.55
+        },
+        "properties": {
+          "risk": 0.05,
+          "intrusiveness": 0.3,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.08
+        }
+      },
+      {
+        "capability": "entertainment",
+        "display_name": "影音娱乐",
+        "description": "覆盖内容搜索、详情查看、内容选择、播放控制、音源切换、音量调节和历史影音设置恢复。",
+        "supported_needs": {
+          "emotional_comfort": 0.9,
+          "physical_comfort": 0.2,
+          "exploration": 0.55,
+          "restore_history": 0.7,
+          "user_autonomy": 0.7,
+          "group_balance": 0.45,
+          "task_completion": 0.05
+        },
+        "properties": {
+          "risk": 0.1,
+          "intrusiveness": 0.45,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.12
+        }
+      },
+      {
+        "capability": "ambient_light",
+        "display_name": "氛围灯",
+        "description": "覆盖氛围灯开关、颜色、亮度、灯效切换和历史灯光方案恢复。",
+        "supported_needs": {
+          "emotional_comfort": 0.9,
+          "physical_comfort": 0.25,
+          "immediate_feedback": 0.85,
+          "user_autonomy": 0.65,
+          "task_completion": 0.05,
+          "restore_history": 0.55
+        },
+        "properties": {
+          "risk": 0.05,
+          "intrusiveness": 0.25,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.12
+        }
+      },
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "description": "覆盖地点搜索、详情查看、历史目的地、目的地设置、路线规划/比较/选择、导航运行和 ETA/迟到风险判断。",
+        "supported_needs": {
+          "task_completion": 1.0,
+          "time_efficiency": 0.95,
+          "trip_forecast": 0.8,
+          "safety_support": 0.85,
+          "emotional_comfort": 0.1,
+          "dependency_check": 0.6
+        },
+        "properties": {
+          "risk": 0.15,
+          "intrusiveness": 0.35,
+          "reversibility": 0.9,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.05
+        }
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "description": "覆盖通知读取、摘要、优先级分类、提醒延后、静音控制、非紧急通知屏蔽、回复草稿和发送、电话回拨。",
+        "supported_needs": {
+          "user_autonomy": 0.7,
+          "emotional_comfort": 0.55,
+          "task_completion": 0.65,
+          "time_efficiency": 0.5,
+          "personal_boundary": 0.85,
+          "safety_support": 0.3
+        },
+        "properties": {
+          "risk": 0.08,
+          "intrusiveness": 0.35,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.06
+        }
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "description": "覆盖座椅位置调节、记忆位置恢复、加热、通风和按摩控制。",
+        "supported_needs": {
+          "physical_comfort": 0.95,
+          "emotional_comfort": 0.45,
+          "restore_history": 0.8,
+          "task_completion": 0.2,
+          "user_autonomy": 0.6,
+          "group_balance": 0.3
+        },
+        "properties": {
+          "risk": 0.08,
+          "intrusiveness": 0.4,
+          "reversibility": 0.95,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.08
+        }
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "description": "覆盖服务与地点搜索、详情获取、候选筛选与比较、价格优惠、资源状态、方案选择、预约、订单、支付和进度查询。",
+        "supported_needs": {
+          "trip_forecast": 0.75,
+          "provide_options": 0.9,
+          "exploration": 0.8,
+          "task_completion": 0.55,
+          "time_efficiency": 0.5,
+          "safety_support": 0.6,
+          "group_balance": 0.4,
+          "emotional_comfort": 0.25
+        },
+        "properties": {
+          "risk": 0.2,
+          "intrusiveness": 0.4,
+          "reversibility": 0.85,
+          "requires_confirmation": true,
+          "max_persona_randomness": 0.1
+        }
+      }
+    ],
+    "execution_modes": {
+      "auto_generate": {
+        "display_name": "自动生成",
+        "definition": "自动完成搜索、分析或方案生成，但不改变车辆或外部状态",
+        "applies_to": [
+          "搜索",
+          "摘要",
+          "规划",
+          "比较",
+          "草稿"
+        ],
+        "example": "自动生成两条候选路线"
+      },
+      "auto_execute": {
+        "display_name": "自动执行",
+        "definition": "无需事前确认，直接改变车辆或服务状态",
+        "applies_to": [
+          "安全必需动作",
+          "低风险动作",
+          "可撤销动作"
+        ],
+        "example": "自动开启前挡除雾"
+      },
+      "conditional_auto": {
+        "display_name": "条件自动",
+        "definition": "满足预设条件后自动执行，否则降级为确认或建议",
+        "applies_to": [
+          "有明确阈值的动作",
+          "有权限约束的动作",
+          "有历史偏好的动作"
+        ],
+        "example": "温度低于阈值时自动开启加热"
+      },
+      "confirm_execute": {
+        "display_name": "确认后执行",
+        "definition": "展示动作和关键参数，用户确认后执行",
+        "applies_to": [
+          "对外通信",
+          "支付",
+          "订单",
+          "较高影响动作"
+        ],
+        "example": "确认后支付停车费"
+      },
+      "choose_execute": {
+        "display_name": "选择后执行",
+        "definition": "提供多个候选项，用户选择后执行",
+        "applies_to": [
+          "路线",
+          "餐厅",
+          "停车场",
+          "其他主观决策"
+        ],
+        "example": "用户选择路线后启动导航"
+      },
+      "suggest_only": {
+        "display_name": "仅建议",
+        "definition": "只提供建议，不调用实际能力",
+        "applies_to": [
+          "证据不足",
+          "权限缺失",
+          "需求不明确"
+        ],
+        "example": "建议开启座椅加热"
+      }
+    }
+  },
+  "blueprint": {
+    "scene_backbone": [
+      "climate",
+      "seat"
+    ],
+    "capability_hints": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "action": null,
+        "details": "处理当前体感与舱内温度问题",
+        "intensity": "medium",
+        "execution_mode": "conditional_auto",
+        "reason": "处理当前体感与舱内温度问题；遵循情绪边界维护",
+        "persona_influence": "更强调用户选择空间与边界保留",
+        "scenario_influence": "情绪边界维护",
+        "parameters_hint": {
+          "target_temperature": 23,
+          "mode": "balanced"
+        }
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "action": null,
+        "details": "恢复或调整舒适坐姿与身体负担",
+        "intensity": "medium",
+        "execution_mode": "confirm_execute",
+        "reason": "恢复或调整舒适坐姿与身体负担；遵循情绪边界维护",
+        "persona_influence": "更强调用户选择空间与边界保留",
+        "scenario_influence": "情绪边界维护",
+        "parameters_hint": {
+          "mode": "memory_restore"
+        }
+      }
+    ],
+    "no_call_reasons": {
+      "climate": "已进入本轮行为序列",
+      "entertainment": "未进入本轮流程骨架",
+      "ambient_light": "未进入本轮流程骨架",
+      "navigation": "未进入本轮流程骨架",
+      "notification_mode": "未进入本轮流程骨架",
+      "seat": "已进入本轮行为序列",
+      "ecosystem": "未进入本轮流程骨架"
+    },
+    "notes": [
+      "先形成共同情境骨架，再叠加人格差异",
+      "主导功能为 Fi，通过步骤 4-6 影响动作顺序、执行方式和说明重点"
+    ],
+    "persona_description": {
+      "top4_functions": [
+        {
+          "function": "Fi",
+          "display_name": "内倾情感",
+          "action_strategy": "个人价值一致",
+          "principle": "依据个人价值和内在边界筛选系统行为，避免不符合主体的干预",
+          "action_logic": [
+            "识别个人价值与边界",
+            "过滤不一致行动",
+            "选择性表达和执行",
+            "保留自主控制"
+          ]
+        }
+      ],
+      "dominant_summary": "该方案优先维护用户当前感受、个人偏好与系统介入边界。\n",
+      "target_persona_description": [
+        "Fi：依据个人价值和内在边界筛选系统行为，避免不符合主体的干预"
+      ]
+    },
+    "interaction_profile": {
+      "raw_interaction": {
+        "initiative": 0.35,
+        "confirmation": 0.85,
+        "memory_usage": 0.45,
+        "option_count": 2,
+        "automation_level": 0.25,
+        "follow_up": 0.4,
+        "intervention_intensity": 0.35,
+        "group_orientation": 0.35,
+        "boundary_protection": 0.95
+      },
+      "scaled_1_to_5": {
+        "initiative": 2,
+        "confirmation": 4,
+        "memory_usage": 3,
+        "option_count": 5,
+        "automation_level": 2,
+        "follow_up": 3,
+        "intervention_intensity": 2,
+        "group_orientation": 2,
+        "boundary_protection": 5
+      },
+      "function_dimension_descriptions": [
+        {
+          "function": "Fi",
+          "stance": "个人价值、意义和自主边界的维护者",
+          "voice_org": "呈现个人选择、价值边界和可控范围",
+          "explanation_focus": "说明个人价值、边界影响及保留的选择权",
+          "timing": "在价值、隐私或自主边界可能被触及时先征得许可",
+          "ordering": "按个人价值优先级和不可让渡边界排序"
+        }
+        }
+      ]
+    }
+  }
+}

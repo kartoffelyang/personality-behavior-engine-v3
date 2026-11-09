@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>提示词版本库</title>
+  <style>
+    :root {
+      --bg: #101419;
+      --surface: #171d24;
+      --surface-2: #0d1217;
+      --line: #303943;
+      --line-soft: #252d35;
+      --text: #edf2f4;
+      --muted: #9ca9b1;
+      --teal: #63c7b2;
+      --amber: #e5ad5b;
+      --red: #ec8178;
+      --green-bg: #17342e;
+      --red-bg: #3a2223;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, textarea, select { font: inherit; letter-spacing: 0; }
+    button { cursor: pointer; }
+    .topbar {
+      min-height: 66px;
+      border-bottom: 1px solid var(--line);
+      background: #13181e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 24px;
+    }
+    .brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+    h1 { margin: 0; font-size: 1.25rem; font-weight: 720; }
+    .count { color: var(--muted); font-size: .84rem; white-space: nowrap; }
+    .nav { display: flex; align-items: center; gap: 8px; }
+    .nav a { color: var(--muted); text-decoration: none; font-size: .88rem; padding: 7px 9px; }
+    .nav a:hover { color: var(--text); }
+    .page { max-width: 1460px; margin: 0 auto; padding: 20px 22px 48px; }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .segments { display: inline-grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .segment { border: 0; border-right: 1px solid var(--line); background: var(--surface-2); color: var(--muted); padding: 9px 18px; min-width: 104px; }
+    .segment:last-child { border-right: 0; }
+    .segment.active { background: #23443e; color: #dff8f1; }
+    .btn { border: 1px solid var(--line); border-radius: 6px; background: #1b222a; color: var(--text); padding: 9px 12px; min-height: 38px; }
+    .btn:hover { border-color: #596774; }
+    .btn.primary { background: var(--teal); color: #09221c; border-color: var(--teal); font-weight: 700; }
+    .btn.warn { color: #f5d9ac; border-color: #795f38; }
+    .btn:disabled { opacity: .42; cursor: default; }
+    .workspace { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 14px; align-items: start; }
+    .sidebar, .editor, .compare { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; }
+    .sidebar { min-height: 660px; overflow: hidden; }
+    .side-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 15px 10px; border-bottom: 1px solid var(--line-soft); }
+    .side-title { font-size: .82rem; color: var(--muted); }
+    .version-list { max-height: 740px; overflow: auto; padding: 7px; }
+    .version-list { scrollbar-width: thin; scrollbar-color: #56636d transparent; }
+    .version-item { width: 100%; text-align: left; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--text); padding: 11px; margin-bottom: 4px; }
+    .version-item:hover { background: #1d252e; }
+    .version-item.active { background: #202b32; border-color: #3d5f59; }
+    .version-title { font-size: .91rem; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
+    .version-meta { margin-top: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; color: var(--muted); font-size: .74rem; }
+    .badge { display: inline-flex; align-items: center; min-height: 20px; border: 1px solid #397264; color: #a9e6d8; background: #19302c; border-radius: 4px; padding: 1px 6px; }
+    .editor { min-width: 0; overflow: hidden; }
+    .editor-head { padding: 16px 18px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+    .editor-title { min-width: 0; }
+    .editor-title h2 { margin: 0 0 5px; font-size: 1.05rem; overflow-wrap: anywhere; }
+    .editor-title p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+    .status { color: var(--teal); font-size: .8rem; white-space: nowrap; min-height: 20px; }
+    .form { padding: 16px 18px 18px; }
+    .field-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.7fr); gap: 12px; margin-bottom: 13px; }
+    label { display: block; color: var(--muted); font-size: .8rem; margin-bottom: 6px; }
+    input, textarea, select { width: 100%; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 10px 11px; outline: none; }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(99,199,178,.12); }
+    textarea { resize: vertical; line-height: 1.55; }
+    #systemPrompt { min-height: 410px; font-family: Consolas, "Microsoft YaHei UI", monospace; font-size: .83rem; }
+    #userPrompt { min-height: 180px; font-family: Consolas, "Microsoft YaHei UI", monospace; font-size: .82rem; }
+    .prompt-tabs { display: flex; align-items: center; gap: 4px; margin: 12px 0 8px; border-bottom: 1px solid var(--line-soft); }
+    .prompt-tab { border: 0; border-bottom: 2px solid transparent; color: var(--muted); background: transparent; padding: 8px 10px; }
+    .prompt-tab.active { color: var(--text); border-bottom-color: var(--amber); }
+    .field-note { color: var(--muted); font-size: .75rem; margin-top: 6px; }
+    .metrics { color: var(--muted); font-size: .76rem; margin-left: auto; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 13px; border-top: 1px solid var(--line-soft); }
+    .compare { margin-top: 14px; overflow: hidden; }
+    .compare-head { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line-soft); }
+    .compare-head h2 { margin: 0; font-size: 1rem; }
+    .compare-controls { display: grid; grid-template-columns: 1fr 1fr 150px; gap: 10px; padding: 12px 16px; }
+    .diff-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-soft); }
+    .diff-col { min-width: 0; }
+    .diff-col:first-child { border-right: 1px solid var(--line-soft); }
+    .diff-label { padding: 8px 12px; color: var(--muted); font-size: .76rem; background: #12181e; border-bottom: 1px solid var(--line-soft); }
+    .diff-code { margin: 0; min-height: 220px; max-height: 520px; overflow: auto; padding: 10px 0; background: var(--surface-2); font: .77rem/1.55 Consolas, "Microsoft YaHei UI", monospace; white-space: pre; }
+    .diff-line { display: block; min-height: 1.55em; padding: 0 10px; }
+    .diff-line.add { background: var(--green-bg); color: #c8f0e4; }
+    .diff-line.del { background: var(--red-bg); color: #f6c8c4; }
+    .empty { color: var(--muted); padding: 20px 12px; text-align: center; font-size: .85rem; }
+    .toast { position: fixed; right: 18px; bottom: 18px; z-index: 10; max-width: min(360px, calc(100vw - 36px)); background: #222c34; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: 6px; padding: 11px 13px; color: var(--text); opacity: 0; transform: translateY(8px); pointer-events: none; transition: .16s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { border-left-color: var(--red); }
+    @media (max-width: 880px) {
+      .workspace { grid-template-columns: 1fr; }
+      .sidebar { min-height: auto; }
+      .version-list { display: flex; overflow-x: auto; max-height: none; gap: 6px; }
+      .version-list { scrollbar-width: none; }
+      .version-list::-webkit-scrollbar { display: none; }
+      .version-item { flex: 0 0 235px; margin: 0; }
+      .field-row, .compare-controls { grid-template-columns: 1fr; }
+      .diff-grid { grid-template-columns: 1fr; }
+      .diff-col:first-child { border-right: 0; border-bottom: 1px solid var(--line-soft); }
+    }
+    @media (max-width: 560px) {
+      .topbar { padding: 10px 14px; align-items: flex-start; }
+      .brand { display: block; }
+      .count { display: block; margin-top: 3px; }
+      .nav { display: block; text-align: right; }
+      .nav a { display: block; padding: 3px; }
+      .page { padding: 14px 12px 36px; }
+      .toolbar { align-items: stretch; }
+      .segments { width: 100%; }
+      .segment { min-width: 0; }
+      .editor-head { display: block; }
+      .status { margin-top: 6px; }
+      .form { padding: 13px; }
+      #systemPrompt { min-height: 360px; }
+      .actions .btn { flex: 1 1 140px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>提示词版本库</h1>
+      <span class="count" id="libraryCount"></span>
+    </div>
+    <nav class="nav" aria-label="页面导航">
+      <a href="/comparison">三组对比</a>
+      <a href="/flow_review">流程问题页</a>
+      <a href="/">人格导游</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="toolbar">
+      <div class="segments" role="tablist" aria-label="选择步骤">
+        <button type="button" class="segment active" data-step="2">Step 2</button>
+        <button type="button" class="segment" data-step="7">Step 7</button>
+      </div>
+      <button type="button" class="btn" id="newVersion">新建版本</button>
+    </div>
+
+    <section class="workspace">
+      <aside class="sidebar">
+        <div class="side-head"><span class="side-title">版本记录</span><span class="side-title" id="stepCount"></span></div>
+        <div class="version-list" id="versionList"></div>
+      </aside>
+
+      <article class="editor">
+        <div class="editor-head">
+          <div class="editor-title">
+            <h2 id="selectedTitle">选择一个版本</h2>
+            <p id="selectedMeta"></p>
+          </div>
+          <div class="status" id="editorStatus"></div>
+        </div>
+        <div class="form">
+          <div class="field-row">
+            <div>
+              <label for="versionLabel">版本名称</label>
+              <input id="versionLabel" maxlength="120" placeholder="例如：Step 7 精简版 v3" />
+            </div>
+            <div>
+              <label for="versionNotes">修改说明</label>
+              <input id="versionNotes" maxlength="300" placeholder="记录这一版解决了什么问题" />
+            </div>
+          </div>
+
+          <div class="prompt-tabs">
+            <button type="button" class="prompt-tab active" data-prompt="system">系统提示词</button>
+            <button type="button" class="prompt-tab" data-prompt="user">用户提示词</button>
+            <span class="metrics" id="promptMetrics"></span>
+          </div>
+          <div id="systemPane">
+            <label for="systemPrompt">系统提示词正文</label>
+            <textarea id="systemPrompt" spellcheck="false"></textarea>
+          </div>
+          <div id="userPane" hidden>
+            <label for="userPrompt">用户提示词或示例输入</label>
+            <textarea id="userPrompt" spellcheck="false" placeholder="默认用户提示词由运行上下文动态生成；在流程页手工修改后会随版本保存在这里。"></textarea>
+            <div class="field-note">该内容用于回看和对比，不会被设为所有案例的默认输入。</div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn primary" id="saveVersion">保存为新版本</button>
+            <button type="button" class="btn warn" id="activateVersion">设为当前系统提示词</button>
+            <button type="button" class="btn" id="copyPrompt">复制正文</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="compare">
+      <div class="compare-head"><h2>版本对比</h2><span class="side-title" id="diffSummary"></span></div>
+      <div class="compare-controls">
+        <div><label for="compareLeft">左侧版本</label><select id="compareLeft"></select></div>
+        <div><label for="compareRight">右侧版本</label><select id="compareRight"></select></div>
+        <div><label for="compareKind">对比内容</label><select id="compareKind"><option value="system_prompt">系统提示词</option><option value="user_prompt">用户提示词</option></select></div>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-col"><div class="diff-label" id="leftLabel">左侧</div><pre class="diff-code" id="leftDiff"></pre></div>
+        <div class="diff-col"><div class="diff-label" id="rightLabel">右侧</div><pre class="diff-code" id="rightDiff"></pre></div>
+      </div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script id="versionsData" type="application/json">{{ versions|tojson }}</script>
+  <script>
+    let versions = JSON.parse(document.getElementById('versionsData').textContent || '[]');
+    let currentStep = 2;
+    let selectedId = '';
+    let promptKind = 'system';
+
+    const el = id => document.getElementById(id);
+    const stepVersions = () => versions.filter(v => Number(v.step) === currentStep);
+    const selected = () => versions.find(v => v.id === selectedId);
+    const fmtDate = value => {
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? value : new Intl.DateTimeFormat('zh-CN', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}).format(d);
+    };
+    const sourceName = value => ({current_default:'当前默认', code_archive:'代码归档', run_history:'历史运行', flow_review_history:'历史修改', flow_review:'流程页', version_library:'版本库'})[value] || value;
+    const notify = (message, error=false) => {
+      const node = el('toast'); node.textContent = message; node.className = `toast show${error ? ' error' : ''}`;
+      clearTimeout(notify.timer); notify.timer = setTimeout(() => node.className = 'toast', 2400);
+    };
+    const setMetrics = () => {
+      const value = promptKind === 'system' ? el('systemPrompt').value : el('userPrompt').value;
+      el('promptMetrics').textContent = `${value.length.toLocaleString()} 字符 · ${value ? value.split(/\r?\n/).length : 0} 行`;
+    };
+
+    function renderList() {
+      const list = el('versionList'); list.replaceChildren();
+      const items = stepVersions();
+      el('libraryCount').textContent = `${versions.length} 个已保存版本`;
+      el('stepCount').textContent = `${items.length} 版`;
+      if (!items.length) { list.innerHTML = '<div class="empty">还没有版本</div>'; return; }
+      items.forEach(v => {
+        const btn = document.createElement('button');
+        btn.type = 'button'; btn.className = `version-item${v.id === selectedId ? ' active' : ''}`;
+        const title = document.createElement('div'); title.className = 'version-title'; title.textContent = v.label;
+        const meta = document.createElement('div'); meta.className = 'version-meta';
+        if (v.active) { const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = '当前'; meta.appendChild(badge); }
+        [fmtDate(v.created_at), sourceName(v.source), `${Number(v.system_chars).toLocaleString()} 字符`].forEach(text => { const span=document.createElement('span'); span.textContent=text; meta.appendChild(span); });
+        btn.append(title, meta); btn.onclick = () => selectVersion(v.id); list.appendChild(btn);
+      });
+    }
+
+    function selectVersion(id) {
+      selectedId = id;
+      const v = selected();
+      if (!v) return;
+      el('selectedTitle').textContent = v.label;
+      el('selectedMeta').textContent = `Step ${v.step} · ${fmtDate(v.created_at)} · ${sourceName(v.source)} · ${v.id}`;
+      el('editorStatus').textContent = v.active ? '当前系统提示词' : '';
+      el('versionLabel').value = v.label;
+      el('versionNotes').value = v.notes || '';
+      el('systemPrompt').value = v.system_prompt || '';
+      el('userPrompt').value = v.user_prompt || '';
+      el('activateVersion').disabled = Boolean(v.active);
+      renderList(); setMetrics(); renderCompareOptions();
+    }
+
+    function newVersion() {
+      selectedId = '';
+      el('selectedTitle').textContent = `新建 Step ${currentStep} 版本`;
+      el('selectedMeta').textContent = '编辑完成后保存为独立版本';
+      el('editorStatus').textContent = '';
+      el('versionLabel').value = '';
+      el('versionNotes').value = '';
+      el('systemPrompt').value = stepVersions().find(v => v.active)?.system_prompt || '';
+      el('userPrompt').value = '';
+      el('activateVersion').disabled = true;
+      renderList(); setMetrics();
+      el('versionLabel').focus();
+    }
+
+    async function saveVersion() {
+      const label = el('versionLabel').value.trim();
+      const system = el('systemPrompt').value.trim();
+      if (!label || !system) { notify('请填写版本名称和系统提示词', true); return; }
+      const response = await fetch('/api/prompt-versions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({step:currentStep, label, notes:el('versionNotes').value.trim(), system_prompt:system, user_prompt:el('userPrompt').value.trim()})});
+      const data = await response.json();
+      if (!data.ok) { notify(data.error || '保存失败', true); return; }
+      versions = data.versions; selectedId = data.version.id; renderList(); selectVersion(selectedId); notify('新版本已保存');
+    }
+
+    async function activateVersion() {
+      const v = selected(); if (!v) return;
+      if (!window.confirm(`将“${v.label}”设为 Step ${v.step} 当前系统提示词？`)) return;
+      const response = await fetch(`/api/prompt-versions/${encodeURIComponent(v.id)}/activate`, {method:'POST'});
+      const data = await response.json();
+      if (!data.ok) { notify(data.error || '启用失败', true); return; }
+      versions = data.versions; renderList(); selectVersion(v.id); notify('已设为当前系统提示词');
+    }
+
+    function renderCompareOptions() {
+      const items = stepVersions();
+      const previous = {compareLeft: el('compareLeft').value, compareRight: el('compareRight').value};
+      for (const id of ['compareLeft','compareRight']) {
+        const select = el(id); select.replaceChildren();
+        items.forEach(v => { const option=document.createElement('option'); option.value=v.id; option.textContent=`${v.active ? '当前 · ' : ''}${v.label}`; select.appendChild(option); });
+        if (items.some(v => v.id === previous[id])) select.value = previous[id];
+      }
+      if (items.length) {
+        if (!items.some(v => v.id === previous.compareRight)) el('compareRight').value = items[0].id;
+        if (!items.some(v => v.id === previous.compareLeft)) el('compareLeft').value = (items[1] || items[0]).id;
+      }
+      renderDiff();
+    }
+
+    function lineDiff(leftText, rightText) {
+      const a = leftText.split(/\r?\n/), b = rightText.split(/\r?\n/), n=a.length, m=b.length;
+      const dp = Array.from({length:n+1}, () => new Uint16Array(m+1));
+      for (let i=n-1;i>=0;i--) for (let j=m-1;j>=0;j--) dp[i][j] = a[i] === b[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j], dp[i][j+1]);
+      const left=[], right=[]; let i=0,j=0, changed=0;
+      while(i<n || j<m) {
+        if(i<n && j<m && a[i]===b[j]) { left.push(['',a[i++]]); right.push(['',b[j++]]); }
+        else if(j<m && (i===n || dp[i][j+1] >= dp[i+1][j])) { left.push(['','']); right.push(['add',b[j++]]); changed++; }
+        else { left.push(['del',a[i++]]); right.push(['','']); changed++; }
+      }
+      return {left,right,changed};
+    }
+    function drawLines(target, lines) {
+      target.replaceChildren();
+      lines.forEach(([kind,text]) => { const span=document.createElement('span'); span.className=`diff-line ${kind}`; span.textContent=text || ' '; target.appendChild(span); });
+    }
+    function renderDiff() {
+      const left = versions.find(v => v.id === el('compareLeft').value), right = versions.find(v => v.id === el('compareRight').value);
+      if (!left || !right) { el('leftDiff').textContent=''; el('rightDiff').textContent=''; return; }
+      const key = el('compareKind').value;
+      const diff = lineDiff(left[key] || '', right[key] || '');
+      el('leftLabel').textContent = left.label; el('rightLabel').textContent = right.label;
+      el('diffSummary').textContent = diff.changed ? `${diff.changed} 行增加或删除` : '内容相同';
+      drawLines(el('leftDiff'), diff.left); drawLines(el('rightDiff'), diff.right);
+    }
+
+    document.querySelectorAll('.segment').forEach(btn => btn.onclick = () => {
+      currentStep = Number(btn.dataset.step); document.querySelectorAll('.segment').forEach(x => x.classList.toggle('active', x === btn));
+      const first = stepVersions().find(v => v.active) || stepVersions()[0]; selectedId = first?.id || '';
+      renderList(); if (first) selectVersion(first.id); else newVersion(); renderCompareOptions();
+    });
+    document.querySelectorAll('.prompt-tab').forEach(btn => btn.onclick = () => {
+      promptKind = btn.dataset.prompt; document.querySelectorAll('.prompt-tab').forEach(x => x.classList.toggle('active', x === btn));
+      el('systemPane').hidden = promptKind !== 'system'; el('userPane').hidden = promptKind !== 'user'; setMetrics();
+    });
+    el('newVersion').onclick = newVersion; el('saveVersion').onclick = saveVersion; el('activateVersion').onclick = activateVersion;
+    el('copyPrompt').onclick = async () => { const value = promptKind === 'system' ? el('systemPrompt').value : el('userPrompt').value; await navigator.clipboard.writeText(value); notify('正文已复制'); };
+    el('systemPrompt').oninput = setMetrics; el('userPrompt').oninput = setMetrics;
+    el('compareLeft').onchange = renderDiff; el('compareRight').onchange = renderDiff; el('compareKind').onchange = renderDiff;
+
+    const initial = stepVersions().find(v => v.active) || stepVersions()[0];
+    renderList(); if (initial) selectVersion(initial.id); else newVersion(); renderCompareOptions();
+  </script>
+</body>
+</html>

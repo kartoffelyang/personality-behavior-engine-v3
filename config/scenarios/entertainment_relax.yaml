@@ -1,0 +1,49 @@
+scenario_id: entertainment_relax
+display_name: 娱乐放松
+min_score_to_call: 0.52
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 当下感官松弛
+    preferred_needs:
+      emotional_comfort: 0.9
+      physical_comfort: 0.6
+      immediate_feedback: 0.8
+  Si:
+    strategy: 熟悉节奏恢复
+    preferred_needs:
+      restore_history: 1.0
+      emotional_comfort: 0.7
+  Ne:
+    strategy: 娱乐可能拓展
+    preferred_needs:
+      exploration: 1.0
+      provide_options: 0.9
+  Ni:
+    strategy: 沉浸进程构想
+    preferred_needs:
+      trip_forecast: 0.5
+      emotional_comfort: 0.7
+  Te:
+    strategy: 放松过程编排
+    preferred_needs:
+      task_completion: 0.4
+      time_efficiency: 0.5
+  Ti:
+    strategy: 娱乐干扰校验
+    preferred_needs:
+      dependency_check: 0.9
+      conflict_resolution: 0.9
+      safety_support: 0.6
+  Fe:
+    strategy: 群体娱乐协调
+    preferred_needs:
+      group_balance: 1.0
+      social_harmony: 0.8
+  Fi:
+    strategy: 个人兴趣一致
+    preferred_needs:
+      user_autonomy: 1.0
+      emotional_comfort: 0.9
+      personal_boundary: 0.8

@@ -1,0 +1,23 @@
+# Local credentials and settings
+.env
+.env.*
+!.env.example
+.local-cloud.json
+.local-cloud-*
+# Runtime, caches, environments and model weights
+output/
+outputs/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.venv-*/
+.kev/
+models/
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.log
+*.pid
+.DS_Store

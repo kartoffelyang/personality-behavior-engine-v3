@@ -1,0 +1,50 @@
+scenario_id: time_pressure
+display_name: 时间压力
+min_score_to_call: 0.50
+min_score_gap_for_multi_call: 0.06
+
+function_strategies:
+  Se:
+    strategy: 当前时间响应
+    preferred_needs:
+      time_efficiency: 1.0
+      immediate_feedback: 0.9
+      task_completion: 0.8
+  Si:
+    strategy: 准时经验复用
+    preferred_needs:
+      restore_history: 0.7
+      time_efficiency: 0.9
+      task_completion: 0.8
+  Ne:
+    strategy: 补救路径拓展
+    preferred_needs:
+      provide_options: 0.8
+      time_efficiency: 0.8
+  Ni:
+    strategy: 全链路瓶颈预见
+    preferred_needs:
+      trip_forecast: 1.0
+      time_efficiency: 0.9
+  Te:
+    strategy: 截止目标推进
+    preferred_needs:
+      task_completion: 1.0
+      time_efficiency: 1.0
+  Ti:
+    strategy: 完整时间链校验
+    preferred_needs:
+      dependency_check: 1.0
+      conflict_resolution: 0.8
+      time_efficiency: 0.7
+  Fe:
+    strategy: 多方预期协调
+    preferred_needs:
+      group_balance: 0.7
+      social_harmony: 0.6
+  Fi:
+    strategy: 个人优先维护
+    preferred_needs:
+      personal_boundary: 0.8
+      user_autonomy: 0.7
+      time_efficiency: 0.5

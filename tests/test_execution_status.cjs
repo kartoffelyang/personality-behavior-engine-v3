@@ -1,0 +1,4 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const {diagnose}=require('../web/static/execution-status.js');
+test('empty clarification means missing context, not pending confirmation',()=>{const r=diagnose({status:'needs_clarification',goal:'判断迟到风险',questions:['目的地','到达时间']},{actions:[],events:[]});assert.equal(r.code,'missing_context');assert.equal(r.calls,0);assert.equal(r.questions.length,2);});
+test('missing concrete arguments names the method and fields',()=>{const r=diagnose({}, {actions:[{}],events:[],pending:{method:'温度调节',required_fields:[{name:'温度'}]}});assert.equal(r.code,'missing_arguments');assert.match(r.detail,/温度/);});
+test('service failures are distinct from empty plans',()=>{const r=diagnose({}, {actions:[{}],events:[{response:{code:'SIMULATED_TIMEOUT',message:'模拟超时'}}]});assert.equal(r.code,'service_failed');});

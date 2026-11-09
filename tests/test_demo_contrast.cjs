@@ -1,0 +1,8 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const {comparison,visibleActions}=require('../web/static/demo-contrast.js');
+const a=(name,p={},text=name)=>({domain:'entertainment',name,parameters:p,text,order:1});const v=(l,r)=>({ESTJ:{status:'completed',actions:l},INFP:{status:'completed',actions:r}});
+test('a genuinely added action takes priority over wording changes',()=>{const added={...a('通知静音'),domain:'notification_mode'};const result=comparison(v([added,a('内容搜索',{},'搜三项')],[a('内容搜索',{},'搜一项')]));assert.equal(result.rows[0][0],'通知静音');assert.equal(result.rows[0][2],null);});
+test('object key order does not manufacture a difference',()=>{const r=comparison(v([a('选择',{甲:1,乙:2})],[a('选择',{乙:2,甲:1})]));assert.equal(r.matching,true);assert.equal(r.rows.length,0);});
+test('repeated methods are matched by occurrence',()=>{const r=comparison(v([a('选择',{id:'1'}),a('选择',{id:'2'})],[a('选择',{id:'1'}),a('选择',{id:'3'})]));assert.equal(r.rows[0][1].parameters.id,'2');assert.equal(r.rows[0][2].parameters.id,'3');});
+test('main view hides query mechanics and keeps concrete end actions',()=>assert.deepEqual(visibleActions([a('内容搜索'),a('内容详情查看'),a('内容选择'),a('播放控制')]).map(x=>x.name),['播放控制']));
+
+test('visual trace separates action adoption, parameters, wording and identical actions',()=>{const {actionDifferences}=require('../web/static/demo-contrast.js');const pairs=v([a('按摩'),a('温度',{温度:22}),a('播放',{},'轻松播放'),a('共同')],[a('温度',{温度:24}),a('播放',{},'安静播放'),a('共同')]);assert.deepEqual(actionDifferences(pairs).map(x=>x.kind),['presence','parameters','description','same']);});

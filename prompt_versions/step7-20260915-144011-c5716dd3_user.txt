@@ -1,0 +1,531 @@
+{
+  "persona": "ESTJ",
+  "scenario_id": "fatigue_driving",
+  "emotion": {
+    "label": "疲倦且坚持",
+    "intensity": 0.72
+  },
+  "needs": {
+    "emotional_comfort": 0.25,
+    "physical_comfort": 0.75,
+    "task_completion": 0.7,
+    "time_efficiency": 0.45,
+    "safety_support": 1.0,
+    "restore_history": 0.0,
+    "user_autonomy": 0.65,
+    "group_balance": 0.0
+  },
+  "risk": {
+    "fatigue_driving": 0.95,
+    "distraction": 0.25,
+    "overall": 0.92
+  },
+  "whitelist": [
+    "climate",
+    "entertainment",
+    "ambient_light",
+    "navigation",
+    "notification_mode",
+    "seat",
+    "ecosystem"
+  ],
+  "rule_summary": [
+    "触发安全规则 fatigue_driving",
+    "安全规则覆盖人格偏好"
+  ],
+  "flow_context": {
+    "scenario_understanding": {
+      "scenario_id": "fatigue_driving",
+      "summary": "用户已连续打哈欠并表示仍想继续驾驶，核心任务是识别显著疲劳驾驶风险，在尊重用户自主性的同时优先阻止立即继续驾驶，并促使用户先休息、评估清醒状态后再决定是否出发。",
+      "explicit_intent": "尽管已经连续打哈欠，仍希望继续驾驶。",
+      "implicit_needs": [
+        "获得明确、直接的疲劳风险判断",
+        "在不耽误行程的前提下恢复清醒状态",
+        "获得可执行的停车休息或替代出行方案",
+        "保留对后续行程安排的决策权"
+      ],
+      "core_goal": "避免用户在明显疲劳状态下继续驾驶，优先确保行车安全。",
+      "must_do": [
+        "将连续打哈欠识别为显著疲劳信号",
+        "明确将安全优先级置于继续赶路之上",
+        "建议保持停车状态并立即休息",
+        "提供短时休息、换人驾驶或改用其他交通方式等可执行选项",
+        "在用户恢复清醒前避免启动可能增加分心的功能",
+        "不得仅依靠音乐、冷风或开窗作为继续驾驶的安全依据"
+      ],
+      "user_context": "用户人格为ESTJ，可能偏好直接、务实、目标明确且可立即执行的建议；用户主观上倾向继续完成驾驶任务。",
+      "task_context": "用户正在决定是否继续驾驶，当前决策与疲劳驾驶安全直接相关。",
+      "physical_context": "连续打哈欠表明用户可能已出现明显困倦或警觉性下降。",
+      "social_context": "未提及同行人员、可替换驾驶员或外部协助条件。",
+      "key_facts": [
+        "用户表示自己已经连续打哈欠",
+        "用户仍想继续驾驶",
+        "默认情境显示车辆当前处于停车状态",
+        "默认情境显示乘员数量为1"
+      ],
+      "inferences": [
+        "用户存在较高的疲劳驾驶风险",
+        "如果立即继续驾驶，反应速度、注意力和判断能力可能下降",
+        "当前停车状态为先休息或调整出行方案提供了条件",
+        "单人乘车可能意味着现场没有明确的替换驾驶员"
+      ],
+      "unknowns": [
+        "用户已连续驾驶多长时间",
+        "用户最近一次充分睡眠的时间和时长",
+        "是否还存在眼皮沉重、注意力涣散或短暂失神等症状",
+        "附近是否有安全休息地点",
+        "是否有人可以代驾或接送",
+        "剩余路程和预计驾驶时长",
+        "用户是否服用了可能引起困倦的药物"
+      ],
+      "risks": [
+        "疲劳导致反应迟缓或判断失误",
+        "继续驾驶时发生短暂入睡",
+        "通过刺激性措施暂时提神而低估实际疲劳程度",
+        "在高风险状态下启动车辆并进入道路"
+      ],
+      "evidence": [
+        {
+          "source": "utterance",
+          "fact": "用户已经连续打哈欠。",
+          "confidence": 1.0
+        },
+        {
+          "source": "utterance",
+          "fact": "用户仍想继续驾驶。",
+          "confidence": 1.0
+        }
+      ],
+      "confidence": 0.98,
+      "context_overrides": {
+        "time_period": null,
+        "cabin_temperature": null,
+        "passenger_count": null,
+        "fatigue_risk": 0.9,
+        "destination_known": null,
+        "destination": null,
+        "calendar_pressure": null,
+        "is_festival": null,
+        "driving_state": null,
+        "weather": null
+      },
+      "parsed_needs": {
+        "emotional_comfort": 0.25,
+        "physical_comfort": 0.75,
+        "task_completion": 0.7,
+        "time_efficiency": 0.45,
+        "safety_support": 1.0,
+        "restore_history": 0.0,
+        "user_autonomy": 0.65
+      },
+      "emotion": {
+        "label": "疲倦且坚持",
+        "intensity": 0.72
+      },
+      "risk": {
+        "fatigue_driving": 0.95,
+        "distraction": 0.25,
+        "overall": 0.92
+      }
+    },
+    "persona_scene_strategy": {
+      "dominant_function": "Te",
+      "action_strategy": "外部目标编排",
+      "cross_scenario_prototype": "按照客观目标、约束和优先级组织行动",
+      "scenario_strategy": "安全目标编排",
+      "preferred_needs": {
+        "safety_support": 1.0,
+        "task_completion": 0.8,
+        "time_efficiency": 0.6
+      }
+    },
+    "persona_description": {
+      "top4_functions": [
+        {
+          "function": "Te",
+          "display_name": "外倾思维",
+          "action_strategy": "外部目标编排",
+          "principle": "依据客观事实、规则和可验证目标组织资源与行动顺序",
+          "action_logic": [
+            "明确目标与约束",
+            "排定优先级",
+            "编排能力和步骤",
+            "依据结果验证"
+          ]
+        }
+      ],
+      "dominant_summary": "该方案围绕明确目标组织操作顺序，并减少用户后续操作成本。\n",
+      "target_persona_description": [
+        "Te：依据客观事实、规则和可验证目标组织资源与行动顺序"
+      ]
+    },
+    "interaction_dimensions": {
+      "raw_interaction": {
+        "initiative": 0.82,
+        "confirmation": 0.35,
+        "memory_usage": 0.75,
+        "option_count": 1,
+        "automation_level": 0.78,
+        "follow_up": 0.72,
+        "intervention_intensity": 0.68,
+        "group_orientation": 0.45,
+        "boundary_protection": 0.45
+      },
+      "scaled_1_to_5": {
+        "initiative": 4,
+        "confirmation": 2,
+        "memory_usage": 4,
+        "option_count": 5,
+        "automation_level": 4,
+        "follow_up": 4,
+        "intervention_intensity": 4,
+        "group_orientation": 3,
+        "boundary_protection": 3
+      },
+      "function_dimension_descriptions": [
+        {
+          "function": "Te",
+          "stance": "目标任务的组织者和执行协调者",
+          "voice_org": "呈现目标、优先级、行动和验证结果",
+          "explanation_focus": "说明目标、约束、优先级和结果标准",
+          "timing": "在目标偏离、依赖变化或截止节点前介入",
+          "ordering": "按风险、依赖、时间和目标优先级排序"
+        }
+      ],
+      "mode": "persona_driven"
+    },
+    "capability_catalog": [
+      {
+        "capability": "climate",
+        "display_name": "空调",
+        "description": "覆盖空调开关、温度、风量、出风模式、净化、除雾和历史空调设置恢复。",
+        "supported_needs": {
+          "physical_comfort": 1.0,
+          "emotional_comfort": 0.35,
+          "task_completion": 0.25,
+          "restore_history": 0.7,
+          "time_efficiency": 0.3,
+          "group_balance": 0.75,
+          "user_autonomy": 0.55
+        },
+        "properties": {
+          "risk": 0.05,
+          "intrusiveness": 0.3,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.08
+        }
+      },
+      {
+        "capability": "entertainment",
+        "display_name": "影音娱乐",
+        "description": "覆盖内容搜索、详情查看、内容选择、播放控制、音源切换、音量调节和历史影音设置恢复。",
+        "supported_needs": {
+          "emotional_comfort": 0.9,
+          "physical_comfort": 0.2,
+          "exploration": 0.55,
+          "restore_history": 0.7,
+          "user_autonomy": 0.7,
+          "group_balance": 0.45,
+          "task_completion": 0.05
+        },
+        "properties": {
+          "risk": 0.1,
+          "intrusiveness": 0.45,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.12
+        }
+      },
+      {
+        "capability": "ambient_light",
+        "display_name": "氛围灯",
+        "description": "覆盖氛围灯开关、颜色、亮度、灯效切换和历史灯光方案恢复。",
+        "supported_needs": {
+          "emotional_comfort": 0.9,
+          "physical_comfort": 0.25,
+          "immediate_feedback": 0.85,
+          "user_autonomy": 0.65,
+          "task_completion": 0.05,
+          "restore_history": 0.55
+        },
+        "properties": {
+          "risk": 0.05,
+          "intrusiveness": 0.25,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.12
+        }
+      },
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "description": "覆盖地点搜索、详情查看、历史目的地、目的地设置、路线规划/比较/选择、导航运行和 ETA/迟到风险判断。",
+        "supported_needs": {
+          "task_completion": 1.0,
+          "time_efficiency": 0.95,
+          "trip_forecast": 0.8,
+          "safety_support": 0.85,
+          "emotional_comfort": 0.1,
+          "dependency_check": 0.6
+        },
+        "properties": {
+          "risk": 0.15,
+          "intrusiveness": 0.35,
+          "reversibility": 0.9,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.05
+        }
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "description": "覆盖通知读取、摘要、优先级分类、提醒延后、静音控制、非紧急通知屏蔽、回复草稿和发送、电话回拨。",
+        "supported_needs": {
+          "user_autonomy": 0.7,
+          "emotional_comfort": 0.55,
+          "task_completion": 0.65,
+          "time_efficiency": 0.5,
+          "personal_boundary": 0.85,
+          "safety_support": 0.3
+        },
+        "properties": {
+          "risk": 0.08,
+          "intrusiveness": 0.35,
+          "reversibility": 1.0,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.06
+        }
+      },
+      {
+        "capability": "seat",
+        "display_name": "座椅",
+        "description": "覆盖座椅位置调节、记忆位置恢复、加热、通风和按摩控制。",
+        "supported_needs": {
+          "physical_comfort": 0.95,
+          "emotional_comfort": 0.45,
+          "restore_history": 0.8,
+          "task_completion": 0.2,
+          "user_autonomy": 0.6,
+          "group_balance": 0.3
+        },
+        "properties": {
+          "risk": 0.08,
+          "intrusiveness": 0.4,
+          "reversibility": 0.95,
+          "requires_confirmation": false,
+          "max_persona_randomness": 0.08
+        }
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "description": "覆盖服务与地点搜索、详情获取、候选筛选与比较、价格优惠、资源状态、方案选择、预约、订单、支付和进度查询。",
+        "supported_needs": {
+          "trip_forecast": 0.75,
+          "provide_options": 0.9,
+          "exploration": 0.8,
+          "task_completion": 0.55,
+          "time_efficiency": 0.5,
+          "safety_support": 0.6,
+          "group_balance": 0.4,
+          "emotional_comfort": 0.25
+        },
+        "properties": {
+          "risk": 0.2,
+          "intrusiveness": 0.4,
+          "reversibility": 0.85,
+          "requires_confirmation": true,
+          "max_persona_randomness": 0.1
+        }
+      }
+    ],
+    "execution_modes": {
+      "auto_generate": {
+        "display_name": "自动生成",
+        "definition": "自动完成搜索、分析或方案生成，但不改变车辆或外部状态",
+        "applies_to": [
+          "搜索",
+          "摘要",
+          "规划",
+          "比较",
+          "草稿"
+        ],
+        "example": "自动生成两条候选路线"
+      },
+      "auto_execute": {
+        "display_name": "自动执行",
+        "definition": "无需事前确认，直接改变车辆或服务状态",
+        "applies_to": [
+          "安全必需动作",
+          "低风险动作",
+          "可撤销动作"
+        ],
+        "example": "自动开启前挡除雾"
+      },
+      "conditional_auto": {
+        "display_name": "条件自动",
+        "definition": "满足预设条件后自动执行，否则降级为确认或建议",
+        "applies_to": [
+          "有明确阈值的动作",
+          "有权限约束的动作",
+          "有历史偏好的动作"
+        ],
+        "example": "温度低于阈值时自动开启加热"
+      },
+      "confirm_execute": {
+        "display_name": "确认后执行",
+        "definition": "展示动作和关键参数，用户确认后执行",
+        "applies_to": [
+          "对外通信",
+          "支付",
+          "订单",
+          "较高影响动作"
+        ],
+        "example": "确认后支付停车费"
+      },
+      "choose_execute": {
+        "display_name": "选择后执行",
+        "definition": "提供多个候选项，用户选择后执行",
+        "applies_to": [
+          "路线",
+          "餐厅",
+          "停车场",
+          "其他主观决策"
+        ],
+        "example": "用户选择路线后启动导航"
+      },
+      "suggest_only": {
+        "display_name": "仅建议",
+        "definition": "只提供建议，不调用实际能力",
+        "applies_to": [
+          "证据不足",
+          "权限缺失",
+          "需求不明确"
+        ],
+        "example": "建议开启座椅加热"
+      }
+    }
+  },
+  "blueprint": {
+    "scene_backbone": [
+      "navigation",
+      "ecosystem",
+      "notification_mode"
+    ],
+    "capability_hints": [
+      {
+        "capability": "navigation",
+        "display_name": "导航",
+        "action": null,
+        "details": "把目的地与路线快速收束成可直接出发的方案",
+        "intensity": "high",
+        "execution_mode": "auto_execute",
+        "reason": "把目的地与路线快速收束成可直接出发的方案；遵循安全目标编排",
+        "persona_influence": "更强调目标收束与执行闭环",
+        "scenario_influence": "安全目标编排",
+        "parameters_hint": {
+          "destination": "unknown",
+          "mode": "fastest_stable"
+        }
+      },
+      {
+        "capability": "ecosystem",
+        "display_name": "生态服务",
+        "action": null,
+        "details": "先替用户收敛为更容易直接执行的地点候选",
+        "intensity": "medium",
+        "execution_mode": "auto_generate",
+        "reason": "先替用户收敛为更容易直接执行的地点候选；遵循安全目标编排",
+        "persona_influence": "更强调目标收束与执行闭环",
+        "scenario_influence": "安全目标编排",
+        "parameters_hint": {
+          "ecosystem_type": "route_assist",
+          "count": 3
+        }
+      },
+      {
+        "capability": "notification_mode",
+        "display_name": "通知",
+        "action": null,
+        "details": "降低打扰，保留与当前任务相关的信息",
+        "intensity": "medium",
+        "execution_mode": "auto_execute",
+        "reason": "降低打扰，保留与当前任务相关的信息；遵循安全目标编排",
+        "persona_influence": "更强调目标收束与执行闭环",
+        "scenario_influence": "安全目标编排",
+        "parameters_hint": {
+          "mode": "focus"
+        }
+      }
+    ],
+    "no_call_reasons": {
+      "climate": "未进入本轮流程骨架",
+      "entertainment": "未进入本轮流程骨架",
+      "ambient_light": "未进入本轮流程骨架",
+      "navigation": "已进入本轮行为序列",
+      "notification_mode": "已进入本轮行为序列",
+      "seat": "未进入本轮流程骨架",
+      "ecosystem": "已进入本轮行为序列"
+    },
+    "notes": [
+      "安全优先：娱乐与氛围类能力不作为主动作",
+      "先降低风险，再讨论体验优化"
+    ],
+    "persona_description": {
+      "top4_functions": [
+        {
+          "function": "Te",
+          "display_name": "外倾思维",
+          "action_strategy": "外部目标编排",
+          "principle": "依据客观事实、规则和可验证目标组织资源与行动顺序",
+          "action_logic": [
+            "明确目标与约束",
+            "排定优先级",
+            "编排能力和步骤",
+            "依据结果验证"
+          ]
+        }
+      ],
+      "dominant_summary": "该方案围绕明确目标组织操作顺序，并减少用户后续操作成本。\n",
+      "target_persona_description": [
+        "Te：依据客观事实、规则和可验证目标组织资源与行动顺序"
+      ]
+    },
+    "interaction_profile": {
+      "raw_interaction": {
+        "initiative": 0.82,
+        "confirmation": 0.35,
+        "memory_usage": 0.75,
+        "option_count": 1,
+        "automation_level": 0.78,
+        "follow_up": 0.72,
+        "intervention_intensity": 0.68,
+        "group_orientation": 0.45,
+        "boundary_protection": 0.45
+      },
+      "scaled_1_to_5": {
+        "initiative": 4,
+        "confirmation": 2,
+        "memory_usage": 4,
+        "option_count": 5,
+        "automation_level": 4,
+        "follow_up": 4,
+        "intervention_intensity": 4,
+        "group_orientation": 3,
+        "boundary_protection": 3
+      },
+      "function_dimension_descriptions": [
+        {
+          "function": "Te",
+          "stance": "目标任务的组织者和执行协调者",
+          "voice_org": "呈现目标、优先级、行动和验证结果",
+          "explanation_focus": "说明目标、约束、优先级和结果标准",
+          "timing": "在目标偏离、依赖变化或截止节点前介入",
+          "ordering": "按风险、依赖、时间和目标优先级排序"
+        }
+      ],
+      "mode": "persona_driven"
+    }
+  }
+}

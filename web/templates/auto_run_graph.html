@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ persona }} · Git 行为图</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-run.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='behavior-swimlane.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='auto-compare.css') }}" />
+  <script defer src="{{ url_for('static', filename='behavior-swimlane.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='auto-run.js') }}"></script>
+</head>
+<body class="auto-result-page auto-compare-graph-page" data-auto-result data-auto-graph>
+  <main class="auto-result-wrap">
+    <div class="standalone-nav"><a href="/auto_run/{{ job.id }}">← 查看 {{ persona }} 完整记录</a></div>
+    {% if final_snapshot and final_snapshot.validated_actions %}
+    {% include '_behavior_swimlane.html' %}
+    {% else %}
+    <section class="auto-panel"><h1>{{ persona }} · Git 图</h1><p class="muted">本次没有可绘制的动作。</p></section>
+    {% endif %}
+  </main>
+</body>
+</html>

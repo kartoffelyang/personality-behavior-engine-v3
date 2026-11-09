@@ -1,0 +1,47 @@
+scenario_id: festival_celebration
+display_name: 节日庆祝
+min_score_to_call: 0.52
+min_score_gap_for_multi_call: 0.08
+
+function_strategies:
+  Se:
+    strategy: 节庆体验激活
+    preferred_needs:
+      immediate_feedback: 0.9
+      emotional_comfort: 0.8
+  Si:
+    strategy: 节庆传统延续
+    preferred_needs:
+      restore_history: 0.9
+      emotional_comfort: 0.7
+  Ne:
+    strategy: 庆祝可能生成
+    preferred_needs:
+      provide_options: 1.0
+      exploration: 0.9
+  Ni:
+    strategy: 庆祝图景统摄
+    preferred_needs:
+      trip_forecast: 0.5
+      proactive_preparation: 0.7
+  Te:
+    strategy: 庆祝任务编排
+    preferred_needs:
+      task_completion: 0.8
+      time_efficiency: 0.5
+  Ti:
+    strategy: 庆祝逻辑校验
+    preferred_needs:
+      dependency_check: 0.7
+      conflict_resolution: 0.6
+  Fe:
+    strategy: 共享意义协调
+    preferred_needs:
+      group_balance: 0.9
+      social_harmony: 1.0
+  Fi:
+    strategy: 个人意义表达
+    preferred_needs:
+      personal_boundary: 1.0
+      user_autonomy: 1.0
+      emotional_comfort: 0.9

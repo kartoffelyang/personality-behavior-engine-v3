@@ -1,0 +1,5 @@
+{% for a in final_snapshot.O_Action_Plan %}
+<div class="action-sequence-line" style="white-space: pre-wrap; word-break: break-word; padding: 2px 0;">{{ loop.index }}. {{ a }}</div>
+{% else %}
+<div style="white-space: pre-wrap; word-break: break-word;">无工具调用</div>
+{% endfor %}
